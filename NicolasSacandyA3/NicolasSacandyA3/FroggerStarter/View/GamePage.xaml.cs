@@ -41,8 +41,16 @@ namespace FroggerStarter.View
             this.gameManager = new GameManager(this.applicationHeight, this.applicationWidth);
             this.gameManager.InitializeGame(this.canvas);
             this.generateLives();
+
             this.gameManager.LifeLost += this.handleLifeLost;
 
+            this.gameManager.GameOver += this.handleGameOver;
+
+        }
+
+        private void handleGameOver(object sender, EventArgs e)
+        {
+            this.gameOver.Visibility = Visibility.Visible;
         }
 
         #endregion
@@ -88,11 +96,7 @@ namespace FroggerStarter.View
 
         private void handleLifeLost(object sender, EventArgs e)
         {
-            
-            for (int i = this.gameManager.Lives; i < this.lives.Length ; i++)
-            {
-                this.lives[i].Visibility = Visibility.Collapsed;
-            }
+            this.lives[this.gameManager.Lives].Visibility = Visibility.Collapsed;
 
             #endregion
         }

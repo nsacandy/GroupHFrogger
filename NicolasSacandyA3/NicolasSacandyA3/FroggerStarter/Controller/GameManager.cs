@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -37,6 +38,9 @@ namespace FroggerStarter.Controller
         public delegate void LifeLostHandler(object sender, EventArgs e);
         public event LifeLostHandler LifeLost;
 
+        public delegate void GameOverHandler(object sender, EventArgs e);
+        public event GameOverHandler GameOver;
+
         #endregion
 
         #region Constructors
@@ -67,7 +71,11 @@ namespace FroggerStarter.Controller
             this.backgroundWidth = backgroundWidth;
             this.roadManager = new RoadManager(this.backgroundWidth);
             this.setupGameTimer();
-            
+
+            LifeLost += this.handleLifeLost;
+
+            GameOver += this.handleGameOver;
+
         }
 
         #endregion
@@ -181,36 +189,38 @@ namespace FroggerStarter.Controller
             this.setPlayerToCenterOfBottomLane();
             if (this.score == 3)
             {
-                this.handleGameOver();
+                this.RaiseGameOver();
             }
         }
 
-        //TODO handle new gameover
         private void RaiseLifeLost()
         {
             this.Lives -= 1;
-            if (LifeLost != null)
-                LifeLost(this, null);
-            this.roadManager.resetLaneSpeeds();
-
+            this.LifeLost?.Invoke(this, null);
         }
 
-        private void handleGameOver()
+        private void handleLifeLost(Object sender, EventArgs e)
+        { 
+            if (this.Lives == 0)
+            {
+                this.RaiseGameOver();
+            }
+
+            else
+            {
+                this.roadManager.resetLaneSpeeds();
+            }
+        }
+
+        private void RaiseGameOver()
+        {
+            this.GameOver?.Invoke(this, null);
+        }
+
+        private void handleGameOver(Object sender, EventArgs e)
         {
             this.timer.Stop();
             this.player.Sprite.Visibility = Visibility.Collapsed;
-            var gameOver = new TextBlock {
-                Text = "Game Over",
-                Foreground = new SolidColorBrush(Colors.White),
-                FontSize = 30,
-                TextAlignment = TextAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-
-            this.gameCanvas.Children.Add(gameOver);
-            Canvas.SetLeft(gameOver, this.backgroundWidth/2 - 50);
-            
-            Canvas.SetTop(gameOver, this.backgroundHeight/2);
         }
 
         /// <summary>

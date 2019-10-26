@@ -12,5 +12,6 @@
         <Rectangle x:Name="bottomSidewalk" Canvas.Top="{StaticResource LowRoadYLocation}" Fill="Gray" Width="{StaticResource AppWidth}" Height="{StaticResource RoadHeight}" />
         <Canvas x:Name="statusBar" Canvas.Top="0"  Width="{StaticResource AppWidth}" Height="55" />
         <TextBlock x:Name="title" Foreground="Green" HorizontalTextAlignment="Center" Style="{StaticResource SubheaderTextBlockStyle}"  Height="50" Width="200" Text="Froggles!" Canvas.Left="218"/>
+        <TextBlock x:Name="gameOver" Foreground="White" Height="80" Width="250"  TextAlignment="Left"  FontSize="50" Canvas.Left="200" Canvas.Top ="150" Text="Game Over" Visibility="Collapsed" />
     </Canvas>
 </Page>
