@@ -24,7 +24,7 @@ namespace FroggerStarter.Controller
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
         public readonly double TopBorder = 55;
-        private readonly double leftBorder = 0;d-
+        private readonly double leftBorder = 0;
         private Canvas gameCanvas;
         private Frog player;
         private DispatcherTimer timer;
@@ -33,7 +33,10 @@ namespace FroggerStarter.Controller
         private int score;
         private TextBlock scoreDisplay;
         private const double TopShoulder = 105;
-        public IList<FrogSprite> Lives { get; private set; }
+        public int lives = 4;
+
+        public delegate void LifeLostHandler(object sender, EventArgs e);
+        public event LifeLostHandler LifeLost;
 
         #endregion
 
@@ -94,7 +97,7 @@ namespace FroggerStarter.Controller
             this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
             this.createAndPlacePlayer();
             this.placeVehiclesOnCanvas();
-            this.GenerateLives();
+//            this.GenerateLives();
             this.createScoreDisplay();
 
         }
@@ -165,7 +168,8 @@ namespace FroggerStarter.Controller
             {
                 if (uiElement is BaseSprite)
                 {
-                    this.lifeLost();
+                    this.RaiseLifeLost();
+                    
                     this.setPlayerToCenterOfBottomLane();
                 }
             }
@@ -182,15 +186,14 @@ namespace FroggerStarter.Controller
             }
         }
 
-        private void lifeLost()
+        //TODO handle new gameover
+        private void RaiseLifeLost()
         {
-            this.Lives[this.Lives.Count - 1].Visibility = Visibility.Collapsed;
+            this.lives -= 1;
+            if (LifeLost != null)
+                LifeLost(this, null);
             this.roadManager.resetLaneSpeeds();
-            this.Lives.RemoveAt(this.Lives.Count -1);
-            if (this.Lives.Count == 0)
-            {
-                this.handleGameOver();
-            }
+
         }
 
         private void handleGameOver()
@@ -271,30 +274,6 @@ namespace FroggerStarter.Controller
             }
         }
 
-        /// <summary>
-        /// Creates the three initial lives displayed in the corner.
-        /// <Postcondition>this.lives populated, Lives displayed</Postcondition>
-        /// </summary>
-        public void GenerateLives()
-        {
-            IList<FrogSprite> lives = new List<FrogSprite>();
-            var lifeOne = new FrogSprite();
-            var lifeTwo = new FrogSprite();
-            var lifeThree = new FrogSprite();
-
-            lifeOne.RenderAt(0,0);
-            lifeTwo.RenderAt(this.player.Width + 5,0);
-            lifeThree.RenderAt((this.player.Width * 2) + 10,0);
-
-            lives.Add(lifeOne);
-            lives.Add(lifeTwo);
-            lives.Add(lifeThree);
-
-            this.gameCanvas.Children.Add(lifeOne);
-            this.gameCanvas.Children.Add(lifeTwo);
-            this.gameCanvas.Children.Add(lifeThree);
-            this.Lives = lives;
-        }
         #endregion
     }
 }

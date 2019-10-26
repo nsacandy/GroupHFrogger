@@ -1,9 +1,11 @@
-﻿using Windows.Foundation;
+﻿using System;
+using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using FroggerStarter.Controller;
+using FroggerStarter.View.Sprites;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -19,7 +21,7 @@ namespace FroggerStarter.View
         private readonly double applicationHeight = (double) Application.Current.Resources["AppHeight"];
         private readonly double applicationWidth = (double) Application.Current.Resources["AppWidth"];
         private readonly GameManager gameManager;
-        
+        private FrogSprite[] lives;
 
         #endregion
 
@@ -38,10 +40,10 @@ namespace FroggerStarter.View
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             this.gameManager = new GameManager(this.applicationHeight, this.applicationWidth);
             this.gameManager.InitializeGame(this.canvas);
+            this.generateLives();
+            this.gameManager.LifeLost += this.handleLifeLost;
 
         }
-
-
 
         #endregion
 
@@ -66,7 +68,33 @@ namespace FroggerStarter.View
             }
         }
 
-        #endregion
-    }
 
+        //TODO consider moving all sprites into a view-type folder.
+        private void generateLives()
+        {
+            this.lives = new FrogSprite[this.gameManager.lives];
+            for (int i = 0; i < this.gameManager.lives; i++)
+            {
+                FrogSprite life = new FrogSprite();
+                double xLocation = i * (life.Width + 5);
+                life.RenderAt(xLocation, 0);
+                this.statusBar.Children.Add(life);
+                this.lives[i] = life;
+            }
+
+        }
+
+        public object FrogSprite { get; set; }
+
+        private void handleLifeLost(object sender, EventArgs e)
+        {
+            
+            for (int i = this.gameManager.lives; i < this.lives.Length ; i++)
+            {
+                this.lives[i].Visibility = Visibility.Collapsed;
+            }
+
+            #endregion
+        }
+    }
 }

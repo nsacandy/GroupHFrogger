@@ -10,6 +10,7 @@
     <Canvas x:Name="canvas" Width="{StaticResource AppWidth}" Height="{StaticResource AppHeight}" Background="Black">
         <Rectangle x:Name="topSidewalk" Canvas.Top="55" Fill="Gray" Width="{StaticResource AppWidth}" Height="50" />
         <Rectangle Canvas.Top="355" Fill="Gray" Width="{StaticResource AppWidth}" Height="55" />
+        <Canvas x:Name="statusBar" Canvas.Top="0"  Width="{StaticResource AppWidth}" Height="55" />
         <TextBlock x:Name="title" Foreground="Green" HorizontalTextAlignment="Center" Style="{StaticResource SubheaderTextBlockStyle}"  Height="50" Width="200" Text="Froggles!" Canvas.Left="218"/>
     </Canvas>
 </Page>
