@@ -19,11 +19,11 @@ namespace FroggerStarter.Controller
         #region Data members
 
         private const int IntervalBetweenSpeedIncrease = 1;
-        private const int TopLaneOffset = 55;
+        private readonly double TopLaneOffset = (double)App.Current.Resources["HighRoadYLocation"];
         private const int BottomLaneOffset = 5;
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
-        public readonly double TopBorder = 55;
+        public readonly double TopBorder = (double)App.Current.Resources["HighRoadYLocation"] + (double)App.Current.Resources["RoadHeight"];
         private readonly double leftBorder = 0;
         private Canvas gameCanvas;
         private Frog player;
@@ -32,8 +32,7 @@ namespace FroggerStarter.Controller
         private DateTime runningTime;
         private int score;
         private TextBlock scoreDisplay;
-        private const double TopShoulder = 105;
-        public int lives = 4;
+        public int Lives { get; private set; } = 4;
 
         public delegate void LifeLostHandler(object sender, EventArgs e);
         public event LifeLostHandler LifeLost;
@@ -139,7 +138,7 @@ namespace FroggerStarter.Controller
             this.increaseLaneSpeedIfApplicable();
             this.checkForCollision();
 
-            if (this.player.Y <= TopShoulder)
+            if (this.player.Y < this.TopBorder)
             {
                 this.updateScore();
             }
@@ -189,7 +188,7 @@ namespace FroggerStarter.Controller
         //TODO handle new gameover
         private void RaiseLifeLost()
         {
-            this.lives -= 1;
+            this.Lives -= 1;
             if (LifeLost != null)
                 LifeLost(this, null);
             this.roadManager.resetLaneSpeeds();
@@ -253,10 +252,6 @@ namespace FroggerStarter.Controller
         {
             var previousY = this.player.Y;
             this.player.MoveUp();
-            if (this.player.Y < this.TopBorder)
-            {
-                this.player.Y = previousY;
-            }
         }
 
         /// <summary>

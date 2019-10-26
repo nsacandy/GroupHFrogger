@@ -8,6 +8,8 @@
             <x:Double x:Key="AppHeight">410</x:Double>
             <x:Double x:Key="AppWidth">650</x:Double>
             <x:Double x:Key="HighRoadYLocation">55</x:Double>
+            <x:Double x:Key="RoadHeight">50</x:Double>
+            <x:Double x:Key="LowRoadYLocation">355</x:Double>
         </ResourceDictionary>
     </Application.Resources>
 

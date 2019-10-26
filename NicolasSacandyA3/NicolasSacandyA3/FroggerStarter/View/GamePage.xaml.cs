@@ -72,8 +72,8 @@ namespace FroggerStarter.View
         //TODO consider moving all sprites into a view-type folder.
         private void generateLives()
         {
-            this.lives = new FrogSprite[this.gameManager.lives];
-            for (int i = 0; i < this.gameManager.lives; i++)
+            this.lives = new FrogSprite[this.gameManager.Lives];
+            for (int i = 0; i < this.gameManager.Lives; i++)
             {
                 FrogSprite life = new FrogSprite();
                 double xLocation = i * (life.Width + 5);
@@ -89,7 +89,7 @@ namespace FroggerStarter.View
         private void handleLifeLost(object sender, EventArgs e)
         {
             
-            for (int i = this.gameManager.lives; i < this.lives.Length ; i++)
+            for (int i = this.gameManager.Lives; i < this.lives.Length ; i++)
             {
                 this.lives[i].Visibility = Visibility.Collapsed;
             }
