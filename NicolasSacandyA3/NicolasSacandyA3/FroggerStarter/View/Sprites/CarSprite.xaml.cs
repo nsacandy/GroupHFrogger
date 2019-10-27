@@ -4,7 +4,7 @@
 
 namespace FroggerStarter.View.Sprites
 {
-    public sealed partial class CarSprite
+    public sealed partial class CarSprite:BaseSprite
     {
         public CarSprite()
         {

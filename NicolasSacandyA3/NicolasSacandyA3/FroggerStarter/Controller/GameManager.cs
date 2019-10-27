@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -19,7 +20,6 @@ namespace FroggerStarter.Controller
     {
         #region Data members
 
-        private const int IntervalBetweenSpeedIncrease = 1;
         private readonly double TopLaneOffset = (double)App.Current.Resources["HighRoadYLocation"];
         private const int BottomLaneOffset = 5;
         private readonly double backgroundHeight;
@@ -27,12 +27,11 @@ namespace FroggerStarter.Controller
         public readonly double TopBorder = (double)App.Current.Resources["HighRoadYLocation"] + (double)App.Current.Resources["RoadHeight"];
         private readonly double leftBorder = 0;
         private Canvas gameCanvas;
-        private Frog player;
+        private PlayerManager player;
         private DispatcherTimer timer;
         private readonly RoadManager roadManager;
         private DateTime runningTime;
-        private int score;
-        private TextBlock scoreDisplay;
+        public int Score { get; private set; }
         public int Lives { get; private set; } = 4;
 
         public delegate void LifeLostHandler(object sender, EventArgs e);
@@ -41,6 +40,8 @@ namespace FroggerStarter.Controller
         public delegate void GameOverHandler(object sender, EventArgs e);
         public event GameOverHandler GameOver;
 
+        public delegate void PointScoredHandler(object sender, EventArgs e);
+        public event PointScoredHandler PointScored;
         #endregion
 
         #region Constructors
@@ -67,15 +68,28 @@ namespace FroggerStarter.Controller
                 throw new ArgumentOutOfRangeException(nameof(backgroundWidth));
             }
 
+            
             this.backgroundHeight = backgroundHeight;
             this.backgroundWidth = backgroundWidth;
+
             this.roadManager = new RoadManager(this.backgroundWidth);
+            this.player = new PlayerManager(this.TopBorder, this.backgroundHeight, 0, this.backgroundWidth);
             this.setupGameTimer();
+
 
             LifeLost += this.handleLifeLost;
 
             GameOver += this.handleGameOver;
 
+            PointScored += this.handlePointScored;
+
+
+        }
+
+        private void handlePointScored(object sender, EventArgs e)
+        {
+            this.setPlayerToCenterOfBottomLane();
+            this.updateScore();
         }
 
         #endregion
@@ -104,20 +118,7 @@ namespace FroggerStarter.Controller
             this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
             this.createAndPlacePlayer();
             this.placeVehiclesOnCanvas();
-//            this.GenerateLives();
-            this.createScoreDisplay();
-
         }
-
-        private void createScoreDisplay()
-        {
-            this.scoreDisplay = new TextBlock {
-                Foreground = new SolidColorBrush(Colors.White), FontSize = 30, Text = "Score: " + this.score
-            };
-            this.gameCanvas.Children.Add(this.scoreDisplay);
-           Canvas.SetLeft(this.scoreDisplay,this.gameCanvas.Width - 150);
-           Canvas.SetTop(this.scoreDisplay,10);
-          }
 
         private void placeVehiclesOnCanvas()
         {
@@ -129,46 +130,30 @@ namespace FroggerStarter.Controller
 
         private void createAndPlacePlayer()
         {
-            this.player = new Frog();
-            this.gameCanvas.Children.Add(this.player.Sprite);
+            this.gameCanvas.Children.Add(this.player.PlayerSprite);
             this.setPlayerToCenterOfBottomLane();
         }
 
         private void setPlayerToCenterOfBottomLane()
         {
-            this.player.X = this.backgroundWidth / 2 - this.player.Width / 2;
-            this.player.Y = this.backgroundHeight - this.player.Height - BottomLaneOffset;
-            
+            var centeredX = this.backgroundWidth / 2 - this.player.PlayerSprite.Width / 2;
+            var centeredY = this.backgroundHeight - this.player.PlayerSprite.Height - BottomLaneOffset;
+
+            this.player.SetPlayerLocation(centeredX, centeredY);
         }
 
         private void timerOnTick(object sender, object e)
         {
-            this.increaseLaneSpeedIfApplicable();
             this.checkForCollision();
-
-            if (this.player.Y < this.TopBorder)
-            {
-                this.updateScore();
-            }
+            this.updateScore();
 
             this.roadManager.moveAllVehicles();
         }
 
-        private void increaseLaneSpeedIfApplicable()
-        {
-            var sinceLastUpdate = DateTime.Now - this.runningTime;
-            if (sinceLastUpdate.Seconds <= IntervalBetweenSpeedIncrease)
-            {
-                return;
-            }
-
-            this.roadManager.increaseAllLaneSpeeds();
-            this.runningTime = DateTime.Now;
-        }
 
         private void checkForCollision()
         {
-            var playerBox = new Rect(this.player.X, this.player.Y, this.player.Width, this.player.Height);
+            var playerBox = this.player.GetPlayerBox();
             var objectsAtPlayerLocation =
                 VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
             foreach (var uiElement in objectsAtPlayerLocation)
@@ -176,21 +161,27 @@ namespace FroggerStarter.Controller
                 if (uiElement is BaseSprite)
                 {
                     this.RaiseLifeLost();
-                    
-                    this.setPlayerToCenterOfBottomLane();
                 }
             }
         }
 
         private void updateScore()
         {
-            this.score += 1;
-            this.scoreDisplay.Text = "Score: " + this.score;
-            this.setPlayerToCenterOfBottomLane();
-            if (this.score == 3)
+            if (this.player.GetPlayerBox().Y < this.TopBorder)
+            {
+                this.RaisePointScored();
+            }
+
+            if (this.Score == 4)
             {
                 this.RaiseGameOver();
             }
+        }
+
+        private void RaisePointScored()
+        {
+            this.Score += 1;
+            this.PointScored?.Invoke(this, null);
         }
 
         private void RaiseLifeLost()
@@ -201,6 +192,7 @@ namespace FroggerStarter.Controller
 
         private void handleLifeLost(Object sender, EventArgs e)
         { 
+            this.setPlayerToCenterOfBottomLane();
             if (this.Lives == 0)
             {
                 this.RaiseGameOver();
@@ -220,65 +212,28 @@ namespace FroggerStarter.Controller
         private void handleGameOver(Object sender, EventArgs e)
         {
             this.timer.Stop();
-            this.player.Sprite.Visibility = Visibility.Collapsed;
-        }
-
-        /// <summary>
-        ///     Moves the player to the left.
-        ///     Precondition: none
-        ///     Postcondition: player.X = player.X@prev - player.Width
-        /// </summary>
-        public void MovePlayerLeft()
-        {
-            double previousX = this.player.X;
-            this.player.MoveLeft();
-            if (this.player.X < 0)
-            {
-                this.player.X = previousX;
-            }
-        }
-
-        /// <summary>
-        ///     Moves the player to the right.
-        ///     Precondition: none
-        ///     Postcondition: player.X = player.X@prev + player.Width
-        /// </summary>
-        public void MovePlayerRight()
-        {
-            var previousX = this.player.X;
-            this.player.MoveRight();
-            if (this.player.X + this.player.Width >  this.backgroundWidth)
-            {
-                this.player.X = previousX;
-            }
-        }
-
-        /// <summary>
-        ///     Moves the player up.
-        ///     Precondition: none
-        ///     Postcondition: player.Y = player.Y@prev - player.Height
-        /// </summary>
-        public void MovePlayerUp()
-        {
-            var previousY = this.player.Y;
-            this.player.MoveUp();
-        }
-
-        /// <summary>
-        ///     Moves the player down.
-        ///     Precondition: none
-        ///     Postcondition: player.Y = player.Y@prev + player.Height
-        /// </summary>
-        public void MovePlayerDown()
-        {
-            var previousY = this.player.Y;
-            this.player.MoveDown();
-            if (this.player.Y + this.player.Height > this.backgroundHeight)
-            {
-                this.player.Y = previousY;
-            }
+            this.player.PlayerSprite.Visibility = Visibility.Collapsed;
         }
 
         #endregion
+
+        public void MovePlayer(KeyEventArgs args)
+        {
+            switch (args.VirtualKey)
+            {
+                case VirtualKey.Left:
+                    this.player.MovePlayerLeft();
+                    break;
+                case VirtualKey.Right:
+                    this.player.MovePlayerRight();
+                    break;
+                case VirtualKey.Up:
+                    this.player.MovePlayerUp();
+                    break;
+                case VirtualKey.Down:
+                    this.player.MovePlayerDown();
+                    break;
+            }
+        }
     }
 }

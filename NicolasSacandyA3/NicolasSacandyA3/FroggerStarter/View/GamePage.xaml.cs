@@ -46,6 +46,8 @@ namespace FroggerStarter.View
 
             this.gameManager.GameOver += this.handleGameOver;
 
+            this.gameManager.PointScored += this.handlePointScored;
+
         }
 
         private void handleGameOver(object sender, EventArgs e)
@@ -59,21 +61,7 @@ namespace FroggerStarter.View
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
-            switch (args.VirtualKey)
-            {
-                case VirtualKey.Left:
-                    this.gameManager.MovePlayerLeft();
-                    break;
-                case VirtualKey.Right:
-                    this.gameManager.MovePlayerRight();
-                    break;
-                case VirtualKey.Up:
-                    this.gameManager.MovePlayerUp();
-                    break;
-                case VirtualKey.Down:
-                    this.gameManager.MovePlayerDown();
-                    break;
-            }
+            this.gameManager.MovePlayer(args);
         }
 
 
@@ -86,7 +74,7 @@ namespace FroggerStarter.View
                 FrogSprite life = new FrogSprite();
                 double xLocation = i * (life.Width + 5);
                 life.RenderAt(xLocation, 0);
-                this.statusBar.Children.Add(life);
+                this.canvas.Children.Add(life);
                 this.lives[i] = life;
             }
 
@@ -98,7 +86,14 @@ namespace FroggerStarter.View
         {
             this.lives[this.gameManager.Lives].Visibility = Visibility.Collapsed;
 
-            #endregion
+            
         }
+
+        private void handlePointScored(Object sender, EventArgs e)
+        {
+            String score = "Score: " + this.gameManager.Score;
+            this.score.Text = score;
+        }
+        #endregion
     }
 }
