@@ -68,7 +68,6 @@ namespace FroggerStarter.Controller
                 throw new ArgumentOutOfRangeException(nameof(backgroundWidth));
             }
 
-            
             this.backgroundHeight = backgroundHeight;
             this.backgroundWidth = backgroundWidth;
 
@@ -76,14 +75,9 @@ namespace FroggerStarter.Controller
             this.player = new PlayerManager(this.TopBorder, this.backgroundHeight, 0, this.backgroundWidth);
             this.setupGameTimer();
 
-
             LifeLost += this.handleLifeLost;
-
             GameOver += this.handleGameOver;
-
             PointScored += this.handlePointScored;
-
-
         }
 
         private void handlePointScored(object sender, EventArgs e)
@@ -154,8 +148,8 @@ namespace FroggerStarter.Controller
         private void checkForCollision()
         {
             var playerBox = this.player.GetPlayerBox();
-            var objectsAtPlayerLocation =
-                VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
+            var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
+
             foreach (var uiElement in objectsAtPlayerLocation)
             {
                 if (uiElement is BaseSprite)
@@ -200,7 +194,7 @@ namespace FroggerStarter.Controller
 
             else
             {
-                this.roadManager.resetLaneSpeeds();
+                this.roadManager.resetNumVehicles();
             }
         }
 

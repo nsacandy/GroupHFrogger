@@ -1,52 +1,128 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Windows.UI.Xaml;
 using FroggerStarter.Controller;
 
 namespace FroggerStarter.Model
 {
-
-    public class Lane
+    public class Lane : IEnumerable<Vehicle>
     {
-        private readonly int yValue;
-        private IList<Vehicle> laneVehicles;
-        public enum Direction{Left,Right};
+        #region Types and Delegates
 
+        public enum Direction
+        {
+            Left,
+            Right
+        }
+
+        #endregion
+
+        #region Data members
+
+        private readonly int yValue;
         private readonly Direction laneDirection;
         private readonly double width;
-        public double LaneSpeed { get; set; }
 
-        public Lane(int yValue, int numVehicles, Vehicle.VehicleType vehicleType, Direction laneDirection, double laneWidth)
+        private IList<Vehicle> laneVehicles;
+        private Boolean graduallyAddVehicles;
+        private Boolean timeForNewVehicle;
+        #endregion
+
+        private event EventHandler<VehicleArgs> VehicleOutOfBounds;
+
+        #region Properties
+        public int LaneSpeed
+        {
+            get => this.LaneSpeed;
+            set{
+                foreach (var vehicle in this.laneVehicles)
+                {
+                    vehicle.SetSpeed((int)value);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Constructors
+
+        public Lane(int yValue, int numVehicles, Vehicle.VehicleType vehicleType, Direction laneDirection, Boolean graduallyAddVehicles)
         {
             this.yValue = yValue;
             this.laneDirection = laneDirection;
-            this.width = laneWidth;
-            this.populateLaneWithVehicles(numVehicles, vehicleType);
+            this.width = (double)App.Current.Resources["AppWidth"];
+            this.graduallyAddVehicles = graduallyAddVehicles;
+            this.laneVehicles = new List<Vehicle>();
+            this.generateVehicles(numVehicles, vehicleType);
+            this.placeVehicles();
+
+            VehicleOutOfBounds += this.resetVehicleXLocation;
+            if (this.graduallyAddVehicles)
+            {
+                this.hideVehicles();
+                this.VehicleOutOfBounds += this.revealNewVehicle;
+            }
+
         }
 
-        private void populateLaneWithVehicles(int numVehicles, Vehicle.VehicleType vehicleType)
-        {
-            this.laneVehicles = new List<Vehicle>();
+        #endregion
 
-            if (vehicleType.Equals(Vehicle.VehicleType.Car))
+        #region Methods
+
+        public IEnumerator<Vehicle> GetEnumerator()
+        {
+            foreach (var vehicle in this.laneVehicles)
             {
-                
-                for (var i = 0; i < numVehicles; i++)
+                yield return vehicle;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        private void generateVehicles(int numVehicles, Vehicle.VehicleType vehicleType)
+        {
+            for (var i = 0; i < numVehicles; i++)
+            {
+                Vehicle.Heading heading = this.laneDirection.Equals(Direction.Left) ? Vehicle.Heading.Left : Vehicle.Heading.Right;
+                var vehicle = new Vehicle(vehicleType, heading);
+                this.laneVehicles.Add(vehicle);
+            }
+        }
+
+        private void hideVehicles()
+        {
+            Random firstCar = new Random();
+            int firstVisibleCar = firstCar.Next(this.laneVehicles.Count);
+
+            for (int i = 0; i < this.laneVehicles.Count; i++)
+            {
+                if (i == firstVisibleCar)
                 {
-                    var car = new Vehicle(Vehicle.VehicleType.Car,this.laneDirection){X = (this.width/numVehicles) * i,Y=this.yValue};
-                    this.laneVehicles.Add(car);
+                    this.laneVehicles[i].Sprite.Visibility = Visibility.Visible;
+                }
+
+                else
+                {
+                    this.laneVehicles[i].Sprite.Visibility = Visibility.Collapsed;
                 }
             }
-            else if (vehicleType.Equals(Vehicle.VehicleType.Truck))
+        }
+
+        private void placeVehicles()
+        {
+            for (int i = 0; i < this.laneVehicles.Count; i++)
             {
-                for (var i = 0; i < numVehicles; i++)
-                {
-                    var truck = new Vehicle(Vehicle.VehicleType.Truck,this.laneDirection) { X = (this.width / numVehicles) * i, Y=this.yValue};
-                    this.laneVehicles.Add(truck);
-                }
+                this.laneVehicles[i].X = (this.width / this.laneVehicles.Count) * i;
+                this.laneVehicles[i].Y = this.yValue;
             }
         }
 
         /// <summary>
-        /// Gets the vehicles.
+        ///     Gets the vehicles.
         /// </summary>
         /// <returns>List of vehicles</returns>
         public IList<Vehicle> GetVehicles()
@@ -55,46 +131,85 @@ namespace FroggerStarter.Model
         }
 
         /// <summary>
-        /// Moves the vehicles on tick.
-        /// <postcondition>All vehicles x values incremented by lane speed</postcondition>
+        ///     Moves the vehicles on tick.
+        ///     <postcondition>All vehicles x values incremented by lane speed</postcondition>
         /// </summary>
         public void MoveVehiclesOnTick()
         {
-            switch (this.laneDirection)
-            {
-                case Direction.Left:
-                    this.moveVehiclesLeft();
-                    break;
-                case Direction.Right:
-                    this.moveVehiclesRight();
-                    break;
-            }
-        }
-
-        private void moveVehiclesRight()
-        {
             foreach (var vehicle in this.laneVehicles)
             {
-                vehicle.X += this.LaneSpeed;
-                
-                if (vehicle.X > this.width)
-                {
-                    vehicle.X = -vehicle.Sprite.Width;
-                }
+                vehicle.moveVehicle();
+                this.checkIfVehicleOutOfBounds(vehicle);
             }
         }
 
-        private void moveVehiclesLeft()
+        private void checkIfVehicleOutOfBounds(Vehicle vehicle)
         {
-            foreach (var vehicle in this.laneVehicles)
+            if (this.laneDirection.Equals(Direction.Right) && vehicle.X > this.width)
             {
-                vehicle.X -= this.LaneSpeed;
-                if ((vehicle.X + vehicle.Sprite.Width) < 0)
-                {
-                    vehicle.X = this.width + vehicle.Sprite.Width;
-                }
+                this.OnRaiseVehicleOutOfBounds(new VehicleArgs(vehicle));
+            }
 
+            else if (this.laneDirection.Equals(Direction.Left) && (vehicle.X + vehicle.Width) < 0)
+            {
+                this.OnRaiseVehicleOutOfBounds(new VehicleArgs(vehicle));
             }
         }
+
+        protected virtual void OnRaiseVehicleOutOfBounds(VehicleArgs vehicle)
+        {
+            EventHandler<VehicleArgs> handler = VehicleOutOfBounds;
+
+            if (handler != null)
+            {
+                handler(this, vehicle);
+            }
+        }
+    
+
+        private void revealNewVehicle(object sender, VehicleArgs args)
+        {
+            Vehicle vehicle = args.OutOfBoundsVehicle;
+            if (vehicle.Sprite.Visibility.Equals(Visibility.Visible))
+            {
+                this.timeForNewVehicle = true;
+            }
+
+            else if (this.timeForNewVehicle)
+            {
+                vehicle.Sprite.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void resetVehicleXLocation(object sender, VehicleArgs args)
+        {
+            Vehicle vehicle = args.OutOfBoundsVehicle;
+            if (this.laneDirection.Equals(Direction.Left))
+            {
+                vehicle.X = this.width + vehicle.Sprite.Width;
+            }
+
+            if (this.laneDirection.Equals(Direction.Right))
+            {
+                vehicle.X = -vehicle.Sprite.Width;
+            }
+        }
+
+        public class VehicleArgs : EventArgs
+        {
+            public VehicleArgs(Vehicle outOfBoundsVehicle)
+            {
+                this.outOfBoundsVehicle = outOfBoundsVehicle;
+            }
+
+            private Vehicle outOfBoundsVehicle;
+
+            public Vehicle OutOfBoundsVehicle
+            {
+                get { return this.outOfBoundsVehicle; }
+            }
+        }
+
+        #endregion
     }
 }

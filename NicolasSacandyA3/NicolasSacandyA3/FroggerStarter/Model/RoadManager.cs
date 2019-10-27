@@ -45,7 +45,7 @@ namespace FroggerStarter.Model
         private Lane getInitialLaneOne()
         {
             var laneOne =
-                new Lane(LanesYValues[0], NumVehiclesInEachLane[0], Vehicle.VehicleType.Car, Lane.Direction.Left,this.laneWidth) {
+                new Lane(LanesYValues[0], NumVehiclesInEachLane[0], Vehicle.VehicleType.Car, Lane.Direction.Left, true) {
                     LaneSpeed = InitialLaneSpeeds[0]
                 };
             return laneOne;
@@ -54,7 +54,7 @@ namespace FroggerStarter.Model
         private Lane getInitialLaneTwo()
         {
             var laneTwo =
-                new Lane(LanesYValues[1], NumVehiclesInEachLane[1], Vehicle.VehicleType.Truck, Lane.Direction.Right,this.laneWidth) {
+                new Lane(LanesYValues[1], NumVehiclesInEachLane[1], Vehicle.VehicleType.Truck, Lane.Direction.Right,true) {
                     LaneSpeed = InitialLaneSpeeds[1]
                 };
             return laneTwo;
@@ -63,7 +63,7 @@ namespace FroggerStarter.Model
         private Lane getInitialLaneThree()
         {
             var laneThree =
-                new Lane(LanesYValues[2], NumVehiclesInEachLane[2], Vehicle.VehicleType.Car, Lane.Direction.Left, this.laneWidth) {
+                new Lane(LanesYValues[2], NumVehiclesInEachLane[2], Vehicle.VehicleType.Car, Lane.Direction.Left, true) {
                     LaneSpeed = InitialLaneSpeeds[2]
                 };
             return laneThree;
@@ -72,8 +72,8 @@ namespace FroggerStarter.Model
 
         private Lane getInitialLaneFour()
         {
-            var laneFour =
-                new Lane(LanesYValues[3], NumVehiclesInEachLane[3], Vehicle.VehicleType.Truck, Lane.Direction.Left, this.laneWidth) {
+            var laneFour = 
+                new Lane(LanesYValues[3], NumVehiclesInEachLane[3], Vehicle.VehicleType.Truck, Lane.Direction.Left, true) {
                     LaneSpeed = InitialLaneSpeeds[3]
                 };
             return laneFour;
@@ -83,42 +83,10 @@ namespace FroggerStarter.Model
         private Lane getInitialLaneFive()
         {
             var laneFive =
-                new Lane(LanesYValues[4], NumVehiclesInEachLane[4], Vehicle.VehicleType.Car, Lane.Direction.Right, this.laneWidth) {
+                new Lane(LanesYValues[4], NumVehiclesInEachLane[4], Vehicle.VehicleType.Car, Lane.Direction.Right, true) {
                     LaneSpeed = InitialLaneSpeeds[4]
                 };
             return laneFive;
-        }
-
-        /// <summary>
-        /// Increases all lane speeds, increasing slowly but exponentially.
-        /// </summary>
-        public void increaseAllLaneSpeeds()
-        {
-            foreach (var lane in this.lanes.Values)
-            {
-                if (lane.LaneSpeed <= 4)
-                {
-                    lane.LaneSpeed *= 1.4;
-                }
-                else
-                {
-                    lane.LaneSpeed *= 1.05;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Resets the lane speeds.
-        /// </summary>
-        public void resetLaneSpeeds()
-        {
-            var i = 0;
-            foreach (var lane in this.lanes.Values)
-            {
-                lane.LaneSpeed = InitialLaneSpeeds[i];
-                i++;
-            }
-
         }
 
         /// <summary>
@@ -130,7 +98,7 @@ namespace FroggerStarter.Model
             IList<Vehicle> vehicles = new List<Vehicle>();
             foreach (var lane in this.lanes.Values)
             {
-                foreach (var vehicle in lane.GetVehicles())
+                foreach (var vehicle in lane)
                 {
                     vehicles.Add(vehicle);
                 }
@@ -148,6 +116,11 @@ namespace FroggerStarter.Model
             {
                 lane.MoveVehiclesOnTick();
             }
+        }
+
+        public void resetNumVehicles()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

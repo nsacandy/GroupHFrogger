@@ -85,8 +85,6 @@ namespace FroggerStarter.View
         private void handleLifeLost(object sender, EventArgs e)
         {
             this.lives[this.gameManager.Lives].Visibility = Visibility.Collapsed;
-
-            
         }
 
         private void handlePointScored(Object sender, EventArgs e)

@@ -9,16 +9,23 @@ namespace FroggerStarter.Model
     /// </summary>
     public class Vehicle : GameObject
     {
-
-        
         public enum VehicleType
         {
             Car,
             Truck
         };
 
+        public enum Heading
+        {
+            Left,
+            Right,
+            Up,
+            Down
+        }
+
+        public Heading vehicleDirection;
         //TODO make backwards facing sprites. Do this spec too.
-        public Vehicle(VehicleType vehicleType, Lane.Direction leftOrRight)
+        public Vehicle(VehicleType vehicleType, Heading heading)
         {
             if (vehicleType.Equals(VehicleType.Car))
             {
@@ -30,7 +37,8 @@ namespace FroggerStarter.Model
                 Sprite = new TruckSprite();
             }
 
-            if (leftOrRight.Equals(Lane.Direction.Right))
+            this.vehicleDirection = heading;
+            if (heading.Equals(Heading.Right))
             {
                 this.flipHorizontally();
             }
@@ -40,6 +48,31 @@ namespace FroggerStarter.Model
         {
             this.Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
             this.Sprite.RenderTransform = new ScaleTransform() { ScaleX = -1 };
+        }
+
+        public void moveVehicle()
+        {
+            switch (this.vehicleDirection)
+            {
+                case Heading.Left:
+                    this.X -= this.SpeedX;
+                    break;
+                case Heading.Right:
+                    this.X += this.SpeedX;
+                    break;
+                case Heading.Down:
+                    this.Y += this.SpeedY;
+                    break;
+                case Heading.Up:
+                    this.Y -= this.SpeedY;
+                    break;
+            }
+            
+        }
+
+        public void SetSpeed(int speed)
+        {
+            base.SetSpeed(speed, speed);
         }
     }
 }
