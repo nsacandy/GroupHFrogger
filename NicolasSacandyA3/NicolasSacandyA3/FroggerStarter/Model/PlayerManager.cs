@@ -8,7 +8,7 @@ using FroggerStarter.View.Sprites;
 
 namespace FroggerStarter.Model
 {
-    class PlayerManager
+    class PlayerManager : GameObject
     {
         private double topBoundary;
         private double bottomBoundary;
@@ -22,6 +22,7 @@ namespace FroggerStarter.Model
         {
             this.Player = new Frog();
             this.PlayerSprite = this.Player.Sprite;
+            this.PlayerSprite.IsHitTestVisible = false;
 
             this.topBoundary = topBoundary;
             this.bottomBoundary = bottomBoundary;
@@ -89,13 +90,7 @@ namespace FroggerStarter.Model
             this.Player.X = x;
             this.Player.Y = y;
         }
-
-        public Rect GetPlayerBox()
-        {
-            Rect playerBox = new Rect(this.Player.X, this.Player.Y, this.PlayerSprite.Width, this.PlayerSprite.Height);
-            return playerBox;
-        }
-
+        
         public void handleMove(Object sender, EventArgs e)
         {
 

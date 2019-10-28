@@ -31,6 +31,9 @@ namespace FroggerStarter.Controller
         private DispatcherTimer timer;
         private readonly RoadManager roadManager;
         private DateTime runningTime;
+        private List<UIElement> gameObjectsToBeAddedToCanvas;
+
+        public List<LilyPad> LandingSpots { get; private set; }
         public int Score { get; private set; }
         public int Lives { get; private set; } = 4;
 
@@ -40,8 +43,7 @@ namespace FroggerStarter.Controller
         public delegate void GameOverHandler(object sender, EventArgs e);
         public event GameOverHandler GameOver;
 
-        public delegate void PointScoredHandler(object sender, EventArgs e);
-        public event PointScoredHandler PointScored;
+        public event EventHandler<ScoreArgs> PointScored;
         #endregion
 
         #region Constructors
@@ -73,8 +75,8 @@ namespace FroggerStarter.Controller
 
             this.roadManager = new RoadManager(this.backgroundWidth);
             this.player = new PlayerManager(this.TopBorder, this.backgroundHeight, 0, this.backgroundWidth);
-            this.setupGameTimer();
-
+            this.gameObjectsToBeAddedToCanvas = new List<UIElement>();
+            
             LifeLost += this.handleLifeLost;
             GameOver += this.handleGameOver;
             PointScored += this.handlePointScored;
@@ -109,26 +111,36 @@ namespace FroggerStarter.Controller
         /// <exception cref="ArgumentNullException">gameCanvas</exception>
         public void InitializeGame(Canvas gamePage)
         {
-            this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
+            this.setupGameTimer();
             this.createAndPlacePlayer();
-            this.placeVehiclesOnCanvas();
+            this.addVehiclesToCanvasObjectsList();
+            this.addLandingSpotsToCanvasList();
+            this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
+            this.addObjectsToCanvas();
         }
 
-        private void placeVehiclesOnCanvas()
+        public void addObjectsToCanvas()
+        {
+            foreach (var UIElement in this.gameObjectsToBeAddedToCanvas)
+            {
+                this.gameCanvas.Children.Add(UIElement);
+            }
+        }
+
+        private void addVehiclesToCanvasObjectsList()
         {
             foreach (var lane in this.roadManager)
             {
                 foreach (var vehicle in lane)
                 {
-                    this.gameCanvas.Children.Add(vehicle.Sprite);
+                    this.gameObjectsToBeAddedToCanvas.Add(vehicle.Sprite);
                 }
-                
             }
         }
 
         private void createAndPlacePlayer()
         {
-            this.gameCanvas.Children.Add(this.player.PlayerSprite);
+            this.gameObjectsToBeAddedToCanvas.Add(this.player.PlayerSprite);
             this.setPlayerToCenterOfBottomLane();
         }
 
@@ -142,21 +154,45 @@ namespace FroggerStarter.Controller
 
         private void timerOnTick(object sender, object e)
         {
-            this.checkForCollision();
-            this.updateScore();
+            this.checkForPlayerVehicleCollision();
+            this.checkForPointScored();
 
             this.roadManager.moveAllVehicles();
         }
 
-
-        private void checkForCollision()
+        private void checkForPointScored()
         {
-            var playerBox = this.player.GetPlayerBox();
+            var playerBox = this.player.PlayerSprite.HitBox;
             var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
 
             foreach (var uiElement in objectsAtPlayerLocation)
             {
-                if (uiElement is BaseSprite)
+                if (uiElement is LilyPad pad)
+                {
+                    this.OnRaisePointScored(new ScoreArgs(uiElement as LilyPad));
+                }
+            }
+        }
+
+        protected virtual void OnRaisePointScored(ScoreArgs lilyPadHitBox)
+        {
+            EventHandler<ScoreArgs> handler = PointScored;
+            this.Score += 1;
+
+            if (handler != null)
+            {
+                handler(this, lilyPadHitBox);
+            }
+        }
+
+        private void checkForPlayerVehicleCollision()
+        {
+            var playerBox = this.player.PlayerSprite.HitBox;
+            var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
+
+            foreach (var uiElement in objectsAtPlayerLocation)
+            {
+                if (uiElement is CarSprite || uiElement is TruckSprite)
                 {
                     this.RaiseLifeLost();
                 }
@@ -165,21 +201,11 @@ namespace FroggerStarter.Controller
 
         private void updateScore()
         {
-            if (this.player.GetPlayerBox().Y < this.TopBorder)
-            {
-                this.RaisePointScored();
-            }
 
             if (this.Score == 4)
             {
                 this.RaiseGameOver();
             }
-        }
-
-        private void RaisePointScored()
-        {
-            this.Score += 1;
-            this.PointScored?.Invoke(this, null);
         }
 
         private void RaiseLifeLost()
@@ -231,6 +257,39 @@ namespace FroggerStarter.Controller
                 case VirtualKey.Down:
                     this.player.MovePlayerDown();
                     break;
+            }
+        }
+
+        private void addLandingSpotsToCanvasList()
+        {
+            this.LandingSpots = new List<LilyPad>();
+            int numLandingSpots = 5;
+            for (int i = 0; i < numLandingSpots; i++)
+            {
+                LilyPad newLandingSpot = new LilyPad();
+
+                double xLocation = (this.backgroundWidth / numLandingSpots) * i;
+                double yLocation = (double) Application.Current.Resources["HighRoadYLocation"];
+
+                newLandingSpot.RenderAt(xLocation, yLocation);
+                
+                this.LandingSpots.Add(newLandingSpot);
+                this.gameObjectsToBeAddedToCanvas.Add(newLandingSpot);
+            }
+        }
+
+        public class ScoreArgs : EventArgs
+        {
+            public ScoreArgs(LilyPad hitLilyPad)
+            {
+                this.lilyPad = hitLilyPad;
+            }
+
+            private LilyPad lilyPad;
+
+            public LilyPad LilyPad
+            {
+                get { return this.lilyPad; }
             }
         }
     }

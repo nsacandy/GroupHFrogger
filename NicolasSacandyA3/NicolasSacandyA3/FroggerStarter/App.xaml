@@ -11,9 +11,6 @@
             <x:Double x:Key="RoadHeight">50</x:Double>
             <x:Double x:Key="LowRoadYLocation">355</x:Double>
             <x:Double x:Key="HorizontalCenter">325</x:Double>
-
-
-
         </ResourceDictionary>
     </Application.Resources>
 

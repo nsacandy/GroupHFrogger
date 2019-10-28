@@ -9,11 +9,11 @@ namespace FroggerStarter.Model
     /// </summary>
     public class RoadManager : IEnumerable<Lane>
     {
-        private static readonly int[] LaneOneValues = {305, 2, 3};
-        private static readonly int[] LaneTwoValues = { 255, 3, 4};
-        private static readonly int[] LaneThreeValues = { 205, 3, 5};
-        private static readonly int[] LaneFourValues = { 155, 2, 6};
-        private static readonly int[] LaneFiveValues = { 105, 3, 7};
+        private static readonly int[] LaneOneValues = {305, 3, 3};
+        private static readonly int[] LaneTwoValues = { 255, 2, 4};
+        private static readonly int[] LaneThreeValues = { 205, 4, 5};
+        private static readonly int[] LaneFourValues = { 155, 3, 6};
+        private static readonly int[] LaneFiveValues = { 105, 5, 7};
 
         private IList<Lane> lanes;
         private double laneWidth;
@@ -69,7 +69,7 @@ namespace FroggerStarter.Model
         private void setInitialLaneFour()
         {
             var laneFour = 
-                new Lane(LaneFourValues[0], LaneFiveValues[1], Vehicle.VehicleType.Truck, Lane.Direction.Left, true) {
+                new Lane(LaneFourValues[0], LaneFourValues[1], Vehicle.VehicleType.Truck, Lane.Direction.Left, true) {
                     LaneSpeed = LaneFourValues[2]
                 };
             this.lanes.Add(laneFour);

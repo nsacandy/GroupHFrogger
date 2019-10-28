@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using Windows.Foundation;
+using Windows.UI.Xaml.Controls;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -11,6 +12,8 @@ namespace FroggerStarter.View.Sprites
     public abstract partial class BaseSprite : ISpriteRenderer
     {
         #region Constructors
+
+        public Rect HitBox { get; private set; }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BaseSprite" /> class.
@@ -35,6 +38,7 @@ namespace FroggerStarter.View.Sprites
         {
             Canvas.SetLeft(this, x);
             Canvas.SetTop(this, y);
+            this.HitBox = new Rect(x, y, this.Width, this.Height);
         }
 
         #endregion

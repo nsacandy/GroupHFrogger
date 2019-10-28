@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
@@ -22,6 +24,7 @@ namespace FroggerStarter.View
         private readonly double applicationWidth = (double) Application.Current.Resources["AppWidth"];
         private readonly GameManager gameManager;
         private FrogSprite[] lives;
+        private IDictionary<LilyPad, FrogSprite> landingSpots;
 
         #endregion
 
@@ -41,14 +44,14 @@ namespace FroggerStarter.View
             this.gameManager = new GameManager(this.applicationHeight, this.applicationWidth);
             this.gameManager.InitializeGame(this.canvas);
             this.generateLives();
+            this.generateLandingSpotFrogs();
 
             this.gameManager.LifeLost += this.handleLifeLost;
 
             this.gameManager.GameOver += this.handleGameOver;
 
             this.gameManager.PointScored += this.handlePointScored;
-
-        }
+            }
 
         private void handleGameOver(object sender, EventArgs e)
         {
@@ -87,10 +90,29 @@ namespace FroggerStarter.View
             this.lives[this.gameManager.Lives].Visibility = Visibility.Collapsed;
         }
 
-        private void handlePointScored(Object sender, EventArgs e)
+        private void handlePointScored(Object sender, GameManager.ScoreArgs e)
         {
-            String score = "Score: " + this.gameManager.Score;
-            this.score.Text = score;
+            e.LilyPad.Visibility = Visibility.Collapsed;
+            this.landingSpots[e.LilyPad].Visibility = Visibility.Visible;
+            
+        }
+
+        private void generateLandingSpotFrogs()
+        {
+
+            this.landingSpots = new Dictionary<LilyPad, FrogSprite>();
+            for (int i = 0; i < this.gameManager.LandingSpots.Count; i++)
+            {
+                FrogSprite newLandingSpotFrog = new FrogSprite();
+                newLandingSpotFrog.Visibility = Visibility.Collapsed;
+
+                double xLocation = this.gameManager.LandingSpots[i].HitBox.X;
+                double yLocation = this.gameManager.LandingSpots[i].HitBox.Y;
+                newLandingSpotFrog.RenderAt(xLocation, yLocation);
+                this.canvas.Children.Add(newLandingSpotFrog);
+
+                this.landingSpots.Add(this.gameManager.LandingSpots[i], newLandingSpotFrog);
+            }
         }
         #endregion
     }
