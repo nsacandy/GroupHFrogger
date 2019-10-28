@@ -9,11 +9,11 @@ namespace FroggerStarter.Model
     /// </summary>
     public class RoadManager : IEnumerable<Lane>
     {
-        private static readonly int[] LaneOneValues = {305, 3, 3};
-        private static readonly int[] LaneTwoValues = { 255, 2, 4};
-        private static readonly int[] LaneThreeValues = { 205, 4, 5};
-        private static readonly int[] LaneFourValues = { 155, 3, 6};
-        private static readonly int[] LaneFiveValues = { 105, 5, 7};
+        private static readonly int[] LaneOneValues = {305, 3, 2};
+        private static readonly int[] LaneTwoValues = { 255, 2, 3};
+        private static readonly int[] LaneThreeValues = { 205, 4, 4};
+        private static readonly int[] LaneFourValues = { 155, 3, 5};
+        private static readonly int[] LaneFiveValues = { 105, 5, 6};
 
         private IList<Lane> lanes;
         private double laneWidth;

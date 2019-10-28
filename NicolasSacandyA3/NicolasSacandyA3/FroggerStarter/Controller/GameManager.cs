@@ -20,18 +20,28 @@ namespace FroggerStarter.Controller
     {
         #region Data members
 
-        private readonly double TopLaneOffset = (double)App.Current.Resources["HighRoadYLocation"];
-        private const int BottomLaneOffset = 5;
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
+
+        private readonly double TopLaneOffset = (double)App.Current.Resources["HighRoadYLocation"];
+        private const int BottomLaneOffset = 5;
+        
         public readonly double TopBorder = (double)App.Current.Resources["HighRoadYLocation"] + (double)App.Current.Resources["RoadHeight"];
         private readonly double leftBorder = 0;
         private Canvas gameCanvas;
         private PlayerManager player;
         private DispatcherTimer timer;
         private readonly RoadManager roadManager;
-        private DateTime runningTime;
+        private DateTime startTime;
+
+        public readonly TimeSpan timerLength = new TimeSpan(0,0,10);
+
+        private TimeSpan remainingTime;
+
+        
+
         private List<UIElement> gameObjectsToBeAddedToCanvas;
+        private TimeSpan runningTime;
 
         public List<LilyPad> LandingSpots { get; private set; }
         public int Score { get; private set; }
@@ -77,9 +87,11 @@ namespace FroggerStarter.Controller
             this.player = new PlayerManager(this.TopLaneOffset, this.backgroundHeight, 0, this.backgroundWidth);
             this.gameObjectsToBeAddedToCanvas = new List<UIElement>();
             
+            this.remainingTime = this.timerLength;
             LifeLost += this.handleLifeLost;
             GameOver += this.handleGameOver;
             PointScored += this.handlePointScored;
+            this.startTime = DateTime.Now;
         }
 
         private void handlePointScored(object sender, EventArgs e)
@@ -98,8 +110,7 @@ namespace FroggerStarter.Controller
             this.timer.Tick += this.timerOnTick;
             this.timer.Interval = new TimeSpan(0, 0, 0, 0, 15);
             this.timer.Start();
-            this.runningTime = DateTime.Now;
-        }
+            }
 
         /// <summary>
         ///     Initializes the game working with appropriate classes to play frog
@@ -156,8 +167,15 @@ namespace FroggerStarter.Controller
         {
             this.checkForPlayerVehicleCollision();
             this.checkForPointScored();
-
+            
             this.roadManager.moveAllVehicles();
+
+            this.runningTime += this.timer.Interval;
+            
+           if ((DateTime.Now - this.startTime).Seconds >= this.timerLength.Seconds)
+           {
+               this.RaiseLifeLost();
+           }
         }
 
         private void checkForPointScored()
@@ -182,8 +200,6 @@ namespace FroggerStarter.Controller
         protected virtual void OnRaisePointScored(ScoreArgs lilyPadHitBox)
         {
             EventHandler<ScoreArgs> handler = PointScored;
-            this.Score += 1;
-            this.setPlayerToCenterOfBottomLane();
 
             if (handler != null)
             {
@@ -207,8 +223,8 @@ namespace FroggerStarter.Controller
 
         private void updateScore()
         {
-
-            if (this.Score == 4)
+            this.Score += 1;
+            if (this.Score == 5)
             {
                 this.RaiseGameOver();
             }

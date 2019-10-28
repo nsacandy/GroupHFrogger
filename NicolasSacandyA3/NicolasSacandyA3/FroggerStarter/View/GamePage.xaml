@@ -5,7 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
 
     <Canvas x:Name="canvas" Width="{StaticResource AppWidth}" Height="{StaticResource AppHeight}" Background="Black">
         <Rectangle x:Name="topSidewalk" Canvas.Top="{StaticResource HighRoadYLocation}" Fill="Gray" Width="{StaticResource AppWidth}" Height="{StaticResource RoadHeight}"/>
@@ -13,6 +15,45 @@
         <TextBlock x:Name="title" Foreground="Green" HorizontalTextAlignment="Center" Style="{StaticResource SubheaderTextBlockStyle}"  Height="50" Width="200" Text="Froggles!" Canvas.Left="218"/>
         <TextBlock x:Name="score" Text="Score: 0" Foreground="White" Canvas.Left="500" Height="50" Width="150" FontSize="30"></TextBlock>
         <TextBlock x:Name="gameOver" Foreground="White" Height="80" Width="250"  TextAlignment="Left"  FontSize="50" Canvas.Left="200" Canvas.Top ="150" Text="Game Over" Visibility="Collapsed" />
+        <Ellipse x:Name="timerCircleOne"  Fill="Chartreuse" Height="10" Width="10" Canvas.Left="20" Canvas.Top="380"/>
+        <Ellipse x:Name="timerCircleTwo"  Fill="Chartreuse" Height="10" Width="10" Canvas.Left="30" Canvas.Top="380"/>
+        <Ellipse x:Name="timerCircleThree"  Fill="Chartreuse" Height="10" Width="10" Canvas.Left="40" Canvas.Top="380"/>
+        <Ellipse x:Name="timerCircleFour"  Fill="Chartreuse" Height="10" Width="10" Canvas.Left="50" Canvas.Top="380"/>
+        <Ellipse x:Name="timerCircleFive"  Fill="Chartreuse" Height="10" Width="10" Canvas.Left="60" Canvas.Top="380"/>
+<Canvas.Resources>
+            <Storyboard x:Name="timeController" >
+                    <DoubleAnimation
+                        Storyboard.TargetName="timerCircleOne"
+                        Storyboard.TargetProperty="Opacity"
+                        BeginTime="0:0:0"
+                        To="0.0" Duration="0:0:6"/>
+
+                    <DoubleAnimation
+                        Storyboard.TargetName="timerCircleTwo"
+                        Storyboard.TargetProperty="Opacity"
+                        BeginTime="0:0:6"
+                        To="0.0" Duration="0:0:6"/>
+
+                    <DoubleAnimation
+                        Storyboard.TargetName="timerCircleThree"
+                        Storyboard.TargetProperty="Opacity"
+                        BeginTime="0:0:12"
+                        To="0.0" Duration="0:0:6"/>
+
+                    <DoubleAnimation
+                        Storyboard.TargetName="timerCircleFour"
+                        Storyboard.TargetProperty="Opacity"
+                        BeginTime="0:0:18"
+                        To="0.0" Duration="0:0:6"/>
+                    
+                    <DoubleAnimation
+                        Storyboard.TargetName="timerCircleFive"
+                        Storyboard.TargetProperty="Opacity"
+                        BeginTime="0:0:24"
+                        To="0.0" Duration="0:0:6"/>
+            </Storyboard>
+            
+            </Canvas.Resources>
     </Canvas>
 
 </Page>

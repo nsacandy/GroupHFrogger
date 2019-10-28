@@ -6,6 +6,8 @@ using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Shapes;
 using FroggerStarter.Controller;
 using FroggerStarter.View.Sprites;
 
@@ -25,6 +27,7 @@ namespace FroggerStarter.View
         private readonly GameManager gameManager;
         private FrogSprite[] lives;
         private IDictionary<LilyPad, FrogSprite> landingSpots;
+//        private myControllableClock;
 
         #endregion
 
@@ -51,6 +54,7 @@ namespace FroggerStarter.View
             this.gameManager.GameOver += this.handleGameOver;
 
             this.gameManager.PointScored += this.handlePointScored;
+            this.createVisibleClock();
             }
 
         private void handleGameOver(object sender, EventArgs e)
@@ -95,6 +99,13 @@ namespace FroggerStarter.View
             e.LilyPad.Visibility = Visibility.Collapsed;
             this.landingSpots[e.LilyPad].Visibility = Visibility.Visible;
             
+        }
+
+        private void createVisibleClock()
+        {
+            this.timeController.SpeedRatio = (30 / this.gameManager.timerLength.Seconds);
+    this.timeController.Begin();
+                
         }
 
         private void generateLandingSpotFrogs()
