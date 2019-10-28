@@ -93,10 +93,10 @@ namespace FroggerStarter.Model
             }
         }
 
-        private void hideVehicles()
+        public void hideVehicles()
         {
-            Random firstCar = new Random();
-            int firstVisibleCar = firstCar.Next(this.laneVehicles.Count);
+            Random carPicker = new Random();
+            int firstVisibleCar = carPicker.Next(this.laneVehicles.Count);
 
             for (int i = 0; i < this.laneVehicles.Count; i++)
             {
@@ -178,6 +178,7 @@ namespace FroggerStarter.Model
             else if (this.timeForNewVehicle)
             {
                 vehicle.Sprite.Visibility = Visibility.Visible;
+                this.timeForNewVehicle = false;
             }
         }
 

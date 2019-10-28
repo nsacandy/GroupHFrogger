@@ -1,25 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace FroggerStarter.Model
 {
     /// <summary>
     /// Contains methods and initial values for generating and managing lanes.
     /// </summary>
-    public class RoadManager
+    public class RoadManager : IEnumerable<Lane>
     {
-        private static readonly int[] LanesYValues = new int[] {305,255,205,155,105};
-        private static readonly int[] InitialLaneSpeeds = new int[] {2, 3, 4, 5, 6};
-        private static readonly int[] NumVehiclesInEachLane = new int[]{2,3,3,2,3};
-        public enum LaneNumber
-        {
-            One,
-            Two,
-            Three,
-            Four,
-            Five
-        };
+        private static readonly int[] LaneOneValues = {305, 2, 3};
+        private static readonly int[] LaneTwoValues = { 255, 3, 4};
+        private static readonly int[] LaneThreeValues = { 205, 3, 5};
+        private static readonly int[] LaneFourValues = { 155, 2, 6};
+        private static readonly int[] LaneFiveValues = { 105, 3, 7};
 
-        private Dictionary<LaneNumber, Lane> lanes;
+        private IList<Lane> lanes;
         private double laneWidth;
 
         /// <summary>
@@ -33,78 +29,60 @@ namespace FroggerStarter.Model
 
         private void setInitialLaneValues()
         {
-            this.lanes = new Dictionary<LaneNumber, Lane> {
-                {LaneNumber.One, getInitialLaneOne()},
-                {LaneNumber.Two, getInitialLaneTwo()},
-                {LaneNumber.Three, getInitialLaneThree()},
-                {LaneNumber.Four, getInitialLaneFour()},
-                {LaneNumber.Five, this.getInitialLaneFive()}
-            };
+            this.lanes = new List<Lane>();
+            this.setInitialLaneOne();
+            this.setInitialLaneTwo();
+            this.setInitialLaneThree();
+            this.setInitialLaneFour();
+            this.getInitialLaneFive();
+            
         }
 
-        private Lane getInitialLaneOne()
+        private void setInitialLaneOne()
         {
             var laneOne =
-                new Lane(LanesYValues[0], NumVehiclesInEachLane[0], Vehicle.VehicleType.Car, Lane.Direction.Left, true) {
-                    LaneSpeed = InitialLaneSpeeds[0]
+                new Lane(LaneOneValues[0], LaneOneValues[1], Vehicle.VehicleType.Car, Lane.Direction.Left, true) {
+                    LaneSpeed = LaneOneValues[2]
                 };
-            return laneOne;
+            this.lanes.Add(laneOne);
         }
 
-        private Lane getInitialLaneTwo()
+        private void setInitialLaneTwo()
         {
             var laneTwo =
-                new Lane(LanesYValues[1], NumVehiclesInEachLane[1], Vehicle.VehicleType.Truck, Lane.Direction.Right,true) {
-                    LaneSpeed = InitialLaneSpeeds[1]
+                new Lane(LaneTwoValues[0], LaneTwoValues[1], Vehicle.VehicleType.Truck, Lane.Direction.Right,true) {
+                    LaneSpeed = LaneTwoValues[2]
                 };
-            return laneTwo;
+            this.lanes.Add(laneTwo);
         }
 
-        private Lane getInitialLaneThree()
+        private void setInitialLaneThree()
         {
             var laneThree =
-                new Lane(LanesYValues[2], NumVehiclesInEachLane[2], Vehicle.VehicleType.Car, Lane.Direction.Left, true) {
-                    LaneSpeed = InitialLaneSpeeds[2]
+                new Lane(LaneThreeValues[0], LaneThreeValues[1], Vehicle.VehicleType.Car, Lane.Direction.Left, true) {
+                    LaneSpeed = LaneThreeValues[2]
                 };
-            return laneThree;
+            this.lanes.Add(laneThree);
         }
 
 
-        private Lane getInitialLaneFour()
+        private void setInitialLaneFour()
         {
             var laneFour = 
-                new Lane(LanesYValues[3], NumVehiclesInEachLane[3], Vehicle.VehicleType.Truck, Lane.Direction.Left, true) {
-                    LaneSpeed = InitialLaneSpeeds[3]
+                new Lane(LaneFourValues[0], LaneFiveValues[1], Vehicle.VehicleType.Truck, Lane.Direction.Left, true) {
+                    LaneSpeed = LaneFourValues[2]
                 };
-            return laneFour;
+            this.lanes.Add(laneFour);
         }
 
 
-        private Lane getInitialLaneFive()
+        private void getInitialLaneFive()
         {
             var laneFive =
-                new Lane(LanesYValues[4], NumVehiclesInEachLane[4], Vehicle.VehicleType.Car, Lane.Direction.Right, true) {
-                    LaneSpeed = InitialLaneSpeeds[4]
+                new Lane(LaneFiveValues[0], LaneFiveValues[1], Vehicle.VehicleType.Car, Lane.Direction.Right, true) {
+                    LaneSpeed = LaneFiveValues[2]
                 };
-            return laneFive;
-        }
-
-        /// <summary>
-        /// Gets all vehicle objects across all lanes.
-        /// </summary>
-        /// <returns>IList of Vehicles</returns>
-        public IList<Vehicle> getVehicles()
-        {
-            IList<Vehicle> vehicles = new List<Vehicle>();
-            foreach (var lane in this.lanes.Values)
-            {
-                foreach (var vehicle in lane)
-                {
-                    vehicles.Add(vehicle);
-                }
-
-            }
-            return vehicles;
+            this.lanes.Add(laneFive);
         }
 
         /// <summary>
@@ -112,7 +90,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void moveAllVehicles()
         {
-            foreach (var lane in this.lanes.Values)
+            foreach (var lane in this.lanes)
             {
                 lane.MoveVehiclesOnTick();
             }
@@ -120,7 +98,23 @@ namespace FroggerStarter.Model
 
         public void resetNumVehicles()
         {
-            throw new System.NotImplementedException();
+            foreach (var lane in this.lanes)
+            {
+                lane.hideVehicles();
+            }
+        }
+
+        public IEnumerator<Lane> GetEnumerator()
+        {
+            foreach (var lane in this.lanes)
+            {
+                yield return lane;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }
