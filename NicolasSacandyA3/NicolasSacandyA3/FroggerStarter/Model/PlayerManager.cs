@@ -15,6 +15,8 @@ namespace FroggerStarter.Model
         private double leftBoundary;
         private double rightBoundary;
 
+        private Point previousPosition;
+        
         public Frog Player { get; }
         public BaseSprite PlayerSprite { get; }
 
@@ -38,11 +40,11 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerLeft()
         {
-            double previousX = this.Player.X;
+            this.setPreviousPositionLocation();
             this.Player.MoveLeft();
             if (this.Player.X < this.leftBoundary)
             {
-                this.Player.X = previousX;
+                this.resetPlayerToPreviousPosition();
             }
         }
 
@@ -53,10 +55,10 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerRight()
         {
-            var previousX = this.Player.X;
+            this.setPreviousPositionLocation();
             this.Player.MoveRight();
             if (this.Player.X + this.Player.Width > this.rightBoundary)
-            { this.Player.X = previousX; }
+            { this.resetPlayerToPreviousPosition(); }
         }
 
         /// <summary>
@@ -66,8 +68,10 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerUp()
         {
-            var previousY = this.Player.Y;
+            this.setPreviousPositionLocation();
             this.Player.MoveUp();
+            if (this.Player.Y < this.topBoundary)
+            { this.resetPlayerToPreviousPosition(); }
         }
 
         /// <summary>
@@ -77,23 +81,30 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerDown()
         {
-            var previousY = this.Player.Y;
+            this.setPreviousPositionLocation();
             this.Player.MoveDown();
             if (this.Player.Y + this.Player.Height > this.bottomBoundary)
             {
-                this.Player.Y = previousY;
+                this.resetPlayerToPreviousPosition();
             }
+        }
+
+        public void resetPlayerToPreviousPosition()
+        {
+            this.Player.X = this.previousPosition.X;
+            this.Player.Y = this.previousPosition.Y;
+        }
+
+        private void setPreviousPositionLocation()
+        {
+            this.previousPosition = new Point(this.PlayerSprite.HitBox.X, this.PlayerSprite.HitBox.Y);
         }
 
         public void SetPlayerLocation(double x, double y)
         {
             this.Player.X = x;
             this.Player.Y = y;
-        }
-        
-        public void handleMove(Object sender, EventArgs e)
-        {
-
+            this.setPreviousPositionLocation();
         }
     }
 }

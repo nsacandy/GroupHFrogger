@@ -74,7 +74,7 @@ namespace FroggerStarter.Controller
             this.backgroundWidth = backgroundWidth;
 
             this.roadManager = new RoadManager(this.backgroundWidth);
-            this.player = new PlayerManager(this.TopBorder, this.backgroundHeight, 0, this.backgroundWidth);
+            this.player = new PlayerManager(this.TopLaneOffset, this.backgroundHeight, 0, this.backgroundWidth);
             this.gameObjectsToBeAddedToCanvas = new List<UIElement>();
             
             LifeLost += this.handleLifeLost;
@@ -171,6 +171,11 @@ namespace FroggerStarter.Controller
                 {
                     this.OnRaisePointScored(new ScoreArgs(uiElement as LilyPad));
                 }
+
+                else if (playerBox.Y < this.TopBorder)
+                {
+                    this.player.resetPlayerToPreviousPosition();
+                }
             }
         }
 
@@ -178,6 +183,7 @@ namespace FroggerStarter.Controller
         {
             EventHandler<ScoreArgs> handler = PointScored;
             this.Score += 1;
+            this.setPlayerToCenterOfBottomLane();
 
             if (handler != null)
             {
