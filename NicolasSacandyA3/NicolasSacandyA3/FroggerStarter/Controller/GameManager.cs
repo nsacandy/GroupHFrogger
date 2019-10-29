@@ -243,16 +243,19 @@ namespace FroggerStarter.Controller
         }
 
         private void handleLifeLost(Object sender, EventArgs e)
-        { 
+        {
+            this.player.AnimateDeath();
             this.setPlayerToCenterOfBottomLane();
             if (this.Lives == 0)
             {
                 this.RaiseGameOver();
             }
 
+            
             else
             {
                 this.roadManager.resetNumVehicles();
+                
             }
         }
 

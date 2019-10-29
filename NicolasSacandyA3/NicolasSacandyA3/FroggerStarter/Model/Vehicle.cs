@@ -24,7 +24,7 @@ namespace FroggerStarter.Model
         }
 
         public Heading vehicleDirection;
-        //TODO make backwards facing sprites. Do this spec too.
+        
         public Vehicle(VehicleType vehicleType, Heading heading)
         {
             if (vehicleType.Equals(VehicleType.Car))

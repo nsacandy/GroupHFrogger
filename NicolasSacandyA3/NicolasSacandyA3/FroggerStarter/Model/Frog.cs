@@ -22,7 +22,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public Frog()
         {
-            Sprite = new FrogSprite();
+            Sprite = new DeathSprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 

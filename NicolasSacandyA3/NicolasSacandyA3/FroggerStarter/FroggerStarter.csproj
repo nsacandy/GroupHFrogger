@@ -136,6 +136,9 @@
     <Compile Include="View\Sprites\CarSprite.xaml.cs">
       <DependentUpon>CarSprite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\DeathSprite.xaml.cs">
+      <DependentUpon>DeathSprite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\FrogSprite.xaml.cs">
       <DependentUpon>FrogSprite.xaml</DependentUpon>
     </Compile>
@@ -176,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\CarSprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\DeathSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

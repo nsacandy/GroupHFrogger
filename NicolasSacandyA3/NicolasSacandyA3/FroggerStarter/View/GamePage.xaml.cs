@@ -122,7 +122,8 @@ namespace FroggerStarter.View
 
         private void timerOnTick(object sender, object e)
         {
-           this.emptyTimerBar.Width += 1;
+            double increment = 10.0 / (double) this.gameManager.timerLength.Seconds;
+            this.emptyTimerBar.Width += increment;
         }
 
         private void generateLandingSpotFrogs()

@@ -18,18 +18,19 @@ namespace FroggerStarter.Model
         private Point previousPosition;
         
         public Frog Player { get; }
-        public BaseSprite PlayerSprite { get; }
+        public DeathSprite PlayerSprite { get; }
 
         public PlayerManager(double topBoundary, double bottomBoundary, double leftBoundary, double rightBoundary)
         {
             this.Player = new Frog();
-            this.PlayerSprite = this.Player.Sprite;
+            this.PlayerSprite = (DeathSprite)this.Player.Sprite;
             this.PlayerSprite.IsHitTestVisible = false;
 
             this.topBoundary = topBoundary;
             this.bottomBoundary = bottomBoundary;
             this.leftBoundary = leftBoundary;
             this.rightBoundary = rightBoundary;
+            
         }
 
 
@@ -105,6 +106,11 @@ namespace FroggerStarter.Model
             this.Player.X = x;
             this.Player.Y = y;
             this.setPreviousPositionLocation();
+        }
+
+        public void AnimateDeath()
+        {
+            this.PlayerSprite.AnimateDeath();
         }
     }
 }
