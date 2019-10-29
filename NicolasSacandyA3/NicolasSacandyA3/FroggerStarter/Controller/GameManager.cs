@@ -167,15 +167,17 @@ namespace FroggerStarter.Controller
         {
             this.checkForPlayerVehicleCollision();
             this.checkForPointScored();
-            
-            this.roadManager.moveAllVehicles();
+            this.checkRemainingTime();
 
-            this.runningTime += this.timer.Interval;
-            
-           if ((DateTime.Now - this.startTime).Seconds >= this.timerLength.Seconds)
-           {
-               this.RaiseLifeLost();
-           }
+            this.roadManager.moveAllVehicles();
+        }
+
+        private void checkRemainingTime()
+        {
+            if ((DateTime.Now - this.startTime).Seconds >= this.timerLength.Seconds)
+            {
+                this.RaiseLifeLost();
+            }
         }
 
         private void checkForPointScored()
@@ -233,6 +235,7 @@ namespace FroggerStarter.Controller
         private void RaiseLifeLost()
         {
             this.Lives -= 1;
+            this.startTime = DateTime.Now;
             this.LifeLost?.Invoke(this, null);
         }
 

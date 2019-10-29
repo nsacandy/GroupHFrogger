@@ -27,7 +27,9 @@ namespace FroggerStarter.View
         private readonly GameManager gameManager;
         private FrogSprite[] lives;
         private IDictionary<LilyPad, FrogSprite> landingSpots;
-//        private myControllableClock;
+
+        private TimeSpan timerLength;
+        private DispatcherTimer timer;
 
         #endregion
 
@@ -36,6 +38,7 @@ namespace FroggerStarter.View
         public GamePage()
         {
             this.InitializeComponent();
+            
 
             ApplicationView.PreferredLaunchViewSize = new Size
                 {Width = this.applicationWidth, Height = this.applicationHeight};
@@ -83,7 +86,9 @@ namespace FroggerStarter.View
                 life.RenderAt(xLocation, 0);
                 this.canvas.Children.Add(life);
                 this.lives[i] = life;
-            }
+                this.timerLength = this.gameManager.timerLength;
+                this.createVisibleClock();
+    }
 
         }
 
@@ -92,20 +97,30 @@ namespace FroggerStarter.View
         private void handleLifeLost(object sender, EventArgs e)
         {
             this.lives[this.gameManager.Lives].Visibility = Visibility.Collapsed;
+
+            this.emptyTimerBar.Width = 0;
         }
 
         private void handlePointScored(Object sender, GameManager.ScoreArgs e)
         {
             e.LilyPad.Visibility = Visibility.Collapsed;
             this.landingSpots[e.LilyPad].Visibility = Visibility.Visible;
-            
+            this.emptyTimerBar.Width = 0;
         }
 
         private void createVisibleClock()
         {
-            this.timeController.SpeedRatio = (30 / this.gameManager.timerLength.Seconds);
-    this.timeController.Begin();
-                
+
+            this.timer = new DispatcherTimer();
+            this.timer.Tick += this.timerOnTick;
+            this.timer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            this.timer.Start();
+
+        }
+
+        private void timerOnTick(object sender, object e)
+        {
+           this.emptyTimerBar.Width += 1;
         }
 
         private void generateLandingSpotFrogs()
