@@ -119,7 +119,7 @@ namespace FroggerStarter.Model
         {
             foreach (var lane in this.lanes)
             {
-                lane.hideVehicles();
+                lane.HideVehicles();
             }
         }
 

@@ -61,7 +61,7 @@ namespace FroggerStarter.Model
             this.VehicleOutOfBounds += this.resetVehicleXLocation;
             if (this.graduallyAddVehicles)
             {
-                this.hideVehicles();
+                this.HideVehicles();
                 this.VehicleOutOfBounds += this.revealNewVehicle;
             }
         }
@@ -95,7 +95,7 @@ namespace FroggerStarter.Model
             }
         }
 
-        public void hideVehicles()
+        public void HideVehicles()
         {
             var carPicker = new Random();
             var firstVisibleCar = carPicker.Next(this.laneVehicles.Count);
@@ -162,10 +162,7 @@ namespace FroggerStarter.Model
         {
             var handler = this.VehicleOutOfBounds;
 
-            if (handler != null)
-            {
-                handler(this, vehicle);
-            }
+            handler?.Invoke(this, vehicle);
         }
 
         private void revealNewVehicle(object sender, VehicleArgs args)

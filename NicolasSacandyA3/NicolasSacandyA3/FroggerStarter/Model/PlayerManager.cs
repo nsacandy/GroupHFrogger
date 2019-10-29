@@ -21,7 +21,7 @@ namespace FroggerStarter.Model
 
         private Point previousPosition;
 
-        private bool controlsFrozen;
+        private bool keyboardFrozen;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace FroggerStarter.Model
             this.leftBoundary = leftBoundary;
             this.rightBoundary = rightBoundary;
 
-            this.PlayerSprite.NewSpriteCreated += this.OnNewSpriteCreated;
+            this.PlayerSprite.NewSpriteCreated += this.onNewSpriteCreated;
         }
 
         #endregion
@@ -54,9 +54,9 @@ namespace FroggerStarter.Model
 
         public event NewSpriteCreatedHandler NewSpriteCreated;
 
-        private void OnNewSpriteCreated(object sender, EventArgs e)
+        private void onNewSpriteCreated(object sender, EventArgs e)
         {
-            this.controlsFrozen = false;
+            this.keyboardFrozen = false;
             this.NewSpriteCreated?.Invoke(this, null);
         }
 
@@ -67,7 +67,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerLeft()
         {
-            if (this.controlsFrozen)
+            if (this.keyboardFrozen)
             {
                 return;
             }
@@ -76,7 +76,7 @@ namespace FroggerStarter.Model
             this.Player.MoveLeft();
             if (this.Player.X < this.leftBoundary)
             {
-                this.resetPlayerToPreviousPosition();
+                this.ResetPlayerToPreviousPosition();
             }
         }
 
@@ -87,7 +87,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerRight()
         {
-            if (this.controlsFrozen)
+            if (this.keyboardFrozen)
             {
                 return;
             }
@@ -96,7 +96,7 @@ namespace FroggerStarter.Model
             this.Player.MoveRight();
             if (this.Player.X + this.Player.Width > this.rightBoundary)
             {
-                this.resetPlayerToPreviousPosition();
+                this.ResetPlayerToPreviousPosition();
             }
         }
 
@@ -107,7 +107,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerUp()
         {
-            if (this.controlsFrozen)
+            if (this.keyboardFrozen)
             {
                 return;
             }
@@ -116,7 +116,7 @@ namespace FroggerStarter.Model
             this.Player.MoveUp();
             if (this.Player.Y < this.topBoundary)
             {
-                this.resetPlayerToPreviousPosition();
+                this.ResetPlayerToPreviousPosition();
             }
         }
 
@@ -127,7 +127,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerDown()
         {
-            if (this.controlsFrozen)
+            if (this.keyboardFrozen)
             {
                 return;
             }
@@ -136,14 +136,8 @@ namespace FroggerStarter.Model
             this.Player.MoveDown();
             if (this.Player.Y + this.Player.Height > this.bottomBoundary)
             {
-                this.resetPlayerToPreviousPosition();
+                this.ResetPlayerToPreviousPosition();
             }
-        }
-
-        public void resetPlayerToPreviousPosition()
-        {
-            this.Player.X = this.previousPosition.X;
-            this.Player.Y = this.previousPosition.Y;
         }
 
         private void setPreviousPositionLocation()
@@ -158,9 +152,15 @@ namespace FroggerStarter.Model
             this.setPreviousPositionLocation();
         }
 
-        public void handleLifeLost(object sender, EventArgs e)
+        public void ResetPlayerToPreviousPosition()
         {
-            this.controlsFrozen = true;
+            this.Player.X = this.previousPosition.X;
+            this.Player.Y = this.previousPosition.Y;
+        }
+
+        public void HandleLifeLost(object sender, EventArgs e)
+        {
+            this.keyboardFrozen = true;
             this.PlayerSprite.AnimateDeath();
         }
 
