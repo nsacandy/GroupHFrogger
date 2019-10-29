@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Windows.Foundation;
 using Windows.System;
-using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,45 +16,48 @@ namespace FroggerStarter.Controller
     /// </summary>
     public class GameManager
     {
+        #region Types and Delegates
+
+        public delegate void GameOverHandler(object sender, EventArgs e);
+
+        public delegate void GameResumedHandler(object sender, EventArgs e);
+
+        public delegate void LifeLostHandler(object sender, EventArgs e);
+
+        #endregion
+
         #region Data members
+
+        private const int BottomLaneOffset = 5;
+
+        public readonly double TopBorder = (double) Application.Current.Resources["HighRoadYLocation"] +
+                                           (double) Application.Current.Resources["RoadHeight"];
+
+        public readonly TimeSpan TimerLength = new TimeSpan(0, 0, 20);
 
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
 
-        private readonly double TopLaneOffset = (double)App.Current.Resources["HighRoadYLocation"];
-        private const int BottomLaneOffset = 5;
-        
-        public readonly double TopBorder = (double)App.Current.Resources["HighRoadYLocation"] + (double)App.Current.Resources["RoadHeight"];
-        private readonly double leftBorder = 0;
+        private readonly double topLaneOffset = (double) Application.Current.Resources["HighRoadYLocation"];
+        public readonly double LeftBorder = 0;
         private Canvas gameCanvas;
-        private PlayerManager player;
+        private readonly PlayerManager player;
         private DispatcherTimer timer;
         private readonly RoadManager roadManager;
         private DateTime startTime;
 
-        public readonly TimeSpan timerLength = new TimeSpan(0,0,20);
-
         private TimeSpan currentLifeAndPointTime;
 
-        
+        private readonly List<UIElement> gameObjectsToBeAddedToCanvas;
 
-        private List<UIElement> gameObjectsToBeAddedToCanvas;
-        
+        #endregion
+
+        #region Properties
 
         public List<LilyPad> LandingSpots { get; private set; }
         public int Score { get; private set; }
         public int Lives { get; private set; } = 4;
 
-        public delegate void LifeLostHandler(object sender, EventArgs e);
-        public event LifeLostHandler LifeLost;
-
-        public delegate void GameOverHandler(object sender, EventArgs e);
-        public event GameOverHandler GameOver;
-
-        public delegate void GameResumedHandler(object sender, EventArgs e);
-        public event GameResumedHandler GameResumed;
-
-        public event EventHandler<ScoreArgs> PointScored;
         #endregion
 
         #region Constructors
@@ -87,18 +88,28 @@ namespace FroggerStarter.Controller
             this.backgroundWidth = backgroundWidth;
 
             this.roadManager = new RoadManager(this.backgroundWidth);
-            this.player = new PlayerManager(this.TopLaneOffset, this.backgroundHeight, 0, this.backgroundWidth);
+            this.player = new PlayerManager(this.topLaneOffset, this.backgroundHeight, 0, this.backgroundWidth);
             this.gameObjectsToBeAddedToCanvas = new List<UIElement>();
-            
-            this.currentLifeAndPointTime = this.timerLength;
-            LifeLost += this.player.handleLifeLost;
-            GameOver += this.handleGameOver;
-            PointScored += this.handlePointScored;
-            this.player.NewSpriteCreated += PlayerOnNewSpriteCreated;
+
+            this.currentLifeAndPointTime = this.TimerLength;
+            this.LifeLost += this.player.handleLifeLost;
+            this.GameOver += this.handleGameOver;
+            this.PointScored += this.handlePointScored;
+            this.player.NewSpriteCreated += this.playerOnNewSpriteCreated;
             this.startTime = DateTime.Now;
         }
 
-        private void PlayerOnNewSpriteCreated(object sender, EventArgs e)
+        #endregion
+
+        #region Methods
+
+        public event LifeLostHandler LifeLost;
+        public event GameOverHandler GameOver;
+        public event GameResumedHandler GameResumed;
+
+        public event EventHandler<ScoreArgs> PointScored;
+
+        private void playerOnNewSpriteCreated(object sender, EventArgs e)
         {
             this.setPlayerToCenterOfBottomLane();
             this.timer.Start();
@@ -117,17 +128,13 @@ namespace FroggerStarter.Controller
             this.updateScore(e);
         }
 
-        #endregion
-
-        #region Methods
-
         private void setupGameTimer()
         {
             this.timer = new DispatcherTimer();
             this.timer.Tick += this.timerOnTick;
             this.timer.Interval = new TimeSpan(0, 0, 0, 0, 15);
             this.timer.Start();
-            }
+        }
 
         /// <summary>
         ///     Initializes the game working with appropriate classes to play frog
@@ -144,14 +151,14 @@ namespace FroggerStarter.Controller
             this.addVehiclesToCanvasObjectsList();
             this.addLandingSpotsToCanvasList();
             this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
-            this.addObjectsToCanvas();
+            this.AddObjectsToCanvas();
         }
 
-        public void addObjectsToCanvas()
+        public void AddObjectsToCanvas()
         {
-            foreach (var UIElement in this.gameObjectsToBeAddedToCanvas)
+            foreach (var uiElement in this.gameObjectsToBeAddedToCanvas)
             {
-                this.gameCanvas.Children.Add(UIElement);
+                this.gameCanvas.Children.Add(uiElement);
             }
         }
 
@@ -182,7 +189,7 @@ namespace FroggerStarter.Controller
 
         private void timerOnTick(object sender, object e)
         {
-            this.currentLifeAndPointTime = (DateTime.Now - this.startTime);
+            this.currentLifeAndPointTime = DateTime.Now - this.startTime;
             this.checkForPlayerVehicleCollision();
             this.checkForPointScored();
             this.checkRemainingTime();
@@ -192,9 +199,9 @@ namespace FroggerStarter.Controller
 
         private void checkRemainingTime()
         {
-            if (this.currentLifeAndPointTime.Seconds >= this.timerLength.Seconds)
+            if (this.currentLifeAndPointTime.Seconds >= this.TimerLength.Seconds)
             {
-                this.OnLifeLost();
+                this.onLifeLost();
             }
         }
 
@@ -207,7 +214,7 @@ namespace FroggerStarter.Controller
             {
                 if (uiElement is LilyPad pad)
                 {
-                    this.OnRaisePointScored(new ScoreArgs(uiElement as LilyPad));
+                    this.OnRaisePointScored(new ScoreArgs(pad));
                 }
 
                 else if (playerBox.Y < this.TopBorder)
@@ -219,12 +226,9 @@ namespace FroggerStarter.Controller
 
         protected virtual void OnRaisePointScored(ScoreArgs lilyPadHitBox)
         {
-            EventHandler<ScoreArgs> handler = PointScored;
+            var handler = this.PointScored;
 
-            if (handler != null)
-            {
-                handler(this, lilyPadHitBox);
-            }
+            handler?.Invoke(this, lilyPadHitBox);
         }
 
         private void checkForPlayerVehicleCollision()
@@ -236,23 +240,23 @@ namespace FroggerStarter.Controller
             {
                 if (uiElement is CarSprite || uiElement is TruckSprite)
                 {
-                    this.OnLifeLost();
+                    this.onLifeLost();
                 }
             }
         }
 
         private void updateScore(ScoreArgs e)
         {
-            this.Score += this.timerLength.Seconds - this.currentLifeAndPointTime.Seconds;
+            this.Score += this.TimerLength.Seconds - this.currentLifeAndPointTime.Seconds;
             this.startTime = DateTime.Now;
             this.LandingSpots.Remove(e.LilyPad);
-            if (LandingSpots.Count == 0)
+            if (this.LandingSpots.Count == 0)
             {
-                this.RaiseGameOver();
+                this.raiseGameOver();
             }
         }
 
-        private void OnLifeLost()
+        private void onLifeLost()
         {
             this.handleLifeLost();
             this.LifeLost?.Invoke(this, null);
@@ -264,7 +268,8 @@ namespace FroggerStarter.Controller
             this.Lives -= 1;
             if (this.Lives == 0)
             {
-                this.RaiseGameOver();
+                
+                this.raiseGameOver();
             }
 
             else
@@ -273,18 +278,16 @@ namespace FroggerStarter.Controller
             }
         }
 
-        private void RaiseGameOver()
+        private void raiseGameOver()
         {
             this.GameOver?.Invoke(this, null);
         }
 
-        private void handleGameOver(Object sender, EventArgs e)
+        private void handleGameOver(object sender, EventArgs e)
         {
             this.timer.Stop();
             this.player.PlayerSprite.Visibility = Visibility.Collapsed;
         }
-
-        #endregion
 
         public void MovePlayer(KeyEventArgs args)
         {
@@ -308,16 +311,16 @@ namespace FroggerStarter.Controller
         private void addLandingSpotsToCanvasList()
         {
             this.LandingSpots = new List<LilyPad>();
-            int numLandingSpots = 5;
-            for (int i = 0; i < numLandingSpots; i++)
+            var numLandingSpots = 5;
+            for (var i = 0; i < numLandingSpots; i++)
             {
-                LilyPad newLandingSpot = new LilyPad();
+                var newLandingSpot = new LilyPad();
 
-                double xLocation = (this.backgroundWidth / numLandingSpots) * i;
-                double yLocation = (double) Application.Current.Resources["HighRoadYLocation"];
+                var xLocation = this.backgroundWidth / numLandingSpots * i;
+                var yLocation = (double) Application.Current.Resources["HighRoadYLocation"];
 
                 newLandingSpot.RenderAt(xLocation, yLocation);
-                
+
                 this.LandingSpots.Add(newLandingSpot);
                 this.gameObjectsToBeAddedToCanvas.Add(newLandingSpot);
             }
@@ -325,17 +328,26 @@ namespace FroggerStarter.Controller
 
         public class ScoreArgs : EventArgs
         {
+            #region Data members
+
+            #endregion
+
+            #region Properties
+
+            public LilyPad LilyPad { get; }
+
+            #endregion
+
+            #region Constructors
+
             public ScoreArgs(LilyPad hitLilyPad)
             {
-                this.lilyPad = hitLilyPad;
+                this.LilyPad = hitLilyPad;
             }
 
-            private LilyPad lilyPad;
-
-            public LilyPad LilyPad
-            {
-                get { return this.lilyPad; }
-            }
+            #endregion
         }
+
+        #endregion
     }
 }

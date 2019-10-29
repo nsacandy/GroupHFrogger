@@ -1,34 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using FroggerStarter.View.Sprites;
 
 namespace FroggerStarter.Model
 {
-    class PlayerManager : GameObject
+    internal class PlayerManager : GameObject
     {
-        private double topBoundary;
-        private double bottomBoundary;
-        private double leftBoundary;
-        private double rightBoundary;
+        #region Types and Delegates
+
+        public delegate void NewSpriteCreatedHandler(object sender, EventArgs e);
+
+        #endregion
+
+        #region Data members
+
+        private readonly double topBoundary;
+        private readonly double bottomBoundary;
+        private readonly double leftBoundary;
+        private readonly double rightBoundary;
 
         private Point previousPosition;
-        
+
+        private bool controlsFrozen;
+
+        #endregion
+
+        #region Properties
+
         public Frog Player { get; }
         public DeathSprite PlayerSprite { get; }
 
-        public delegate void NewSpriteCreatedHandler(object sender, EventArgs e);
-        public event NewSpriteCreatedHandler NewSpriteCreated;
+        #endregion
 
-        private bool controlsFrozen = false;
+        #region Constructors
 
         public PlayerManager(double topBoundary, double bottomBoundary, double leftBoundary, double rightBoundary)
         {
             this.Player = new Frog();
-            this.PlayerSprite = (DeathSprite)this.Player.Sprite;
+            this.PlayerSprite = (DeathSprite) this.Player.Sprite;
             this.PlayerSprite.IsHitTestVisible = false;
 
             this.topBoundary = topBoundary;
@@ -38,6 +47,12 @@ namespace FroggerStarter.Model
 
             this.PlayerSprite.NewSpriteCreated += this.OnNewSpriteCreated;
         }
+
+        #endregion
+
+        #region Methods
+
+        public event NewSpriteCreatedHandler NewSpriteCreated;
 
         private void OnNewSpriteCreated(object sender, EventArgs e)
         {
@@ -56,6 +71,7 @@ namespace FroggerStarter.Model
             {
                 return;
             }
+
             this.setPreviousPositionLocation();
             this.Player.MoveLeft();
             if (this.Player.X < this.leftBoundary)
@@ -75,10 +91,13 @@ namespace FroggerStarter.Model
             {
                 return;
             }
+
             this.setPreviousPositionLocation();
             this.Player.MoveRight();
             if (this.Player.X + this.Player.Width > this.rightBoundary)
-            { this.resetPlayerToPreviousPosition(); }
+            {
+                this.resetPlayerToPreviousPosition();
+            }
         }
 
         /// <summary>
@@ -92,10 +111,13 @@ namespace FroggerStarter.Model
             {
                 return;
             }
+
             this.setPreviousPositionLocation();
             this.Player.MoveUp();
             if (this.Player.Y < this.topBoundary)
-            { this.resetPlayerToPreviousPosition(); }
+            {
+                this.resetPlayerToPreviousPosition();
+            }
         }
 
         /// <summary>
@@ -109,6 +131,7 @@ namespace FroggerStarter.Model
             {
                 return;
             }
+
             this.setPreviousPositionLocation();
             this.Player.MoveDown();
             if (this.Player.Y + this.Player.Height > this.bottomBoundary)
@@ -140,5 +163,7 @@ namespace FroggerStarter.Model
             this.controlsFrozen = true;
             this.PlayerSprite.AnimateDeath();
         }
+
+        #endregion
     }
 }

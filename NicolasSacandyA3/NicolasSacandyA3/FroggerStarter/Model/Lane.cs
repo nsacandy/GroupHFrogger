@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
-using FroggerStarter.Controller;
 
 namespace FroggerStarter.Model
 {
@@ -24,21 +23,22 @@ namespace FroggerStarter.Model
         private readonly Direction laneDirection;
         private readonly double width;
 
-        private IList<Vehicle> laneVehicles;
-        private Boolean graduallyAddVehicles;
-        private Boolean timeForNewVehicle;
+        private readonly IList<Vehicle> laneVehicles;
+        private readonly bool graduallyAddVehicles;
+        private bool timeForNewVehicle;
+
         #endregion
 
-        private event EventHandler<VehicleArgs> VehicleOutOfBounds;
-
         #region Properties
+
         public int LaneSpeed
         {
             get => this.LaneSpeed;
-            set{
+            set
+            {
                 foreach (var vehicle in this.laneVehicles)
                 {
-                    vehicle.SetSpeed((int)value);
+                    vehicle.SetSpeed(value);
                 }
             }
         }
@@ -47,23 +47,23 @@ namespace FroggerStarter.Model
 
         #region Constructors
 
-        public Lane(int yValue, int numVehicles, Vehicle.VehicleType vehicleType, Direction laneDirection, Boolean graduallyAddVehicles)
+        public Lane(int yValue, int numVehicles, Vehicle.VehicleType vehicleType, Direction laneDirection,
+            bool graduallyAddVehicles)
         {
             this.yValue = yValue;
             this.laneDirection = laneDirection;
-            this.width = (double)App.Current.Resources["AppWidth"];
+            this.width = (double) Application.Current.Resources["AppWidth"];
             this.graduallyAddVehicles = graduallyAddVehicles;
             this.laneVehicles = new List<Vehicle>();
             this.generateVehicles(numVehicles, vehicleType);
             this.placeVehicles();
 
-            VehicleOutOfBounds += this.resetVehicleXLocation;
+            this.VehicleOutOfBounds += this.resetVehicleXLocation;
             if (this.graduallyAddVehicles)
             {
                 this.hideVehicles();
                 this.VehicleOutOfBounds += this.revealNewVehicle;
             }
-
         }
 
         #endregion
@@ -83,11 +83,13 @@ namespace FroggerStarter.Model
             return this.GetEnumerator();
         }
 
+        private event EventHandler<VehicleArgs> VehicleOutOfBounds;
+
         private void generateVehicles(int numVehicles, Vehicle.VehicleType vehicleType)
         {
             for (var i = 0; i < numVehicles; i++)
             {
-                Vehicle.Heading heading = this.laneDirection.Equals(Direction.Left) ? Vehicle.Heading.Left : Vehicle.Heading.Right;
+                var heading = this.laneDirection.Equals(Direction.Left) ? Vehicle.Heading.Left : Vehicle.Heading.Right;
                 var vehicle = new Vehicle(vehicleType, heading);
                 this.laneVehicles.Add(vehicle);
             }
@@ -95,10 +97,10 @@ namespace FroggerStarter.Model
 
         public void hideVehicles()
         {
-            Random carPicker = new Random();
-            int firstVisibleCar = carPicker.Next(this.laneVehicles.Count);
+            var carPicker = new Random();
+            var firstVisibleCar = carPicker.Next(this.laneVehicles.Count);
 
-            for (int i = 0; i < this.laneVehicles.Count; i++)
+            for (var i = 0; i < this.laneVehicles.Count; i++)
             {
                 if (i == firstVisibleCar)
                 {
@@ -114,9 +116,9 @@ namespace FroggerStarter.Model
 
         private void placeVehicles()
         {
-            for (int i = 0; i < this.laneVehicles.Count; i++)
+            for (var i = 0; i < this.laneVehicles.Count; i++)
             {
-                this.laneVehicles[i].X = (this.width / this.laneVehicles.Count) * i;
+                this.laneVehicles[i].X = this.width / this.laneVehicles.Count * i;
                 this.laneVehicles[i].Y = this.yValue;
             }
         }
@@ -138,7 +140,7 @@ namespace FroggerStarter.Model
         {
             foreach (var vehicle in this.laneVehicles)
             {
-                vehicle.moveVehicle();
+                vehicle.MoveVehicle();
                 this.checkIfVehicleOutOfBounds(vehicle);
             }
         }
@@ -150,7 +152,7 @@ namespace FroggerStarter.Model
                 this.OnRaiseVehicleOutOfBounds(new VehicleArgs(vehicle));
             }
 
-            else if (this.laneDirection.Equals(Direction.Left) && (vehicle.X + vehicle.Width) < 0)
+            else if (this.laneDirection.Equals(Direction.Left) && vehicle.X + vehicle.Width < 0)
             {
                 this.OnRaiseVehicleOutOfBounds(new VehicleArgs(vehicle));
             }
@@ -158,18 +160,17 @@ namespace FroggerStarter.Model
 
         protected virtual void OnRaiseVehicleOutOfBounds(VehicleArgs vehicle)
         {
-            EventHandler<VehicleArgs> handler = VehicleOutOfBounds;
+            var handler = this.VehicleOutOfBounds;
 
             if (handler != null)
             {
                 handler(this, vehicle);
             }
         }
-    
 
         private void revealNewVehicle(object sender, VehicleArgs args)
         {
-            Vehicle vehicle = args.OutOfBoundsVehicle;
+            var vehicle = args.OutOfBoundsVehicle;
             if (vehicle.Sprite.Visibility.Equals(Visibility.Visible))
             {
                 this.timeForNewVehicle = true;
@@ -184,7 +185,7 @@ namespace FroggerStarter.Model
 
         private void resetVehicleXLocation(object sender, VehicleArgs args)
         {
-            Vehicle vehicle = args.OutOfBoundsVehicle;
+            var vehicle = args.OutOfBoundsVehicle;
             if (this.laneDirection.Equals(Direction.Left))
             {
                 vehicle.X = this.width + vehicle.Sprite.Width;
@@ -198,17 +199,24 @@ namespace FroggerStarter.Model
 
         public class VehicleArgs : EventArgs
         {
+            #region Data members
+
+            #endregion
+
+            #region Properties
+
+            public Vehicle OutOfBoundsVehicle { get; }
+
+            #endregion
+
+            #region Constructors
+
             public VehicleArgs(Vehicle outOfBoundsVehicle)
             {
-                this.outOfBoundsVehicle = outOfBoundsVehicle;
+                this.OutOfBoundsVehicle = outOfBoundsVehicle;
             }
 
-            private Vehicle outOfBoundsVehicle;
-
-            public Vehicle OutOfBoundsVehicle
-            {
-                get { return this.outOfBoundsVehicle; }
-            }
+            #endregion
         }
 
         #endregion

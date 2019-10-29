@@ -9,11 +9,7 @@ namespace FroggerStarter.Model
     /// </summary>
     public class Vehicle : GameObject
     {
-        public enum VehicleType
-        {
-            Car,
-            Truck
-        };
+        #region Types and Delegates
 
         public enum Heading
         {
@@ -23,8 +19,22 @@ namespace FroggerStarter.Model
             Down
         }
 
-        public Heading vehicleDirection;
-        
+        public enum VehicleType
+        {
+            Car,
+            Truck
+        }
+
+        #endregion
+
+        #region Data members
+
+        public Heading VehicleDirection;
+
+        #endregion
+
+        #region Constructors
+
         public Vehicle(VehicleType vehicleType, Heading heading)
         {
             if (vehicleType.Equals(VehicleType.Car))
@@ -37,42 +47,47 @@ namespace FroggerStarter.Model
                 Sprite = new TruckSprite();
             }
 
-            this.vehicleDirection = heading;
+            this.VehicleDirection = heading;
             if (heading.Equals(Heading.Right))
             {
                 this.flipHorizontally();
             }
         }
 
+        #endregion
+
+        #region Methods
+
         private void flipHorizontally()
         {
-            this.Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
-            this.Sprite.RenderTransform = new ScaleTransform() { ScaleX = -1 };
+            Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
+            Sprite.RenderTransform = new ScaleTransform {ScaleX = -1};
         }
 
-        public void moveVehicle()
+        public void MoveVehicle()
         {
-            switch (this.vehicleDirection)
+            switch (this.VehicleDirection)
             {
                 case Heading.Left:
-                    this.X -= this.SpeedX;
+                    X -= SpeedX;
                     break;
                 case Heading.Right:
-                    this.X += this.SpeedX;
+                    X += SpeedX;
                     break;
                 case Heading.Down:
-                    this.Y += this.SpeedY;
+                    Y += SpeedY;
                     break;
                 case Heading.Up:
-                    this.Y -= this.SpeedY;
+                    Y -= SpeedY;
                     break;
             }
-            
         }
 
         public void SetSpeed(int speed)
         {
             base.SetSpeed(speed, speed);
         }
+
+        #endregion
     }
 }

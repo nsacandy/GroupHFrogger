@@ -7,21 +7,27 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    
+
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    
+
 
     <Canvas x:Name="canvas" Width="{StaticResource AppWidth}" Height="{StaticResource AppHeight}" Background="Black">
 
-        
-        <Rectangle x:Name="topSidewalk" Canvas.Top="{StaticResource HighRoadYLocation}" Fill="Gray" Width="{StaticResource AppWidth}" Height="{StaticResource RoadHeight}"/>
-        <Rectangle x:Name="bottomSidewalk" Canvas.Top="{StaticResource LowRoadYLocation}" Fill="Gray" Width="{StaticResource AppWidth}" Height="{StaticResource RoadHeight}" />
-        <TextBlock x:Name="title" Foreground="Green" HorizontalTextAlignment="Center" Style="{StaticResource SubheaderTextBlockStyle}"  Height="50" Width="200" Text="Froggles!" Canvas.Left="218"/>
-        <TextBlock x:Name="score" Text="Score: 0" Foreground="White" Canvas.Left="500" Height="50" Width="150" FontSize="30"></TextBlock>
-        <TextBlock x:Name="gameOver" Foreground="White" Height="80" Width="250"  TextAlignment="Left"  FontSize="50" Canvas.Left="200" Canvas.Top ="150" Text="Game Over" Visibility="Collapsed" />
 
-        <Rectangle x:Name="fullTimerBar"  Fill="White" Height="10" Width="50" Canvas.Left="40" Canvas.Top="380"/>
-        <Rectangle x:Name="emptyTimerBar"  Fill="Red" Height="10" Width="0" Canvas.Left="40" Canvas.Top="380"/>
+        <Rectangle x:Name="topSidewalk" Canvas.Top="{StaticResource HighRoadYLocation}" Fill="Gray"
+                   Width="{StaticResource AppWidth}" Height="{StaticResource RoadHeight}" />
+        <Rectangle x:Name="bottomSidewalk" Canvas.Top="{StaticResource LowRoadYLocation}" Fill="Gray"
+                   Width="{StaticResource AppWidth}" Height="{StaticResource RoadHeight}" />
+        <TextBlock x:Name="title" Foreground="Green" HorizontalTextAlignment="Center"
+                   Style="{StaticResource SubheaderTextBlockStyle}" Height="50" Width="200" Text="Froggles!"
+                   Canvas.Left="218" />
+        <TextBlock x:Name="score" Text="Score: 0" Foreground="White" Canvas.Left="500" Height="50" Width="150"
+                   FontSize="30" />
+        <TextBlock x:Name="gameOver" Foreground="White" Height="80" Width="250" TextAlignment="Left" FontSize="50"
+                   Canvas.Left="200" Canvas.Top="150" Text="Game Over" Visibility="Collapsed" />
+
+        <Rectangle x:Name="fullTimerBar" Fill="White" Height="10" Width="50" Canvas.Left="40" Canvas.Top="380" />
+        <Rectangle x:Name="emptyTimerBar" Fill="Red" Height="10" Width="0" Canvas.Left="40" Canvas.Top="380" />
     </Canvas>
 
 

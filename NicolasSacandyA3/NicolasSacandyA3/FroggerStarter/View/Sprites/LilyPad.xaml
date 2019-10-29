@@ -10,7 +10,7 @@
     Width="45">
 
     <Canvas Width="45" Height="45" Background="Transparent">
-        <Ellipse Canvas.Top="2" Canvas.Left="2" Width="40" Height="40" Fill="Chartreuse"/>
-        <Polygon Points="20,45 20,20 30,45" Fill="Gray"/>
+        <Ellipse Canvas.Top="2" Canvas.Left="2" Width="40" Height="40" Fill="Chartreuse" />
+        <Polygon Points="20,45 20,20 30,45" Fill="Gray" />
     </Canvas>
 </local:BaseSprite>

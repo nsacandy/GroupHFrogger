@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Windows.Foundation;
-using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media.Animation;
-using Windows.UI.Xaml.Shapes;
 using FroggerStarter.Controller;
 using FroggerStarter.View.Sprites;
 
@@ -28,7 +24,6 @@ namespace FroggerStarter.View
         private FrogSprite[] lives;
         private IDictionary<LilyPad, FrogSprite> landingSpots;
 
-        private TimeSpan timerLength;
         private DispatcherTimer timer;
 
         #endregion
@@ -38,7 +33,6 @@ namespace FroggerStarter.View
         public GamePage()
         {
             this.InitializeComponent();
-            
 
             ApplicationView.PreferredLaunchViewSize = new Size
                 {Width = this.applicationWidth, Height = this.applicationHeight};
@@ -59,7 +53,11 @@ namespace FroggerStarter.View
 
             this.gameManager.PointScored += this.handlePointScored;
             this.createVisibleClock();
-            }
+        }
+
+        #endregion
+
+        #region Methods
 
         private void resumeGame(object sender, EventArgs e)
         {
@@ -69,35 +67,32 @@ namespace FroggerStarter.View
 
         private void handleGameOver(object sender, EventArgs e)
         {
+            foreach (var uiElement in this.canvas.Children)
+            {
+                uiElement.Visibility = Visibility.Collapsed;
+            }
             this.gameOver.Visibility = Visibility.Visible;
+            this.score.Visibility = Visibility.Visible;
             this.timer.Stop();
         }
-
-        #endregion
-
-        #region Methods
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
             this.gameManager.MovePlayer(args);
         }
 
-
-        //TODO consider moving all sprites into a view-type folder.
         private void generateLives()
         {
             this.lives = new FrogSprite[this.gameManager.Lives];
-            for (int i = 0; i < this.gameManager.Lives; i++)
+            for (var i = 0; i < this.gameManager.Lives; i++)
             {
-                FrogSprite life = new FrogSprite();
-                double xLocation = i * (life.Width + 5);
+                var life = new FrogSprite();
+                var xLocation = i * (life.Width + 5);
                 life.RenderAt(xLocation, 0);
                 this.canvas.Children.Add(life);
                 this.lives[i] = life;
-                this.timerLength = this.gameManager.timerLength;
                 this.createVisibleClock();
-    }
-
+            }
         }
 
         private void handleLifeLost(object sender, EventArgs e)
@@ -106,7 +101,7 @@ namespace FroggerStarter.View
             this.timer.Stop();
         }
 
-        private void handlePointScored(Object sender, GameManager.ScoreArgs e)
+        private void handlePointScored(object sender, GameManager.ScoreArgs e)
         {
             e.LilyPad.Visibility = Visibility.Collapsed;
             this.landingSpots[e.LilyPad].Visibility = Visibility.Visible;
@@ -124,27 +119,26 @@ namespace FroggerStarter.View
 
         private void timerOnTick(object sender, object e)
         {
-            double increment = 10.0 / (double) this.gameManager.timerLength.Seconds;
+            var increment = 10.0 / this.gameManager.TimerLength.Seconds;
             this.emptyTimerBar.Width += increment;
         }
 
         private void generateLandingSpotFrogs()
         {
-
             this.landingSpots = new Dictionary<LilyPad, FrogSprite>();
-            for (int i = 0; i < this.gameManager.LandingSpots.Count; i++)
+            foreach (var t in this.gameManager.LandingSpots)
             {
-                FrogSprite newLandingSpotFrog = new FrogSprite();
-                newLandingSpotFrog.Visibility = Visibility.Collapsed;
+                var newLandingSpotFrog = new FrogSprite {Visibility = Visibility.Collapsed};
 
-                double xLocation = this.gameManager.LandingSpots[i].HitBox.X;
-                double yLocation = this.gameManager.LandingSpots[i].HitBox.Y;
+                var xLocation = t.HitBox.X;
+                var yLocation = t.HitBox.Y;
                 newLandingSpotFrog.RenderAt(xLocation, yLocation);
                 this.canvas.Children.Add(newLandingSpotFrog);
 
-                this.landingSpots.Add(this.gameManager.LandingSpots[i], newLandingSpotFrog);
+                this.landingSpots.Add(t, newLandingSpotFrog);
             }
         }
+
         #endregion
     }
 }

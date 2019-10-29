@@ -26,7 +26,6 @@ namespace FroggerStarter.Model
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
-       
         #endregion
     }
 }

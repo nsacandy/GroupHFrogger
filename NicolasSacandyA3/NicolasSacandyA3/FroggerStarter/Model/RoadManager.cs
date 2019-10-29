@@ -1,30 +1,52 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace FroggerStarter.Model
 {
     /// <summary>
-    /// Contains methods and initial values for generating and managing lanes.
+    ///     Contains methods and initial values for generating and managing lanes.
     /// </summary>
     public class RoadManager : IEnumerable<Lane>
     {
+        #region Data members
+
         private static readonly int[] LaneOneValues = {305, 3, 2};
-        private static readonly int[] LaneTwoValues = { 255, 2, 3};
-        private static readonly int[] LaneThreeValues = { 205, 4, 4};
-        private static readonly int[] LaneFourValues = { 155, 3, 5};
-        private static readonly int[] LaneFiveValues = { 105, 5, 6};
+        private static readonly int[] LaneTwoValues = {255, 2, 3};
+        private static readonly int[] LaneThreeValues = {205, 4, 4};
+        private static readonly int[] LaneFourValues = {155, 3, 5};
+        private static readonly int[] LaneFiveValues = {105, 5, 6};
 
         private IList<Lane> lanes;
         private double laneWidth;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="RoadManager"/> class.
+        ///     Initializes a new instance of the <see cref="RoadManager" /> class.
         /// </summary>
         public RoadManager(double backgroundWidth)
         {
             this.laneWidth = backgroundWidth;
             this.setInitialLaneValues();
+        }
+
+        #endregion
+
+        #region Methods
+
+        public IEnumerator<Lane> GetEnumerator()
+        {
+            foreach (var lane in this.lanes)
+            {
+                yield return lane;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
 
         private void setInitialLaneValues()
@@ -35,7 +57,6 @@ namespace FroggerStarter.Model
             this.setInitialLaneThree();
             this.setInitialLaneFour();
             this.getInitialLaneFive();
-            
         }
 
         private void setInitialLaneOne()
@@ -50,7 +71,7 @@ namespace FroggerStarter.Model
         private void setInitialLaneTwo()
         {
             var laneTwo =
-                new Lane(LaneTwoValues[0], LaneTwoValues[1], Vehicle.VehicleType.Truck, Lane.Direction.Right,true) {
+                new Lane(LaneTwoValues[0], LaneTwoValues[1], Vehicle.VehicleType.Truck, Lane.Direction.Right, true) {
                     LaneSpeed = LaneTwoValues[2]
                 };
             this.lanes.Add(laneTwo);
@@ -65,16 +86,14 @@ namespace FroggerStarter.Model
             this.lanes.Add(laneThree);
         }
 
-
         private void setInitialLaneFour()
         {
-            var laneFour = 
+            var laneFour =
                 new Lane(LaneFourValues[0], LaneFourValues[1], Vehicle.VehicleType.Truck, Lane.Direction.Left, true) {
                     LaneSpeed = LaneFourValues[2]
                 };
             this.lanes.Add(laneFour);
         }
-
 
         private void getInitialLaneFive()
         {
@@ -86,7 +105,7 @@ namespace FroggerStarter.Model
         }
 
         /// <summary>
-        /// Moves all vehicles at lane speed.
+        ///     Moves all vehicles at lane speed.
         /// </summary>
         public void moveAllVehicles()
         {
@@ -104,17 +123,6 @@ namespace FroggerStarter.Model
             }
         }
 
-        public IEnumerator<Lane> GetEnumerator()
-        {
-            foreach (var lane in this.lanes)
-            {
-                yield return lane;
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
+        #endregion
     }
 }

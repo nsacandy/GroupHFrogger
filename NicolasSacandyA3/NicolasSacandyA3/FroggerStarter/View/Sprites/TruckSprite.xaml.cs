@@ -4,9 +4,13 @@ namespace FroggerStarter.View.Sprites
 {
     public sealed partial class TruckSprite
     {
+        #region Constructors
+
         public TruckSprite()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

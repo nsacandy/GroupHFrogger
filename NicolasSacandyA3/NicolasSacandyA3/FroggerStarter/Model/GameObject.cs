@@ -32,7 +32,7 @@ namespace FroggerStarter.Model
                 this.render();
             }
         }
-        
+
         /// <summary>
         ///     Gets or sets the y location of the game object.
         /// </summary>
