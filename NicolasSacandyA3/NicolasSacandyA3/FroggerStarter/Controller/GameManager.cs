@@ -34,14 +34,14 @@ namespace FroggerStarter.Controller
         private readonly RoadManager roadManager;
         private DateTime startTime;
 
-        public readonly TimeSpan timerLength = new TimeSpan(0,0,10);
+        public readonly TimeSpan timerLength = new TimeSpan(0,0,20);
 
-        private TimeSpan remainingTime;
+        private TimeSpan currentLifeAndPointTime;
 
         
 
         private List<UIElement> gameObjectsToBeAddedToCanvas;
-        private TimeSpan runningTime;
+        
 
         public List<LilyPad> LandingSpots { get; private set; }
         public int Score { get; private set; }
@@ -87,17 +87,17 @@ namespace FroggerStarter.Controller
             this.player = new PlayerManager(this.TopLaneOffset, this.backgroundHeight, 0, this.backgroundWidth);
             this.gameObjectsToBeAddedToCanvas = new List<UIElement>();
             
-            this.remainingTime = this.timerLength;
+            this.currentLifeAndPointTime = this.timerLength;
             LifeLost += this.handleLifeLost;
             GameOver += this.handleGameOver;
             PointScored += this.handlePointScored;
             this.startTime = DateTime.Now;
         }
 
-        private void handlePointScored(object sender, EventArgs e)
+        private void handlePointScored(object sender, ScoreArgs e)
         {
             this.setPlayerToCenterOfBottomLane();
-            this.updateScore();
+            this.updateScore(e);
         }
 
         #endregion
@@ -165,6 +165,7 @@ namespace FroggerStarter.Controller
 
         private void timerOnTick(object sender, object e)
         {
+            this.currentLifeAndPointTime = (DateTime.Now - this.startTime);
             this.checkForPlayerVehicleCollision();
             this.checkForPointScored();
             this.checkRemainingTime();
@@ -174,7 +175,7 @@ namespace FroggerStarter.Controller
 
         private void checkRemainingTime()
         {
-            if ((DateTime.Now - this.startTime).Seconds >= this.timerLength.Seconds)
+            if (this.currentLifeAndPointTime.Seconds >= this.timerLength.Seconds)
             {
                 this.RaiseLifeLost();
             }
@@ -223,10 +224,12 @@ namespace FroggerStarter.Controller
             }
         }
 
-        private void updateScore()
+        private void updateScore(ScoreArgs e)
         {
-            this.Score += 1;
-            if (this.Score == 5)
+            this.Score += this.timerLength.Seconds - this.currentLifeAndPointTime.Seconds;
+            this.startTime = DateTime.Now;
+            this.LandingSpots.Remove(e.LilyPad);
+            if (LandingSpots.Count == 0)
             {
                 this.RaiseGameOver();
             }

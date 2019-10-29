@@ -63,6 +63,7 @@ namespace FroggerStarter.View
         private void handleGameOver(object sender, EventArgs e)
         {
             this.gameOver.Visibility = Visibility.Visible;
+            this.timer.Stop();
         }
 
         #endregion
@@ -105,6 +106,7 @@ namespace FroggerStarter.View
         {
             e.LilyPad.Visibility = Visibility.Collapsed;
             this.landingSpots[e.LilyPad].Visibility = Visibility.Visible;
+            this.score.Text = "Score:" + this.gameManager.Score;
             this.emptyTimerBar.Width = 0;
         }
 
