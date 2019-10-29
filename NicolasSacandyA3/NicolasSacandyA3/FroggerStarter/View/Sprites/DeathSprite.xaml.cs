@@ -19,26 +19,28 @@ using Windows.UI.Xaml.Navigation;
 
 namespace FroggerStarter.View.Sprites
 {
+   
     public sealed partial class DeathSprite
     {
-        
+        public delegate void NewSpriteCreatedHandler(object sender, EventArgs e);
+        public event NewSpriteCreatedHandler NewSpriteCreated;
         public DeathSprite()
         {
             this.InitializeComponent();
             this.IsHitTestVisible = false;
-            this.Dying.Storyboard.Completed += this.CreateNewSprite;
+            this.Dying.Storyboard.Completed += this.OnNewSpriteCreated;
         }
 
         public void AnimateDeath()
         {
-            VisualStateManager.GoToState(this, "Dying", false);
-            this.Dying.Storyboard.Begin();
+                VisualStateManager.GoToState(this, "Dying", false);
+                this.Dying.Storyboard.Begin();
         }
 
-        private void CreateNewSprite(object e, object f)
+        private void OnNewSpriteCreated(object e, object f)
         {
-            VisualStateManager.GoToState(this, "OriginalState", false);
-            
+            VisualStateManager.GoToState(this, "OriginalSprite", false);
+            this.NewSpriteCreated?.Invoke(this,null);
         }
 
     }

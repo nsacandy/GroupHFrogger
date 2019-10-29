@@ -53,6 +53,9 @@ namespace FroggerStarter.Controller
         public delegate void GameOverHandler(object sender, EventArgs e);
         public event GameOverHandler GameOver;
 
+        public delegate void GameResumedHandler(object sender, EventArgs e);
+        public event GameResumedHandler GameResumed;
+
         public event EventHandler<ScoreArgs> PointScored;
         #endregion
 
@@ -88,10 +91,24 @@ namespace FroggerStarter.Controller
             this.gameObjectsToBeAddedToCanvas = new List<UIElement>();
             
             this.currentLifeAndPointTime = this.timerLength;
-            LifeLost += this.handleLifeLost;
+            LifeLost += this.player.handleLifeLost;
             GameOver += this.handleGameOver;
             PointScored += this.handlePointScored;
+            this.player.NewSpriteCreated += PlayerOnNewSpriteCreated;
             this.startTime = DateTime.Now;
+        }
+
+        private void PlayerOnNewSpriteCreated(object sender, EventArgs e)
+        {
+            this.setPlayerToCenterOfBottomLane();
+            this.timer.Start();
+            this.startTime = DateTime.Now;
+            this.onGameResumed();
+        }
+
+        private void onGameResumed()
+        {
+            this.GameResumed?.Invoke(this, null);
         }
 
         private void handlePointScored(object sender, ScoreArgs e)
@@ -177,7 +194,7 @@ namespace FroggerStarter.Controller
         {
             if (this.currentLifeAndPointTime.Seconds >= this.timerLength.Seconds)
             {
-                this.RaiseLifeLost();
+                this.OnLifeLost();
             }
         }
 
@@ -219,7 +236,7 @@ namespace FroggerStarter.Controller
             {
                 if (uiElement is CarSprite || uiElement is TruckSprite)
                 {
-                    this.RaiseLifeLost();
+                    this.OnLifeLost();
                 }
             }
         }
@@ -235,27 +252,24 @@ namespace FroggerStarter.Controller
             }
         }
 
-        private void RaiseLifeLost()
+        private void OnLifeLost()
         {
-            this.Lives -= 1;
-            this.startTime = DateTime.Now;
+            this.handleLifeLost();
             this.LifeLost?.Invoke(this, null);
         }
 
-        private void handleLifeLost(Object sender, EventArgs e)
+        private void handleLifeLost()
         {
-            this.player.AnimateDeath();
-            this.setPlayerToCenterOfBottomLane();
+            this.timer.Stop();
+            this.Lives -= 1;
             if (this.Lives == 0)
             {
                 this.RaiseGameOver();
             }
 
-            
             else
             {
                 this.roadManager.resetNumVehicles();
-                
             }
         }
 

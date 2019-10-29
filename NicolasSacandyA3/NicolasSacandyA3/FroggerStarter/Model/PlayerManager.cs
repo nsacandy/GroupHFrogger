@@ -20,6 +20,11 @@ namespace FroggerStarter.Model
         public Frog Player { get; }
         public DeathSprite PlayerSprite { get; }
 
+        public delegate void NewSpriteCreatedHandler(object sender, EventArgs e);
+        public event NewSpriteCreatedHandler NewSpriteCreated;
+
+        private bool controlsFrozen = false;
+
         public PlayerManager(double topBoundary, double bottomBoundary, double leftBoundary, double rightBoundary)
         {
             this.Player = new Frog();
@@ -30,9 +35,15 @@ namespace FroggerStarter.Model
             this.bottomBoundary = bottomBoundary;
             this.leftBoundary = leftBoundary;
             this.rightBoundary = rightBoundary;
-            
+
+            this.PlayerSprite.NewSpriteCreated += this.OnNewSpriteCreated;
         }
 
+        private void OnNewSpriteCreated(object sender, EventArgs e)
+        {
+            this.controlsFrozen = false;
+            this.NewSpriteCreated?.Invoke(this, null);
+        }
 
         /// <summary>
         ///     Moves the player to the left.
@@ -41,6 +52,10 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerLeft()
         {
+            if (this.controlsFrozen)
+            {
+                return;
+            }
             this.setPreviousPositionLocation();
             this.Player.MoveLeft();
             if (this.Player.X < this.leftBoundary)
@@ -56,6 +71,10 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerRight()
         {
+            if (this.controlsFrozen)
+            {
+                return;
+            }
             this.setPreviousPositionLocation();
             this.Player.MoveRight();
             if (this.Player.X + this.Player.Width > this.rightBoundary)
@@ -69,6 +88,10 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerUp()
         {
+            if (this.controlsFrozen)
+            {
+                return;
+            }
             this.setPreviousPositionLocation();
             this.Player.MoveUp();
             if (this.Player.Y < this.topBoundary)
@@ -82,6 +105,10 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerDown()
         {
+            if (this.controlsFrozen)
+            {
+                return;
+            }
             this.setPreviousPositionLocation();
             this.Player.MoveDown();
             if (this.Player.Y + this.Player.Height > this.bottomBoundary)
@@ -108,8 +135,9 @@ namespace FroggerStarter.Model
             this.setPreviousPositionLocation();
         }
 
-        public void AnimateDeath()
+        public void handleLifeLost(object sender, EventArgs e)
         {
+            this.controlsFrozen = true;
             this.PlayerSprite.AnimateDeath();
         }
     }

@@ -55,10 +55,17 @@ namespace FroggerStarter.View
             this.gameManager.LifeLost += this.handleLifeLost;
 
             this.gameManager.GameOver += this.handleGameOver;
+            this.gameManager.GameResumed += this.resumeGame;
 
             this.gameManager.PointScored += this.handlePointScored;
             this.createVisibleClock();
             }
+
+        private void resumeGame(object sender, EventArgs e)
+        {
+            this.emptyTimerBar.Width = 0;
+            this.timer.Start();
+        }
 
         private void handleGameOver(object sender, EventArgs e)
         {
@@ -93,13 +100,10 @@ namespace FroggerStarter.View
 
         }
 
-        public object FrogSprite { get; set; }
-
         private void handleLifeLost(object sender, EventArgs e)
         {
             this.lives[this.gameManager.Lives].Visibility = Visibility.Collapsed;
-
-            this.emptyTimerBar.Width = 0;
+            this.timer.Stop();
         }
 
         private void handlePointScored(Object sender, GameManager.ScoreArgs e)
@@ -112,12 +116,10 @@ namespace FroggerStarter.View
 
         private void createVisibleClock()
         {
-
             this.timer = new DispatcherTimer();
             this.timer.Tick += this.timerOnTick;
             this.timer.Interval = new TimeSpan(0, 0, 0, 1, 0);
             this.timer.Start();
-
         }
 
         private void timerOnTick(object sender, object e)
