@@ -156,17 +156,21 @@ namespace FroggerStarter.Controller
         {
             this.LandingSpots = new List<LilyPad>();
             var numLandingSpots = 5;
+            var frogHomeBuffer = 100;
+            var currX = 0.0;
             for (var i = 0; i < numLandingSpots; i++)
             {
                 var newLandingSpot = new LilyPad();
 
-                var xLocation = this.backgroundWidth / numLandingSpots * i;
-                var yLocation = (double) Application.Current.Resources["HighRoadYLocation"];
+                var xLocation = currX;
+                var yLocation = (double)Application.Current.Resources["HighRoadYLocation"];
 
                 newLandingSpot.RenderAt(xLocation, yLocation);
 
                 this.LandingSpots.Add(newLandingSpot);
                 this.gameObjectsToBeAddedToCanvas.Add(newLandingSpot);
+
+                currX += newLandingSpot.Width + frogHomeBuffer;
             }
         }
 
