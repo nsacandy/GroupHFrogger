@@ -102,8 +102,15 @@ namespace FroggerStarter.Model
 
             for (var i = 0; i < this.laneVehicles.Count; i++)
             {
-                this.laneVehicles[i].Sprite.Visibility =
-                    (i == firstVisibleCar) ? Visibility.Visible : Visibility.Collapsed;
+                if (i == firstVisibleCar)
+                {
+                    this.laneVehicles[i].Sprite.Visibility = Visibility.Visible;
+                }
+
+                else
+                {
+                    this.laneVehicles[i].Sprite.Visibility = Visibility.Collapsed;
+                }
             }
         }
 
