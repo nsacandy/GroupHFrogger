@@ -18,15 +18,10 @@ namespace FroggerStarter.Controller
     {
         #region Types and Delegates
 
-        public delegate void GameOverHandler(object sender, EventArgs e);
 
-        public delegate void GameResumedHandler(object sender, EventArgs e);
-
-        public delegate void LifeLostHandler(object sender, EventArgs e);
-
-        public event LifeLostHandler LifeLost;
-        public event GameOverHandler GameOver;
-        public event GameResumedHandler GameResumed;
+        public event EventHandler LifeLost;
+        public event EventHandler GameOver;
+        public event EventHandler GameResumed;
 
         public event EventHandler<ScoreArgs> PointScored;
 
