@@ -13,6 +13,7 @@ namespace FroggerStarter.View.Sprites
 
         #endregion
 
+
         #region Constructors
 
         public DeathSprite()

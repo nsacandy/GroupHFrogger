@@ -67,10 +67,10 @@ namespace FroggerStarter.View
 
         private void handleGameOver(object sender, EventArgs e)
         {
-            foreach (var uiElement in this.canvas.Children)
-            {
-                uiElement.Visibility = Visibility.Collapsed;
-            }
+            //foreach (var uiElement in this.canvas.Children)
+            //{
+            //    uiElement.Visibility = Visibility.Collapsed;
+            //}
             this.gameOver.Visibility = Visibility.Visible;
             this.score.Visibility = Visibility.Visible;
             this.timer.Stop();
