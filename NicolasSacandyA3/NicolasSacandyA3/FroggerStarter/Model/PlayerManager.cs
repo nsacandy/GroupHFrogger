@@ -8,8 +8,6 @@ namespace FroggerStarter.Model
     {
         #region Types and Delegates
 
-        public delegate void NewSpriteCreatedHandler(object sender, EventArgs e);
-
         #endregion
 
         #region Data members
@@ -52,7 +50,7 @@ namespace FroggerStarter.Model
 
         #region Methods
 
-        public event NewSpriteCreatedHandler NewSpriteCreated;
+        public event EventHandler NewSpriteCreated;
 
         private void onNewSpriteCreated(object sender, EventArgs e)
         {
