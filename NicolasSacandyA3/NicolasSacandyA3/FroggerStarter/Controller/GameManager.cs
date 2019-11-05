@@ -60,6 +60,7 @@ namespace FroggerStarter.Controller
         public List<LilyPad> LandingSpots { get; private set; }
         public int Score { get; private set; }
         public int Lives { get; private set; } = 4;
+        public bool IsGameOver { get; private set; }
 
         #endregion
 
@@ -89,6 +90,8 @@ namespace FroggerStarter.Controller
 
             this.backgroundHeight = backgroundHeight;
             this.backgroundWidth = backgroundWidth;
+
+            this.IsGameOver = false;
 
             this.roadManager = new RoadManager(this.backgroundWidth);
             this.player = new PlayerManager(this.topLaneOffset, this.backgroundHeight, 0, this.backgroundWidth);
@@ -234,7 +237,7 @@ namespace FroggerStarter.Controller
         {
             this.Score += this.TimerLength.Seconds - this.currentLifeAndPointTime.Seconds;
             this.startTime = DateTime.Now;
-                    }
+        }
 
         private void createAndPlacePlayer()
         {
@@ -279,7 +282,6 @@ namespace FroggerStarter.Controller
                 this.handleGameOver();
                 this.raiseGameOver();
             }
-
             else
             {
                 this.roadManager.resetNumVehicles();
@@ -288,6 +290,11 @@ namespace FroggerStarter.Controller
 
         private void playerOnNewSpriteCreated(object sender, EventArgs e)
         {
+            if (this.IsGameOver)
+            {
+                return;
+            }
+
             this.setPlayerToCenterOfBottomLane();
             this.timer.Start();
             this.startTime = DateTime.Now;
@@ -307,7 +314,7 @@ namespace FroggerStarter.Controller
         private void handleGameOver()
         {
             this.timer.Stop();
-            this.player.PlayerSprite.Visibility = Visibility.Collapsed;
+            this.IsGameOver = true;
         }
 
         public void MovePlayer(KeyEventArgs args)
