@@ -9,8 +9,7 @@ namespace FroggerStarter.View.Sprites
     {
         #region Types and Delegates
 
-        public delegate void NewSpriteCreatedHandler(object sender, EventArgs e);
-        public event NewSpriteCreatedHandler NewSpriteCreated;
+        public event EventHandler NewSpriteCreated;
 
         #endregion
 
