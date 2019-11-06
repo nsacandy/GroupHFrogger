@@ -10,9 +10,9 @@ namespace FroggerStarter.Model
     class Truck : Vehicle
     {
 
-        public Truck()
+        public Truck(Vehicle.Heading heading)
         {
-            this.vehicleSprite = new TruckSprite();
+            this.Sprite = new TruckSprite();
 
             this.VehicleDirection = heading;
             if (heading.Equals(Vehicle.Heading.Right))

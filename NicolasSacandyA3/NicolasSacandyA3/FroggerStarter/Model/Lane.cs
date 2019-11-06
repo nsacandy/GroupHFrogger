@@ -90,8 +90,21 @@ namespace FroggerStarter.Model
             for (var i = 0; i < numVehicles; i++)
             {
                 var heading = this.laneDirection.Equals(Direction.Left) ? Vehicle.Heading.Left : Vehicle.Heading.Right;
-                var vehicle = new Vehicle(vehicleType, heading);
+                var vehicle = this.createVehicle(vehicleType, heading);
                 this.laneVehicles.Add(vehicle);
+            }
+        }
+
+        private Vehicle createVehicle(Vehicle.VehicleType type, Vehicle.Heading heading)
+        {
+            switch (type)
+            {
+                case Vehicle.VehicleType.Truck:
+                    return new Truck(heading);
+                case Vehicle.VehicleType.Car:
+                    return new Car(heading);
+                default:
+                    return null;
             }
         }
 

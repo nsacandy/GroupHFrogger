@@ -9,7 +9,7 @@ namespace FroggerStarter.Model
     /// </summary>
     public abstract class Vehicle : GameObject
     {
-        protected BaseSprite vehicleSprite;
+        
         protected Heading vehicleHeading;
 
         public enum Heading
@@ -40,10 +40,10 @@ namespace FroggerStarter.Model
 
         #region Methods
 
-        private void flipHorizontally()
+        protected void flipHorizontally()
         {
-            Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
-            Sprite.RenderTransform = new ScaleTransform { ScaleX = -1 };
+            this.Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
+            this.Sprite.RenderTransform = new ScaleTransform { ScaleX = -1 };
         }
 
         public void MoveVehicle()
