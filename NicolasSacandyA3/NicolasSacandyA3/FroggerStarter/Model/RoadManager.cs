@@ -123,6 +123,14 @@ namespace FroggerStarter.Model
             }
         }
 
+        public void RemoveAllVehicles()
+        {
+            foreach (var lane in this.lanes)
+            {
+                lane.RemoveAllVehicles();
+            }
+        }
+
         #endregion
     }
 }

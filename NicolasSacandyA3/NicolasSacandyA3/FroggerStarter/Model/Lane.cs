@@ -108,7 +108,7 @@ namespace FroggerStarter.Model
             }
         }
 
-        public void RemoveAllCars()
+        public void RemoveAllVehicles()
         {
             foreach (var vehicle in this.laneVehicles)
             {

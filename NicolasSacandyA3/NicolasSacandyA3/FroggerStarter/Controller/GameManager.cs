@@ -287,6 +287,7 @@ namespace FroggerStarter.Controller
         {
             if (this.IsGameOver)
             {
+                this.player.PlayerSprite.Visibility = Visibility.Collapsed;
                 return;
             }
 
@@ -310,7 +311,7 @@ namespace FroggerStarter.Controller
         {
             this.timer.Stop();
             this.IsGameOver = true;
-            this.roadManager.resetNumVehicles();
+            this.roadManager.RemoveAllVehicles();
         }
 
         public void MovePlayer(KeyEventArgs args)
