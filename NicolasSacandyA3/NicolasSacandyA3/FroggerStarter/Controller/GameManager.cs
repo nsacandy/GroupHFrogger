@@ -183,7 +183,7 @@ namespace FroggerStarter.Controller
             {
                 if (uiElement is LilyPad pad)
                 {
-                    this.OnPointScored(new ScoreArgs(pad));
+                    this.PointScored?.Invoke(this, new ScoreArgs(pad));
                 }
                 else if (playerBox.Y < this.TopBorder)
                 {
@@ -202,13 +202,6 @@ namespace FroggerStarter.Controller
             }
             
             this.updateScore(e);
-        }
-
-        protected virtual void OnPointScored(ScoreArgs lilyPadHitBox)
-        {
-            var handler = this.PointScored;
-            
-            handler?.Invoke(this, lilyPadHitBox);
         }
 
         private void updateScore(ScoreArgs e)
