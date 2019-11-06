@@ -148,12 +148,9 @@ namespace FroggerStarter.Controller
 
         private void addVehiclesToCanvasObjectsList()
         {
-            foreach (var lane in this.roadManager)
+            foreach (var vehicle in this.roadManager)
             {
-                foreach (var vehicle in lane)
-                {
-                    this.gameObjectsToBeAddedToCanvas.Add(vehicle.Sprite);
-                }
+                this.gameObjectsToBeAddedToCanvas.Add(vehicle.Sprite);
             }
         }
 

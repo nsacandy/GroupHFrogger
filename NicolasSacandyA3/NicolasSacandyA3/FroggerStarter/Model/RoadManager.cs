@@ -6,7 +6,7 @@ namespace FroggerStarter.Model
     /// <summary>
     ///     Contains methods and initial values for generating and managing lanes.
     /// </summary>
-    public class RoadManager : IEnumerable<Lane>
+    public class RoadManager : IEnumerable<Vehicle>
     {
         #region Data members
 
@@ -36,11 +36,14 @@ namespace FroggerStarter.Model
 
         #region Methods
 
-        public IEnumerator<Lane> GetEnumerator()
+        public IEnumerator<Vehicle> GetEnumerator()
         {
             foreach (var lane in this.lanes)
             {
-                yield return lane;
+                foreach (var vehicle in lane)
+                {
+                    yield return vehicle;
+                }
             }
         }
 
