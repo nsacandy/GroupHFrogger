@@ -98,12 +98,21 @@ namespace FroggerStarter.Model
         public void HideVehicles()
         {
             var carPicker = new Random();
-            var firstVisibleCar = carPicker.Next(this.laneVehicles.Count);
+            var carIndex = carPicker.Next(this.laneVehicles.Count);
+            var firstVisibleCar = this.laneVehicles[carIndex];
 
-            for (var i = 0; i < this.laneVehicles.Count; i++)
+            foreach (var vehicle in this.laneVehicles)
             {
-                this.laneVehicles[i].Sprite.Visibility =
-                    (i == firstVisibleCar) ? Visibility.Visible : Visibility.Collapsed;
+                vehicle.Sprite.Visibility =
+                    (firstVisibleCar.Equals(vehicle)) ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public void RemoveAllCars()
+        {
+            foreach (var vehicle in this.laneVehicles)
+            {
+                vehicle.Sprite.Visibility = Visibility.Collapsed;
             }
         }
 

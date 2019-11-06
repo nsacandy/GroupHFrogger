@@ -310,6 +310,7 @@ namespace FroggerStarter.Controller
         {
             this.timer.Stop();
             this.IsGameOver = true;
+            this.roadManager.resetNumVehicles();
         }
 
         public void MovePlayer(KeyEventArgs args)

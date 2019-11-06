@@ -6,6 +6,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using FroggerStarter.Controller;
 using FroggerStarter.View.Sprites;
+using Visibility = Windows.UI.Xaml.Visibility;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -67,10 +68,8 @@ namespace FroggerStarter.View
 
         private void handleGameOver(object sender, EventArgs e)
         {
-            //foreach (var uiElement in this.canvas.Children)
-            //{
-            //    uiElement.Visibility = Visibility.Collapsed;
-            //}
+            this.emptyTimerBar.Visibility = Visibility.Collapsed;
+            this.fullTimerBar.Visibility = Visibility.Collapsed;
             this.gameOver.Visibility = Visibility.Visible;
             this.score.Visibility = Visibility.Visible;
             this.timer.Stop();
