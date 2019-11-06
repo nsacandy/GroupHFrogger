@@ -125,7 +125,7 @@ namespace FroggerStarter.View
         private void generateLandingSpotFrogs()
         {
             this.landingSpots = new Dictionary<LilyPad, FrogSprite>();
-            foreach (var t in this.gameManager.LandingSpots)
+            foreach (var t in this.gameManager.GetFrogHomes())
             {
                 var newLandingSpotFrog = new FrogSprite {Visibility = Visibility.Collapsed};
 

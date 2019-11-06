@@ -44,6 +44,7 @@ namespace FroggerStarter.Controller
         private Canvas gameCanvas;
         private readonly PlayerManager player;
         private readonly RoadManager roadManager;
+        private HomeManager homes;
 
         private DispatcherTimer timer;
         private DateTime startTime;
@@ -52,7 +53,7 @@ namespace FroggerStarter.Controller
 
         #region Properties
 
-        public List<LilyPad> LandingSpots { get; private set; }
+        
         public int Score { get; private set; }
         public int Lives { get; private set; } = 4;
         public bool IsGameOver { get; private set; }
@@ -123,12 +124,17 @@ namespace FroggerStarter.Controller
         /// <exception cref="ArgumentNullException">gameCanvas</exception>
         public void InitializeGame(Canvas gamePage)
         {
+            this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
             this.setupGameTimer();
             this.createAndPlacePlayer();
             this.addVehiclesToCanvasObjectsList();
-            this.addLandingSpotsToCanvasList();
-            this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
             this.AddObjectsToCanvas();
+            this.homes = new HomeManager(this.gameCanvas);
+        }
+
+        public IEnumerable<LilyPad> GetFrogHomes()
+        {
+            return this.homes;
         }
 
         public void AddObjectsToCanvas()
@@ -147,28 +153,6 @@ namespace FroggerStarter.Controller
                 {
                     this.gameObjectsToBeAddedToCanvas.Add(vehicle.Sprite);
                 }
-            }
-        }
-
-        private void addLandingSpotsToCanvasList()
-        {
-            this.LandingSpots = new List<LilyPad>();
-            var numLandingSpots = 5;
-            var frogHomeBuffer = 100;
-            var currX = 0.0;
-            for (var i = 0; i < numLandingSpots; i++)
-            {
-                var newLandingSpot = new LilyPad();
-
-                var xLocation = currX;
-                var yLocation = (double)Application.Current.Resources["HighRoadYLocation"];
-
-                newLandingSpot.RenderAt(xLocation, yLocation);
-
-                this.LandingSpots.Add(newLandingSpot);
-                this.gameObjectsToBeAddedToCanvas.Add(newLandingSpot);
-
-                currX += newLandingSpot.Width + frogHomeBuffer;
             }
         }
 
@@ -201,7 +185,6 @@ namespace FroggerStarter.Controller
                 {
                     this.OnPointScored(new ScoreArgs(pad));
                 }
-
                 else if (playerBox.Y < this.TopBorder)
                 {
                     this.player.ResetPlayerToPreviousPosition();
@@ -212,8 +195,8 @@ namespace FroggerStarter.Controller
         private void handlePointScored(object sender, ScoreArgs e)
         {
             this.setPlayerToCenterOfBottomLane();
-            this.LandingSpots.Remove(e.LilyPad);
-            if (this.LandingSpots.Count == 0)
+            this.homes.RemoveHome(e.LilyPad);
+            if (this.homes.IsAllHomesFilled())
             {
                 this.raiseGameOver();
             }
