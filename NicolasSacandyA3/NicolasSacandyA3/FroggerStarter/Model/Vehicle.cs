@@ -7,9 +7,10 @@ namespace FroggerStarter.Model
     /// <summary>
     ///     Defines vehicle models
     /// </summary>
-    public class Vehicle : GameObject
+    public abstract class Vehicle : GameObject
     {
-        #region Types and Delegates
+        protected BaseSprite vehicleSprite;
+        protected Heading vehicleHeading;
 
         public enum Heading
         {
@@ -24,8 +25,7 @@ namespace FroggerStarter.Model
             Car,
             Truck
         }
-
-        #endregion
+        
 
         #region Data members
 
@@ -35,24 +35,6 @@ namespace FroggerStarter.Model
 
         #region Constructors
 
-        public Vehicle(VehicleType vehicleType, Heading heading)
-        {
-            if (vehicleType.Equals(VehicleType.Car))
-            {
-                Sprite = new CarSprite();
-            }
-
-            if (vehicleType.Equals(VehicleType.Truck))
-            {
-                Sprite = new TruckSprite();
-            }
-
-            this.VehicleDirection = heading;
-            if (heading.Equals(Heading.Right))
-            {
-                this.flipHorizontally();
-            }
-        }
 
         #endregion
 
@@ -61,7 +43,7 @@ namespace FroggerStarter.Model
         private void flipHorizontally()
         {
             Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
-            Sprite.RenderTransform = new ScaleTransform {ScaleX = -1};
+            Sprite.RenderTransform = new ScaleTransform { ScaleX = -1 };
         }
 
         public void MoveVehicle()
