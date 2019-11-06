@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -181,14 +182,24 @@ namespace FroggerStarter.Controller
 
             foreach (var uiElement in objectsAtPlayerLocation)
             {
-                if (uiElement is LilyPad pad)
-                {
-                    this.PointScored?.Invoke(this, new ScoreArgs(pad));
-                }
-                else if (playerBox.Y < this.TopBorder)
-                {
-                    this.player.ResetPlayerToPreviousPosition();
-                }
+                this.handlePlayerHitsHome(uiElement);
+                this.handlePlayerDoesNotHitHome(playerBox);
+            }
+        }
+
+        private void handlePlayerDoesNotHitHome(Rect playerBox)
+        {
+            if (playerBox.Y < this.TopBorder)
+            {
+                this.player.ResetPlayerToPreviousPosition();
+            }
+        }
+
+        private void handlePlayerHitsHome(UIElement uiElement)
+        {
+            if (uiElement is LilyPad pad)
+            {
+                this.PointScored?.Invoke(this, new ScoreArgs(pad));
             }
         }
 
