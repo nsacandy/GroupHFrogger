@@ -120,7 +120,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Car.cs" />
+    <Compile Include="Controller\GameSettings.cs" />
+    <Compile Include="Model\Vehicles\Car.cs" />
     <Compile Include="Model\Frog.cs" />
     <Compile Include="Controller\GameManager.cs" />
     <Compile Include="Model\GameObject.cs" />
@@ -128,9 +129,9 @@
     <Compile Include="Model\Lane.cs" />
     <Compile Include="Model\PlayerManager.cs" />
     <Compile Include="Model\RoadManager.cs" />
-    <Compile Include="Model\Truck.cs" />
-    <Compile Include="Model\Vehicle.cs" />
-    <Compile Include="Model\VehicleFactory.cs" />
+    <Compile Include="Model\Vehicles\Truck.cs" />
+    <Compile Include="Model\Vehicles\Vehicle.cs" />
+    <Compile Include="Model\Vehicles\VehicleFactory.cs" />
     <Compile Include="View\GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>

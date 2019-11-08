@@ -30,16 +30,9 @@ namespace FroggerStarter.Controller
 
         #region Data members
 
-        private readonly double topLaneOffset = (double)Application.Current.Resources["HighRoadYLocation"];
-        private readonly int bottomLaneOffset = 5;
-        private readonly double leftBorder = 0;
+        
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
-
-        public readonly double TopBorder = (double) Application.Current.Resources["HighRoadYLocation"] +
-                                           (double) Application.Current.Resources["RoadHeight"];
-
-        public readonly TimeSpan TimerLength = new TimeSpan(0, 0, 20);
 
         private readonly List<UIElement> gameObjectsToBeAddedToCanvas;
         private Canvas gameCanvas;
@@ -47,6 +40,7 @@ namespace FroggerStarter.Controller
         private readonly RoadManager roadManager;
         private HomeManager homes;
 
+        private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.GameLengthInSeconds);
         private DispatcherTimer timer;
         private DateTime startTime;
         private TimeSpan currentLifeAndPointTime;
@@ -91,11 +85,11 @@ namespace FroggerStarter.Controller
             this.IsGameOver = false;
 
             this.roadManager = new RoadManager(this.backgroundWidth);
-            this.player = new PlayerManager(this.topLaneOffset, this.backgroundHeight, 0, this.backgroundWidth);
+            this.player = new PlayerManager(GameSettings.TOP_LANE_OFFSET, this.backgroundHeight, GameSettings.leftBorder, this.backgroundWidth);
 
             this.gameObjectsToBeAddedToCanvas = new List<UIElement>();
 
-            this.currentLifeAndPointTime = this.TimerLength;
+            this.currentLifeAndPointTime = this.timerLength;
             this.startTime = DateTime.Now;
 
             this.player.NewSpriteCreated += this.playerOnNewSpriteCreated;
@@ -166,7 +160,7 @@ namespace FroggerStarter.Controller
 
         private void checkRemainingTime()
         {
-            if (this.currentLifeAndPointTime.Seconds >= this.TimerLength.Seconds)
+            if (this.currentLifeAndPointTime.Seconds >= this.timerLength.Seconds)
             {
                 this.onLifeLost();
             }
@@ -186,7 +180,7 @@ namespace FroggerStarter.Controller
 
         private void handlePlayerDoesNotHitHome(Rect playerBox)
         {
-            if (playerBox.Y < this.TopBorder)
+            if (playerBox.Y < GameSettings.TopBorder)
             {
                 this.player.ResetPlayerToPreviousPosition();
             }
@@ -205,7 +199,7 @@ namespace FroggerStarter.Controller
             this.setPlayerToCenterOfBottomLane();
             this.homes.RemoveHome(e.LilyPad);
             if (this.homes.IsAllHomesFilled())
-            {
+            { 
                 this.raiseGameOver();
             }
             
@@ -214,7 +208,7 @@ namespace FroggerStarter.Controller
 
         private void updateScore(ScoreArgs e)
         {
-            this.Score += this.TimerLength.Seconds - this.currentLifeAndPointTime.Seconds;
+            this.Score += this.timerLength.Seconds - this.currentLifeAndPointTime.Seconds;
             this.startTime = DateTime.Now;
         }
 
@@ -227,7 +221,7 @@ namespace FroggerStarter.Controller
         private void setPlayerToCenterOfBottomLane()
         {
             var centeredX = this.backgroundWidth / 2 - this.player.PlayerSprite.Width / 2;
-            var centeredY = this.backgroundHeight - this.player.PlayerSprite.Height - this.bottomLaneOffset;
+            var centeredY = this.backgroundHeight - this.player.PlayerSprite.Height - GameSettings.bottomLaneOffset;
 
             this.player.SetPlayerLocation(centeredX, centeredY);
         }

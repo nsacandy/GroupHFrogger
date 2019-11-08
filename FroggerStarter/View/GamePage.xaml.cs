@@ -118,7 +118,7 @@ namespace FroggerStarter.View
 
         private void timerOnTick(object sender, object e)
         {
-            var increment = 10.0 / this.gameManager.TimerLength.Seconds;
+            var increment = 10.0 / GameSettings.GameLengthInSeconds;
             this.emptyTimerBar.Width += increment;
         }
 

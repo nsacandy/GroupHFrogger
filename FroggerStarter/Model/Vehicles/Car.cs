@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FroggerStarter.Model;
 using FroggerStarter.View.Sprites;
 
-namespace FroggerStarter.Model
+namespace FroggerStarter.Model.Vehicles
 {
     
      public class Car:Vehicle

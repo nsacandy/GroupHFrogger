@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
+using FroggerStarter.Model.Vehicles;
 
 namespace FroggerStarter.Model
 {

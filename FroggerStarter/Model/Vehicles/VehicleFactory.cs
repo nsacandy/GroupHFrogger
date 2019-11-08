@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FroggerStarter.Model
+namespace FroggerStarter.Model.Vehicles
 {
     class VehicleFactory
     {

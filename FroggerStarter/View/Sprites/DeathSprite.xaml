@@ -51,7 +51,6 @@
                                          From="1.0" To="0.0" BeginTime="0:0:3" Duration="0:0:1" />
                     </Storyboard>
                 </VisualState>
-
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
