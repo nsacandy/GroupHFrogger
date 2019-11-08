@@ -5,15 +5,10 @@ namespace FroggerStarter.Model.Vehicles
     class Truck : Vehicle
     {
 
-        public Truck(Vehicle.Heading heading)
+        public Truck(Heading heading)
         {
             this.Sprite = new TruckSprite();
-
-            this.VehicleDirection = heading;
-            if (heading.Equals(Vehicle.Heading.Right))
-            {
-                this.flipHorizontally();
-            }
+            this.setHeading(heading);
         }
     }
 }

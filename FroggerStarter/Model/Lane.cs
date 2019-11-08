@@ -49,7 +49,7 @@ namespace FroggerStarter.Model
 
         #region Constructors
 
-        public Lane(int yValue, int numVehicles, Vehicle.VehicleType vehicleType, Direction laneDirection,
+        public Lane(int yValue, int numVehicles, VehicleFactory.VehicleType vehicleType, Direction laneDirection,
             bool graduallyAddVehicles)
         {
             this.yValue = yValue;
@@ -85,7 +85,7 @@ namespace FroggerStarter.Model
             return this.GetEnumerator();
         }
 
-        private void generateVehicles(int numVehicles, Vehicle.VehicleType vehicleType)
+        private void generateVehicles(int numVehicles, VehicleFactory.VehicleType vehicleType)
         {
             for (var i = 0; i < numVehicles; i++)
             {

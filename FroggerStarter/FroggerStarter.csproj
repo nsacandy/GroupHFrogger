@@ -129,6 +129,7 @@
     <Compile Include="Model\Lane.cs" />
     <Compile Include="Model\PlayerManager.cs" />
     <Compile Include="Model\RoadManager.cs" />
+    <Compile Include="Model\Vehicles\SportsCar.cs" />
     <Compile Include="Model\Vehicles\Truck.cs" />
     <Compile Include="Model\Vehicles\Vehicle.cs" />
     <Compile Include="Model\Vehicles\VehicleFactory.cs" />
@@ -151,6 +152,9 @@
     <Compile Include="View\Sprites\ISpriteRenderer.cs" />
     <Compile Include="View\Sprites\LilyPad.xaml.cs">
       <DependentUpon>LilyPad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\SportsCarSprite.xaml.cs">
+      <DependentUpon>SportsCarSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\TruckSprite.xaml.cs">
       <DependentUpon>TruckSprite.xaml</DependentUpon>
@@ -197,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\LilyPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\SportsCarSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
