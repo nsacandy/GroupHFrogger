@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using FroggerStarter.Model.Vehicles;
 
 namespace FroggerStarter.Model
 {

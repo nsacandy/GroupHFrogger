@@ -1,3 +1,0 @@
-I'm sure the game manager class could be broken up a bit more, some notes may not be extensive,
-should probably have a player class and have the game manager doing less and the view doing more.
-I believe all fuctionality is present.

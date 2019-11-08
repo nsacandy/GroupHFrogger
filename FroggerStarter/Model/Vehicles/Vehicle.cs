@@ -1,8 +1,7 @@
 ﻿using Windows.Foundation;
 using Windows.UI.Xaml.Media;
-using FroggerStarter.View.Sprites;
 
-namespace FroggerStarter.Model
+namespace FroggerStarter.Model.Vehicles
 {
     /// <summary>
     ///     Defines vehicle models
