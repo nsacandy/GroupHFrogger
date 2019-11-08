@@ -27,6 +27,7 @@ namespace FroggerStarter.Model
         private readonly bool graduallyAddVehicles;
         private bool timeForNewVehicle;
 
+        private event EventHandler<VehicleArgs> VehicleOutOfBounds;
         #endregion
 
         #region Properties
@@ -83,28 +84,13 @@ namespace FroggerStarter.Model
             return this.GetEnumerator();
         }
 
-        private event EventHandler<VehicleArgs> VehicleOutOfBounds;
-
         private void generateVehicles(int numVehicles, Vehicle.VehicleType vehicleType)
         {
             for (var i = 0; i < numVehicles; i++)
             {
                 var heading = this.laneDirection.Equals(Direction.Left) ? Vehicle.Heading.Left : Vehicle.Heading.Right;
-                var vehicle = this.createVehicle(vehicleType, heading);
+                var vehicle = VehicleFactory.CreateVehicle(vehicleType, heading);
                 this.laneVehicles.Add(vehicle);
-            }
-        }
-
-        private Vehicle createVehicle(Vehicle.VehicleType type, Vehicle.Heading heading)
-        {
-            switch (type)
-            {
-                case Vehicle.VehicleType.Truck:
-                    return new Truck(heading);
-                case Vehicle.VehicleType.Car:
-                    return new Car(heading);
-                default:
-                    return null;
             }
         }
 
