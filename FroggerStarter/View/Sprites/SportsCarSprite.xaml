@@ -6,12 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    Height="50"
+    Width="50">
+
+    
 
     <Canvas>
-        <local:CarSprite>
-            <Rectangle Canvas.Top="5" Canvas.Left="10" Width="30" Height="40" Fill="Red" />
-        </local:CarSprite>
+        <local:CarSprite></local:CarSprite>
+        <Rectangle Fill="AliceBlue" Canvas.Left="0" Canvas.Top="20" Width="10" Height="10"></Rectangle>
+        <Rectangle Fill="AliceBlue" Canvas.Left="20" Canvas.Top="20" Width="30" Height="10"></Rectangle>
     </Canvas>
 </local:CarSprite>
