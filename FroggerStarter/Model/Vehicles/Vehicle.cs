@@ -8,8 +8,6 @@ namespace FroggerStarter.Model.Vehicles
     /// </summary>
     public abstract class Vehicle : GameObject
     {
-        
-        protected Heading vehicleHeading;
 
         public enum Heading
         {
@@ -18,17 +16,9 @@ namespace FroggerStarter.Model.Vehicles
             Up,
             Down
         }
-
-        public enum VehicleType
-        {
-            Car,
-            Truck
-        }
-        
-
         #region Data members
 
-        public Heading VehicleDirection;
+        protected Heading VehicleHeading;
 
         #endregion
 
@@ -39,7 +29,16 @@ namespace FroggerStarter.Model.Vehicles
 
         #region Methods
 
-        protected void flipHorizontally()
+        protected void setHeading(Heading heading)
+        {
+            this.VehicleHeading = heading;
+            if (this.VehicleHeading.Equals(Heading.Right))
+            {
+                this.headRight();
+            }
+        }
+
+        protected void headRight()
         {
             this.Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
             this.Sprite.RenderTransform = new ScaleTransform { ScaleX = -1 };
@@ -47,7 +46,7 @@ namespace FroggerStarter.Model.Vehicles
 
         public void MoveVehicle()
         {
-            switch (this.VehicleDirection)
+            switch (this.VehicleHeading)
             {
                 case Heading.Left:
                     X -= SpeedX;

@@ -66,7 +66,7 @@ namespace FroggerStarter.Model
         private void setInitialLaneOne()
         {
             var laneOne =
-                new Lane(LaneOneValues[0], LaneOneValues[1], Vehicle.VehicleType.Car, Lane.Direction.Left, true) {
+                new Lane(LaneOneValues[0], LaneOneValues[1], VehicleFactory.VehicleType.Car, Lane.Direction.Left, true) {
                     LaneSpeed = LaneOneValues[2]
                 };
             this.lanes.Add(laneOne);
@@ -75,7 +75,7 @@ namespace FroggerStarter.Model
         private void setInitialLaneTwo()
         {
             var laneTwo =
-                new Lane(LaneTwoValues[0], LaneTwoValues[1], Vehicle.VehicleType.Truck, Lane.Direction.Right, true) {
+                new Lane(LaneTwoValues[0], LaneTwoValues[1], VehicleFactory.VehicleType.SportsCar, Lane.Direction.Right, true) {
                     LaneSpeed = LaneTwoValues[2]
                 };
             this.lanes.Add(laneTwo);
@@ -84,7 +84,7 @@ namespace FroggerStarter.Model
         private void setInitialLaneThree()
         {
             var laneThree =
-                new Lane(LaneThreeValues[0], LaneThreeValues[1], Vehicle.VehicleType.Car, Lane.Direction.Left, true) {
+                new Lane(LaneThreeValues[0], LaneThreeValues[1], VehicleFactory.VehicleType.Car, Lane.Direction.Left, true) {
                     LaneSpeed = LaneThreeValues[2]
                 };
             this.lanes.Add(laneThree);
@@ -93,7 +93,7 @@ namespace FroggerStarter.Model
         private void setInitialLaneFour()
         {
             var laneFour =
-                new Lane(LaneFourValues[0], LaneFourValues[1], Vehicle.VehicleType.Truck, Lane.Direction.Left, true) {
+                new Lane(LaneFourValues[0], LaneFourValues[1], VehicleFactory.VehicleType.Truck, Lane.Direction.Left, true) {
                     LaneSpeed = LaneFourValues[2]
                 };
             this.lanes.Add(laneFour);
@@ -102,7 +102,7 @@ namespace FroggerStarter.Model
         private void getInitialLaneFive()
         {
             var laneFive =
-                new Lane(LaneFiveValues[0], LaneFiveValues[1], Vehicle.VehicleType.Car, Lane.Direction.Right, true) {
+                new Lane(LaneFiveValues[0], LaneFiveValues[1], VehicleFactory.VehicleType.Car, Lane.Direction.Right, true) {
                     LaneSpeed = LaneFiveValues[2]
                 };
             this.lanes.Add(laneFive);

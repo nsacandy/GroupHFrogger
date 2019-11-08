@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FroggerStarter.Model;
 using FroggerStarter.View.Sprites;
 
 namespace FroggerStarter.Model.Vehicles
 {
-    
-     public class Car:Vehicle
+    class SportsCar : Car
     {
-     
-        public Car(Heading heading)
+        public SportsCar(Heading heading):base(heading)
         {
-            this.Sprite = new CarSprite();
-            this.setHeading(heading);
+            this.Sprite = new SportsCarSprite();
         }
+        
     }
 }

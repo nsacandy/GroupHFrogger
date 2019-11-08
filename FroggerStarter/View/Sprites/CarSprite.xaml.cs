@@ -2,7 +2,7 @@
 
 namespace FroggerStarter.View.Sprites
 {
-    public sealed partial class CarSprite : BaseSprite
+    public partial class CarSprite : BaseSprite
     {
         #region Constructors
 
