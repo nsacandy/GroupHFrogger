@@ -26,6 +26,7 @@ namespace FroggerStarter.View
         private IDictionary<LilyPad, FrogSprite> landingSpots;
 
         private DispatcherTimer timer;
+        
 
         #endregion
 

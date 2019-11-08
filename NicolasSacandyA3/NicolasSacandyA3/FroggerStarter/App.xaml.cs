@@ -4,6 +4,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using FroggerStarter.Model;
 using FroggerStarter.View;
 
 namespace FroggerStarter
@@ -13,6 +14,8 @@ namespace FroggerStarter
     /// </summary>
     public sealed partial class App
     {
+        public static SoundEffects AppSoundEffects = new SoundEffects();
+
         #region Constructors
 
         /// <summary>

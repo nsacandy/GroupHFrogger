@@ -128,6 +128,7 @@
     <Compile Include="Model\Lane.cs" />
     <Compile Include="Model\PlayerManager.cs" />
     <Compile Include="Model\RoadManager.cs" />
+    <Compile Include="Model\SoundEffects.cs" />
     <Compile Include="Model\Truck.cs" />
     <Compile Include="Model\Vehicle.cs" />
     <Compile Include="View\GamePage.xaml.cs">
@@ -168,6 +169,14 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Sounds\sound-frogger-gameover.wav" />
+    <Content Include="Sounds\sound-frogger-hit-wall.wav" />
+    <Content Include="Sounds\sound-frogger-land-home.wav" />
+    <Content Include="Sounds\sound-frogger-level-complete.wav" />
+    <Content Include="Sounds\sound-frogger-plunk.wav" />
+    <Content Include="Sounds\sound-frogger-power-up.wav" />
+    <Content Include="Sounds\sound-frogger-squash.wav" />
+    <Content Include="Sounds\sound-frogger-time.wav" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

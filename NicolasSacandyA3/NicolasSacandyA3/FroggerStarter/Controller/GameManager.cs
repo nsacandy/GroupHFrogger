@@ -50,11 +50,12 @@ namespace FroggerStarter.Controller
         private DispatcherTimer timer;
         private DateTime startTime;
         private TimeSpan currentLifeAndPointTime;
+        private ElementSoundPlayer soundPlayer;
         #endregion
 
         #region Properties
 
-        
+
         public int Score { get; private set; }
         public int Lives { get; private set; } = 4;
         public bool IsGameOver { get; private set; }
@@ -157,17 +158,18 @@ namespace FroggerStarter.Controller
         private void timerOnTick(object sender, object e)
         {
             this.currentLifeAndPointTime = DateTime.Now - this.startTime;
-            this.checkForPlayerVehicleCollision();
+            this.checkForPlayerVehicleCollisionAsync();
             this.checkForPointScored();
             this.checkRemainingTime();
 
             this.roadManager.moveAllVehicles();
         }
 
-        private void checkRemainingTime()
+        private async void checkRemainingTime()
         {
             if (this.currentLifeAndPointTime.Seconds >= this.TimerLength.Seconds)
             {
+                App.AppSoundEffects.Play(Sounds.TimeOut);
                 this.onLifeLost();
             }
         }
@@ -196,6 +198,7 @@ namespace FroggerStarter.Controller
         {
             if (uiElement is LilyPad pad)
             {
+                App.AppSoundEffects.Play(Sounds.LandHome);
                 this.PointScored?.Invoke(this, new ScoreArgs(pad));
             }
         }
@@ -232,7 +235,7 @@ namespace FroggerStarter.Controller
             this.player.SetPlayerLocation(centeredX, centeredY);
         }
 
-        private void checkForPlayerVehicleCollision()
+        private void checkForPlayerVehicleCollisionAsync()
         {
             var playerBox = this.player.PlayerSprite.HitBox;
             var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
@@ -241,6 +244,7 @@ namespace FroggerStarter.Controller
             {
                 if (uiElement is CarSprite || uiElement is TruckSprite)
                 {
+                    App.AppSoundEffects.Play(Sounds.HitVehicle);
                     this.onLifeLost();
                 }
             }
@@ -293,6 +297,7 @@ namespace FroggerStarter.Controller
 
         private void handleGameOver()
         {
+            App.AppSoundEffects.Play(Sounds.GameOver);
             this.timer.Stop();
             this.IsGameOver = true;
             this.roadManager.RemoveAllVehicles();
