@@ -63,7 +63,7 @@ namespace FroggerStarter.Model.Vehicles
             }
         }
 
-        public void SetSpeed(int speed)
+        public virtual void SetSpeed(int speed)
         {
             base.SetSpeed(speed, speed);
         }
