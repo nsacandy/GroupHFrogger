@@ -9,16 +9,8 @@ namespace FroggerStarter.Model.Vehicles
     public abstract class Vehicle : GameObject
     {
 
-        public enum Heading
-        {
-            Left,
-            Right,
-            Up,
-            Down
-        }
+        
         #region Data members
-
-        protected Heading VehicleHeading;
 
         #endregion
 
@@ -29,12 +21,16 @@ namespace FroggerStarter.Model.Vehicles
 
         #region Methods
 
-        protected void setHeading(Heading heading)
+        public override void setHeading(Heading heading)
         {
-            this.VehicleHeading = heading;
-            if (this.VehicleHeading.Equals(Heading.Right))
+            this.currentHeading = heading;
+            switch (currentHeading)
             {
+                case Heading.Right: 
                 this.headRight();
+                break;
+                case Heading.Left:
+                    break;
             }
         }
 
@@ -46,7 +42,7 @@ namespace FroggerStarter.Model.Vehicles
 
         public void MoveVehicle()
         {
-            switch (this.VehicleHeading)
+            switch (this.currentHeading)
             {
                 case Heading.Left:
                     X -= SpeedX;
