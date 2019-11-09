@@ -44,7 +44,6 @@ namespace FroggerStarter.Controller
         private DispatcherTimer timer;
         private DateTime startTime;
         private TimeSpan currentLifeAndPointTime;
-        private ElementSoundPlayer soundPlayer;
         #endregion
 
         #region Properties
