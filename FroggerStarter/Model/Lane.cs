@@ -126,15 +126,6 @@ namespace FroggerStarter.Model
         }
 
         /// <summary>
-        ///     Gets the vehicles.
-        /// </summary>
-        /// <returns>List of vehicles</returns>
-        public IList<Vehicle> GetVehicles()
-        {
-            return this.laneVehicles;
-        }
-
-        /// <summary>
         ///     Moves the vehicles on tick.
         ///     <postcondition>All vehicles x values incremented by lane speed</postcondition>
         /// </summary>

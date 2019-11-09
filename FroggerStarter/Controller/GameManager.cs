@@ -23,6 +23,7 @@ namespace FroggerStarter.Controller
         public event EventHandler LifeLost;
         public event EventHandler GameOver;
         public event EventHandler GameResumed;
+        public event EventHandler NextLevel;
 
         public event EventHandler<ScoreArgs> PointScored;
 
@@ -39,6 +40,7 @@ namespace FroggerStarter.Controller
         private readonly PlayerManager player;
         private readonly RoadManager roadManager;
         private HomeManager homes;
+        private LevelManager level;
 
         private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.GameLengthInSeconds);
         private DispatcherTimer timer;
@@ -86,6 +88,7 @@ namespace FroggerStarter.Controller
 
             this.roadManager = new RoadManager(this.backgroundWidth);
             this.player = new PlayerManager(GameSettings.TOP_LANE_OFFSET, this.backgroundHeight, GameSettings.leftBorder, this.backgroundWidth);
+            this.level = new LevelManager();
 
             this.gameObjectsToBeAddedToCanvas = new List<UIElement>();
 
@@ -95,6 +98,7 @@ namespace FroggerStarter.Controller
             this.player.NewSpriteCreated += this.playerOnNewSpriteCreated;
             this.LifeLost += this.player.HandleLifeLost;
             this.PointScored += this.handlePointScored;
+            this.NextLevel += this.moveToNextLevel;
         }
 
         #endregion
@@ -122,8 +126,7 @@ namespace FroggerStarter.Controller
             this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
             this.setupGameTimer();
             this.createAndPlacePlayer();
-            this.addVehiclesToCanvasObjectsList();
-            this.AddObjectsToCanvas();
+            this.addVehiclesToCanvas();
             this.homes = new HomeManager(this.gameCanvas);
         }
 
@@ -132,20 +135,29 @@ namespace FroggerStarter.Controller
             return this.homes;
         }
 
-        public void AddObjectsToCanvas()
-        {
-            foreach (var uiElement in this.gameObjectsToBeAddedToCanvas)
-            {
-                this.gameCanvas.Children.Add(uiElement);
-            }
-        }
-
-        private void addVehiclesToCanvasObjectsList()
+        private void addVehiclesToCanvas()
         {
             foreach (var vehicle in this.roadManager)
             {
-                this.gameObjectsToBeAddedToCanvas.Add(vehicle.Sprite);
+                this.gameCanvas.Children.Add(vehicle.Sprite);
             }
+        }
+
+        private void removeVehiclesFromCanvas()
+        {
+            foreach (var vehicle in this.roadManager)
+            {
+                this.gameCanvas.Children.Remove(vehicle.Sprite);
+            }
+        }
+
+        private void moveToNextLevel(object sender, EventArgs e)
+        {
+            this.removeVehiclesFromCanvas();
+            this.level.MoveToNextLevel();
+            this.roadManager.SetLanesByLevel(this.level.CurrentLevel);
+            this.addVehiclesToCanvas();
+            this.homes.ResetLandingSpots();
         }
 
         private void timerOnTick(object sender, object e)
@@ -158,7 +170,7 @@ namespace FroggerStarter.Controller
             this.roadManager.moveAllVehicles();
         }
 
-        private async void checkRemainingTime()
+        private void checkRemainingTime()
         {
             if (this.currentLifeAndPointTime.Seconds >= this.timerLength.Seconds)
             {
@@ -193,6 +205,10 @@ namespace FroggerStarter.Controller
             {
                 App.AppSoundEffects.Play(Sounds.LandHome);
                 this.PointScored?.Invoke(this, new ScoreArgs(pad));
+                if (this.homes.IsAllHomesFilled() && !this.level.CurrentLevel.Equals(LevelManager.GameLevel.Final))
+                {
+                    this.NextLevel?.Invoke(this, null);
+                }
             }
         }
 
@@ -200,12 +216,11 @@ namespace FroggerStarter.Controller
         {
             this.setPlayerToCenterOfBottomLane();
             this.homes.RemoveHome(e.LilyPad);
-            if (this.homes.IsAllHomesFilled())
+            this.updateScore(e);
+            if (this.homes.IsAllHomesFilled() && this.level.CurrentLevel.Equals(LevelManager.GameLevel.Final))
             { 
                 this.raiseGameOver();
             }
-            
-            this.updateScore(e);
         }
 
         private void updateScore(ScoreArgs e)
@@ -216,7 +231,7 @@ namespace FroggerStarter.Controller
 
         private void createAndPlacePlayer()
         {
-            this.gameObjectsToBeAddedToCanvas.Add(this.player.PlayerSprite);
+            this.gameCanvas.Children.Add(this.player.PlayerSprite);
             this.setPlayerToCenterOfBottomLane();
         }
 

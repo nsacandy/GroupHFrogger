@@ -54,6 +54,7 @@ namespace FroggerStarter.View
             this.gameManager.GameResumed += this.resumeGame;
 
             this.gameManager.PointScored += this.handlePointScored;
+            this.gameManager.NextLevel += this.handleNextRound;
             this.createVisibleClock();
         }
 
@@ -107,6 +108,15 @@ namespace FroggerStarter.View
             this.landingSpots[e.LilyPad].Visibility = Visibility.Visible;
             this.score.Text = "Score:" + this.gameManager.Score;
             this.emptyTimerBar.Width = 0;
+        }
+
+        private void handleNextRound(object sender, EventArgs e)
+        {
+            foreach (var landingSpot in this.landingSpots.Values)
+            {
+                this.canvas.Children.Remove(landingSpot);
+            }
+            this.generateLandingSpotFrogs();
         }
 
         private void createVisibleClock()

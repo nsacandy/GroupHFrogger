@@ -40,6 +40,11 @@ namespace FroggerStarter.Model
             }
         }
 
+        public void ResetLandingSpots()
+        {
+            this.addLandingSpotsToCanvas();
+        }
+
         public bool IsAllHomesFilled()
         {
             return this.landingSpots.Count == 0;
@@ -48,6 +53,7 @@ namespace FroggerStarter.Model
         public void RemoveHome(LilyPad home)
         {
             this.landingSpots.Remove(home);
+            this.gameCanvas.Children.Remove(home);
         }
 
         public IEnumerator<LilyPad> GetEnumerator()

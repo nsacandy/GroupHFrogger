@@ -33,6 +33,22 @@ namespace FroggerStarter.Model
 
         #region Methods
 
+        public void SetLanesByLevel(LevelManager.GameLevel level)
+        {
+            switch (level)
+            {
+                case LevelManager.GameLevel.One:
+                    this.setLevelOneLaneValues();
+                    break;
+                case LevelManager.GameLevel.Two:
+                    this.setLevelTwoLaneValues();
+                    break;
+                case LevelManager.GameLevel.Final:
+                    this.setLevelThreeLaneValues();
+                    break;
+            }
+        }
+
         public IEnumerator<Vehicle> GetEnumerator()
         {
             foreach (var lane in this.lanes)
