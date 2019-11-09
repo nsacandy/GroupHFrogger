@@ -155,6 +155,9 @@
     <Compile Include="View\Sprites\LilyPad.xaml.cs">
       <DependentUpon>LilyPad.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\PowerUpSprites\TimeExtenderSprite.xaml.cs">
+      <DependentUpon>TimeExtenderSprite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\SportsCarSprite.xaml.cs">
       <DependentUpon>SportsCarSprite.xaml</DependentUpon>
     </Compile>
@@ -181,7 +184,7 @@
     <Content Include="Sounds\sound-frogger-land-home.wav" />
     <Content Include="Sounds\sound-frogger-level-complete.wav" />
     <Content Include="Sounds\sound-frogger-plunk.wav" />
-    <Content Include="Sounds\sound-frogger-power-up.wav" />
+    <Content Include="Sounds\sound-frogger-power-up-time.wav" />
     <Content Include="Sounds\sound-frogger-squash.wav" />
     <Content Include="Sounds\sound-frogger-time.wav" />
   </ItemGroup>
@@ -211,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\LilyPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\PowerUpSprites\TimeExtenderSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

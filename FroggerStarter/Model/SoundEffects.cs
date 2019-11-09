@@ -39,7 +39,7 @@ namespace FroggerStarter.Model
             this.effects.Add(Sounds.HitWall, this.loadSoundFile("sound-frogger-hit-wall.wav"));
             this.effects.Add(Sounds.LandHome, this.loadSoundFile("sound-frogger-land-home.wav"));
             this.effects.Add(Sounds.LevelComplete, this.loadSoundFile("sound-frogger-level-complete.wav"));
-            this.effects.Add(Sounds.PowerUp, this.loadSoundFile("sound-frogger-power-up.wav"));
+            this.effects.Add(Sounds.PowerUp, this.loadSoundFile("sound-frogger-power-up-time.wav"));
         }
 
         private MediaPlayer loadSoundFile(string fileName)
