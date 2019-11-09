@@ -13,10 +13,21 @@ namespace FroggerStarter.Model
 
         private Point location;
 
+        public enum Heading
+        {
+            Left,
+            Right,
+            Up,
+            Down
+        }
+
+        protected Heading currentHeading;
         #endregion
 
         #region Properties
 
+        public abstract void setHeading(Heading heading);
+        
         /// <summary>
         ///     Gets or sets the x location of the game object.
         /// </summary>

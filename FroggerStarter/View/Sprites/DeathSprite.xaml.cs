@@ -39,6 +39,7 @@ namespace FroggerStarter.View.Sprites
             this.NewSpriteCreated?.Invoke(this, null);
         }
 
+
         #endregion
     }
 }

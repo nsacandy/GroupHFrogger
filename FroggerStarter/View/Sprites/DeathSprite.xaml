@@ -20,7 +20,6 @@
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="CommonStates">
 
-                <VisualState x:Name="OriginalSprite" />
 
                 <VisualState x:Name="Dying">
                     <Storyboard>
@@ -54,8 +53,8 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-
-        <Rectangle x:Name="body" Canvas.Top="10" Canvas.Left="10" Fill="{StaticResource FrogColor}" Width="30"
+        <Canvas x:Name="frogSprite">
+            <Rectangle x:Name="body" Canvas.Top="10" Canvas.Left="10" Fill="{StaticResource FrogColor}" Width="30"
                    Height="30" />
         <Rectangle Canvas.Top="5" Canvas.Left="15" Fill="{StaticResource FrogColor}" Width="20" Height="5" />
         <Rectangle Canvas.Top="40" Canvas.Left="15" Fill="{StaticResource FrogColor}" Width="20" Height="5" />
@@ -102,5 +101,6 @@
                    Opacity="0.0" />
         <Rectangle x:Name="deadLeftArm" Canvas.Top="0" Canvas.Left="10" Fill="DarkGreen" Width="5" Height="20"
                    Opacity="0.0" />
+        </Canvas>
     </Canvas>
 </local:BaseSprite>
