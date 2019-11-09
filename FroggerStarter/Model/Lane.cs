@@ -87,6 +87,7 @@ namespace FroggerStarter.Model
 
         private void generateVehicles(int numVehicles, VehicleFactory.VehicleType vehicleType)
         {
+            this.laneVehicles.Clear();
             for (var i = 0; i < numVehicles; i++)
             {
                 var heading = this.laneDirection.Equals(Direction.Left) ? Vehicle.Heading.Left : Vehicle.Heading.Right;
@@ -108,7 +109,7 @@ namespace FroggerStarter.Model
             }
         }
 
-        public void RemoveAllVehicles()
+        public void CollapseAllVehicles()
         {
             foreach (var vehicle in this.laneVehicles)
             {

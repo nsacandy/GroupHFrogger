@@ -35,6 +35,7 @@ namespace FroggerStarter.Model
 
         public void SetLanesByLevel(LevelManager.GameLevel level)
         {
+            this.lanes.Clear();
             switch (level)
             {
                 case LevelManager.GameLevel.One:
@@ -256,11 +257,11 @@ namespace FroggerStarter.Model
             }
         }
 
-        public void RemoveAllVehicles()
+        public void CollapseAllVehicles()
         {
             foreach (var lane in this.lanes)
             {
-                lane.RemoveAllVehicles();
+                lane.CollapseAllVehicles();
             }
         }
 

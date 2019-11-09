@@ -308,7 +308,7 @@ namespace FroggerStarter.Controller
             App.AppSoundEffects.Play(Sounds.GameOver);
             this.timer.Stop();
             this.IsGameOver = true;
-            this.roadManager.RemoveAllVehicles();
+            this.roadManager.CollapseAllVehicles();
         }
 
         public void MovePlayer(KeyEventArgs args)
