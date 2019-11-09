@@ -19,7 +19,7 @@
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="CommonStates">
-
+                <VisualState x:Name="OriginalSprite" />
 
                 <VisualState x:Name="Dying">
                     <Storyboard>
