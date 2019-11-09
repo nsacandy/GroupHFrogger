@@ -29,7 +29,11 @@ namespace FroggerStarter.Model
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
-        #endregion
+        #endregion        
+        /// <summary>
+        /// Sets the heading.
+        /// </summary>
+        /// <param name="heading">The heading.</param>
 
         public override void setHeading(Heading heading)
         {
