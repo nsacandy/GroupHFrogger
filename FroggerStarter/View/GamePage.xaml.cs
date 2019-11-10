@@ -55,6 +55,7 @@ namespace FroggerStarter.View
 
             this.gameManager.PointScored += this.handlePointScored;
             this.gameManager.NextLevel += this.handleNextRound;
+            this.gameManager.TimePowerUp += this.handleTimePowerUp;
             this.createVisibleClock();
         }
 
@@ -131,6 +132,12 @@ namespace FroggerStarter.View
         {
             var increment = 10.0 / GameSettings.GameLengthInSeconds;
             this.emptyTimerBar.Width += increment;
+        }
+
+        private void handleTimePowerUp(object sender, EventArgs e)
+        {
+            var increment = (10.0 / GameSettings.GameLengthInSeconds) * 3;
+            this.emptyTimerBar.Width -= increment;
         }
 
         private void generateLandingSpotFrogs()
