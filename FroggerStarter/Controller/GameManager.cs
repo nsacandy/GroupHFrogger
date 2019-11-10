@@ -26,6 +26,7 @@ namespace FroggerStarter.Controller
         public event EventHandler GameOver;
         public event EventHandler GameResumed;
         public event EventHandler NextLevel;
+        public event EventHandler TimePowerUp;
 
         public event EventHandler<ScoreArgs> PointScored;
 
@@ -107,6 +108,7 @@ namespace FroggerStarter.Controller
             this.LifeLost += this.player.HandleLifeLost;
             this.PointScored += this.handlePointScored;
             this.NextLevel += this.moveToNextLevel;
+            this.TimePowerUp += this.onTimeExtention;
         }
 
         #endregion
@@ -209,24 +211,7 @@ namespace FroggerStarter.Controller
                 if (uiElement is TimeExtenderSprite)
                 {
                     App.AppSoundEffects.Play(Sounds.PowerUpTime);
-                    this.onTimeExtention();
-                }
-            }
-        }
-
-        private void checkForInvincibilityStarCollision()
-        {
-            var playerBox = this.player.PlayerSprite.HitBox;
-            var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
-
-            foreach (var uiElement in objectsAtPlayerLocation)
-            {
-                if (uiElement is InvincibilityStarSprite)
-                {
-                    App.AppSoundEffects.Play(Sounds.PowerUpStar);
-                    this.player.onInvincibilityTriggered();
-                    this.invincibilityTimer = GameSettings.InvincibilityLength;
-                    this.invincibilityStar.OnHit();
+                    this.TimePowerUp?.Invoke(this, null);
                 }
             }
         }
@@ -234,7 +219,7 @@ namespace FroggerStarter.Controller
         private void onTimeExtention()
         {
             this.timeSprite.OnHit();
-            this.currentLifeAndPointTime -= new TimeSpan(0, 0, 5);
+            this.currentLifeAndPointTime -= new TimeSpan(0, 0, 4);
         }
 
         private void showTimeSprite()
