@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using FroggerStarter.Model;
 using FroggerStarter.View.Sprites;
+using FroggerStarter.View.Sprites.PowerUpSprites;
 
 namespace FroggerStarter.Controller
 {
@@ -17,6 +18,7 @@ namespace FroggerStarter.Controller
     /// </summary>
     public class GameManager
     {
+
         #region Types and Delegates
 
 
@@ -35,17 +37,18 @@ namespace FroggerStarter.Controller
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
 
-        private readonly List<UIElement> gameObjectsToBeAddedToCanvas;
         private Canvas gameCanvas;
         private readonly PlayerManager player;
         private readonly RoadManager roadManager;
         private HomeManager homes;
         private LevelManager level;
+        private TimeExtender timeSprite;
 
         private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.GameLengthInSeconds);
         private DispatcherTimer timer;
         private DateTime startTime;
         private TimeSpan currentLifeAndPointTime;
+        private int gameTimerTick;
         #endregion
 
         #region Properties
@@ -89,8 +92,7 @@ namespace FroggerStarter.Controller
             this.roadManager = new RoadManager(this.backgroundWidth);
             this.player = new PlayerManager(GameSettings.TOP_LANE_OFFSET, this.backgroundHeight, GameSettings.leftBorder, this.backgroundWidth);
             this.level = new LevelManager();
-
-            this.gameObjectsToBeAddedToCanvas = new List<UIElement>();
+            this.timeSprite = new TimeExtender();
 
             this.currentLifeAndPointTime = this.timerLength;
             this.startTime = DateTime.Now;
@@ -127,12 +129,18 @@ namespace FroggerStarter.Controller
             this.setupGameTimer();
             this.createAndPlacePlayer();
             this.addVehiclesToCanvas();
+            this.addTimeSpriteToCanvas();
             this.homes = new HomeManager(this.gameCanvas);
         }
 
         public IEnumerable<LilyPad> GetFrogHomes()
         {
             return this.homes;
+        }
+
+        private void addTimeSpriteToCanvas()
+        {
+            this.gameCanvas.Children.Add(this.timeSprite.Sprite);
         }
 
         private void addVehiclesToCanvas()
@@ -163,12 +171,43 @@ namespace FroggerStarter.Controller
 
         private void timerOnTick(object sender, object e)
         {
+            this.gameTimerTick++;
             this.currentLifeAndPointTime = DateTime.Now - this.startTime;
+            this.showTimeSprite();
             this.checkForPlayerVehicleCollisionAsync();
             this.checkForPointScored();
+            this.checkForTimeSpriteCollision();
             this.checkRemainingTime();
-
             this.roadManager.moveAllVehicles();
+        }
+
+        private void checkForTimeSpriteCollision()
+        {
+            var playerBox = this.player.PlayerSprite.HitBox;
+            var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
+
+            foreach (var uiElement in objectsAtPlayerLocation)
+            {
+                if (uiElement is TimeExtenderSprite)
+                {
+                    App.AppSoundEffects.Play(Sounds.PowerUpTime);
+                    this.onTimeExtention();
+                }
+            }
+        }
+
+        private void onTimeExtention()
+        {
+            this.timeSprite.OnHit();
+            this.currentLifeAndPointTime -= new TimeSpan(0, 0, 5);
+        }
+
+        private void showTimeSprite()
+        {
+            if (this.gameTimerTick % GameSettings.TimeSpriteShowInterval == 0 && !this.timeSprite.IsShowing)
+            {
+                this.timeSprite.Show();
+            }
         }
 
         private void checkRemainingTime()

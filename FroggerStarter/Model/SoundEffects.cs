@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 
@@ -16,7 +17,7 @@ namespace FroggerStarter.Model
         HitWall,
         LandHome,
         LevelComplete,
-        PowerUp,
+        PowerUpTime,
         PowerUpStar
     }
 
@@ -32,19 +33,19 @@ namespace FroggerStarter.Model
 
         private void loadEfx()
         {
-            this.effects.Add(Sounds.Hop, this.loadSoundFile("sound-frogger-hop.wav"));
-            this.effects.Add(Sounds.HitVehicle, this.loadSoundFile("sound-frogger-squash.wav"));
-            this.effects.Add(Sounds.HitWater, this.loadSoundFile("sound-frogger-plunk.wav"));
-            this.effects.Add(Sounds.TimeOut, this.loadSoundFile("sound-frogger-time.wav"));
-            this.effects.Add(Sounds.GameOver, this.loadSoundFile("sound-frogger-gameover.wav"));
-            this.effects.Add(Sounds.HitWall, this.loadSoundFile("sound-frogger-hit-wall.wav"));
-            this.effects.Add(Sounds.LandHome, this.loadSoundFile("sound-frogger-land-home.wav"));
-            this.effects.Add(Sounds.LevelComplete, this.loadSoundFile("sound-frogger-level-complete.wav"));
-            this.effects.Add(Sounds.PowerUp, this.loadSoundFile("sound-frogger-power-up-time.wav"));
-            this.effects.Add(Sounds.PowerUpStar, this.loadSoundFile("sound-frogger-star-power.wav"));
+            this.effects.Add(Sounds.Hop, this.loadSoundFileAsync("sound-frogger-hop.wav"));
+            this.effects.Add(Sounds.HitVehicle, this.loadSoundFileAsync("sound-frogger-squash.wav"));
+            this.effects.Add(Sounds.HitWater, this.loadSoundFileAsync("sound-frogger-plunk.wav"));
+            this.effects.Add(Sounds.TimeOut, this.loadSoundFileAsync("sound-frogger-time.wav"));
+            this.effects.Add(Sounds.GameOver, this.loadSoundFileAsync("sound-frogger-gameover.wav"));
+            this.effects.Add(Sounds.HitWall, this.loadSoundFileAsync("sound-frogger-hit-wall.wav"));
+            this.effects.Add(Sounds.LandHome, this.loadSoundFileAsync("sound-frogger-land-home.wav"));
+            this.effects.Add(Sounds.LevelComplete, this.loadSoundFileAsync("sound-frogger-level-complete.wav"));
+            this.effects.Add(Sounds.PowerUpTime, this.loadSoundFileAsync("sound-frogger-power-up-time.wav"));
+            this.effects.Add(Sounds.PowerUpStar, this.loadSoundFileAsync("sound-frogger-star-power.wav"));
         }
 
-        private MediaPlayer loadSoundFile(string fileName)
+        private MediaPlayer loadSoundFileAsync(string fileName)
         {
             var mediaSource =
                 MediaSource.CreateFromUri(new Uri("ms-appx:///Sounds///" + fileName, UriKind.RelativeOrAbsolute));

@@ -61,7 +61,6 @@ namespace FroggerStarter.Model
                     this.Sprite.RenderTransform = new RotateTransform();
                     this.Sprite.RenderTransform.SetValue(RotateTransform.AngleProperty, "90");
                     break;
-                    ;
             }
         }
 
