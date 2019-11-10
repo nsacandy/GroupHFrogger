@@ -16,7 +16,8 @@ namespace FroggerStarter.Model
         HitWall,
         LandHome,
         LevelComplete,
-        PowerUp
+        PowerUp,
+        PowerUpStar
     }
 
     public class SoundEffects
@@ -40,6 +41,7 @@ namespace FroggerStarter.Model
             this.effects.Add(Sounds.LandHome, this.loadSoundFile("sound-frogger-land-home.wav"));
             this.effects.Add(Sounds.LevelComplete, this.loadSoundFile("sound-frogger-level-complete.wav"));
             this.effects.Add(Sounds.PowerUp, this.loadSoundFile("sound-frogger-power-up-time.wav"));
+            this.effects.Add(Sounds.PowerUpStar, this.loadSoundFile("sound-frogger-star-power.wav"));
         }
 
         private MediaPlayer loadSoundFile(string fileName)

@@ -190,6 +190,7 @@
     <Content Include="Sounds\sound-frogger-plunk.wav" />
     <Content Include="Sounds\sound-frogger-power-up-time.wav" />
     <Content Include="Sounds\sound-frogger-squash.wav" />
+    <Content Include="Sounds\sound-frogger-star-power.wav" />
     <Content Include="Sounds\sound-frogger-time.wav" />
   </ItemGroup>
   <ItemGroup>

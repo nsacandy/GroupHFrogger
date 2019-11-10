@@ -153,6 +153,7 @@ namespace FroggerStarter.Controller
 
         private void moveToNextLevel(object sender, EventArgs e)
         {
+            App.AppSoundEffects.Play(Sounds.LevelComplete);
             this.removeVehiclesFromCanvas();
             this.level.MoveToNextLevel();
             this.roadManager.SetLanesByLevel(this.level.CurrentLevel);
