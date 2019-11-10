@@ -1,0 +1,27 @@
+﻿<local:BaseSprite
+    x:Class="FroggerStarter.View.Sprites.PowerUpSprites.InvincibilityStarSprite"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FroggerStarter.View.Sprites"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Height="50"
+    Width="40">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Name="Body" Color="Gold"/>
+    </UserControl.Resources>
+
+
+    <Canvas>
+        
+        <Polygon Fill="{StaticResource Body}" Points="10,15,20,0,30,15"/>
+        <Polygon Fill="{StaticResource Body}" Points="0,15,20,25,10,15"/>
+        <Polygon Fill="{StaticResource Body}" Points="30,15,40,15,20,25"/>
+        
+        <Polygon Fill="{StaticResource Body}" Points="0,35,20,25,10,35"/>
+        <Polygon Fill="{StaticResource Body}" Points="30,35,40,35,20,25"/>
+        <Polygon Fill="{StaticResource Body}" Points="10,35,20,50,30,35"/>
+    </Canvas>
+</local:BaseSprite>

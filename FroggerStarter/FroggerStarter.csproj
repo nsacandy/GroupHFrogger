@@ -155,6 +155,9 @@
     <Compile Include="View\Sprites\LilyPad.xaml.cs">
       <DependentUpon>LilyPad.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\PowerUpSprites\InvincibilityStarSprite.xaml.cs">
+      <DependentUpon>InvincibilityStarSprite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\PowerUpSprites\TimeExtenderSprite.xaml.cs">
       <DependentUpon>TimeExtenderSprite.xaml</DependentUpon>
     </Compile>
@@ -214,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\LilyPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\PowerUpSprites\InvincibilityStarSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
