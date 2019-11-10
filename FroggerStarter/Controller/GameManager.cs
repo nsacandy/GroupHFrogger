@@ -26,6 +26,7 @@ namespace FroggerStarter.Controller
         public event EventHandler GameOver;
         public event EventHandler GameResumed;
         public event EventHandler NextLevel;
+        public event EventHandler TimePowerUp;
 
         public event EventHandler<ScoreArgs> PointScored;
 
@@ -101,6 +102,7 @@ namespace FroggerStarter.Controller
             this.LifeLost += this.player.HandleLifeLost;
             this.PointScored += this.handlePointScored;
             this.NextLevel += this.moveToNextLevel;
+            this.TimePowerUp += this.onTimeExtention;
         }
 
         #endregion
@@ -191,15 +193,15 @@ namespace FroggerStarter.Controller
                 if (uiElement is TimeExtenderSprite)
                 {
                     App.AppSoundEffects.Play(Sounds.PowerUpTime);
-                    this.onTimeExtention();
+                    this.TimePowerUp?.Invoke(this, null);
                 }
             }
         }
 
-        private void onTimeExtention()
+        private void onTimeExtention(object sender, EventArgs e)
         {
             this.timeSprite.OnHit();
-            this.currentLifeAndPointTime -= new TimeSpan(0, 0, 5);
+            this.currentLifeAndPointTime -= new TimeSpan(0, 0, 4);
         }
 
         private void showTimeSprite()
