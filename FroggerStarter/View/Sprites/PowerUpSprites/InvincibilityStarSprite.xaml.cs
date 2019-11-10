@@ -17,9 +17,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace FroggerStarter.View.Sprites.PowerUpSprites
 {
-    public sealed partial class TimeExtenderSprite : BaseSprite
+    public sealed partial class InvincibilityStarSprite : BaseSprite
     {
-        public TimeExtenderSprite()
+        public InvincibilityStarSprite()
         {
             this.InitializeComponent();
         }

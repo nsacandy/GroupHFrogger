@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using Windows.UI.Composition;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -20,6 +23,7 @@ namespace FroggerStarter.View.Sprites
         {
             this.InitializeComponent();
             IsHitTestVisible = false;
+            
             this.Dying.Storyboard.Completed += this.onNewSpriteCreated;
         }
 
@@ -39,7 +43,12 @@ namespace FroggerStarter.View.Sprites
             this.NewSpriteCreated?.Invoke(this, null);
         }
 
+        
 
-        #endregion
+        public void AnimateMove()
+        {
+            this.Moving.Storyboard.Begin();
+        }
     }
+    #endregion
 }

@@ -35,7 +35,7 @@ namespace FroggerStarter.Model
         public PlayerManager(double topBoundary, double bottomBoundary, double leftBoundary, double rightBoundary)
         {
             this.Player = new Frog();
-            this.PlayerSprite =  (DeathSprite)this.Player.Sprite;
+            this.PlayerSprite =  (DeathSprite) this.Player.Sprite;
             this.PlayerSprite.IsHitTestVisible = false;
 
             this.topBoundary = topBoundary;
@@ -69,7 +69,7 @@ namespace FroggerStarter.Model
             {
                 return;
             }
-
+            this.PlayerSprite.AnimateMove();
             this.setPreviousPositionLocation();
             this.setHeading(Heading.Left);
             this.Player.MoveLeft();
@@ -91,6 +91,7 @@ namespace FroggerStarter.Model
                 return;
             }
 
+            this.PlayerSprite.AnimateMove();
             this.setPreviousPositionLocation();
             this.Player.MoveRight();
             this.setHeading(Heading.Right);
@@ -112,6 +113,7 @@ namespace FroggerStarter.Model
                 return;
             }
 
+            this.PlayerSprite.AnimateMove();
             this.setPreviousPositionLocation();
             this.Player.MoveUp();
             this.setHeading(Heading.Up);
@@ -133,6 +135,7 @@ namespace FroggerStarter.Model
                 return;
             }
 
+            this.PlayerSprite.AnimateMove();
             this.setPreviousPositionLocation();
             this.Player.MoveDown();
             this.setHeading(Heading.Down);
@@ -172,5 +175,6 @@ namespace FroggerStarter.Model
         {
             Player.setHeading(heading);
         }
+
     }
 }
