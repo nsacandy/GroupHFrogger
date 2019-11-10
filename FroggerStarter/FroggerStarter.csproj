@@ -123,6 +123,7 @@
     <Compile Include="Controller\GameSettings.cs" />
     <Compile Include="Model\LevelManager.cs" />
     <Compile Include="Model\SoundEffects.cs" />
+    <Compile Include="Model\TimeExtender.cs" />
     <Compile Include="Model\Vehicles\Car.cs" />
     <Compile Include="Model\Frog.cs" />
     <Compile Include="Controller\GameManager.cs" />
