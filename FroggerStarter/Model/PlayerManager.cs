@@ -169,12 +169,17 @@ namespace FroggerStarter.Model
             this.PlayerSprite.AnimateDeath();
         }
 
-        #endregion
-
+        public void onInvincibilityTriggered()
+        {
+            PlayerSprite.AnimateInvincibility();
+        }
         public override void setHeading(Heading heading)
         {
             Player.setHeading(heading);
         }
+
+        #endregion
+
 
     }
 }

@@ -25,8 +25,9 @@
                     <VisualTransition From="OriginalSprite" To="Moving" 
                                       GeneratedDuration="0:0:0.25" />
                     <VisualTransition From="Moving" To="OriginalSprite" GeneratedDuration="0:0:0.25"/>
+                    <VisualTransition From="Invincible" To="OriginalSprite" GeneratedDuration="0:0:2"/>
                 </VisualStateGroup.Transitions>
-                <VisualState x:Name="OriginalSprite"/>
+                <VisualState x:Name="OriginalSprite" />
                 <VisualState x:Name="Moving">
                     <Storyboard>
                         <DoubleAnimation Storyboard.TargetName="movingLeftArm" Storyboard.TargetProperty="Opacity"
@@ -82,6 +83,20 @@
                                          From="0.0" To="1.0" BeginTime="0:0:1.5" Duration="0:0:1" />
                         <DoubleAnimation Storyboard.TargetName="deathCanvas" Storyboard.TargetProperty="Opacity"
                                          From="1.0" To="0.0" BeginTime="0:0:3" Duration="0:0:1" />
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Invincible">
+                    <VisualState.StateTriggers>
+                        <StateTrigger></StateTrigger>
+                    </VisualState.StateTriggers>
+                    <Storyboard Completed="StopInvincibility">
+                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="FrogColor"
+                                                      Storyboard.TargetProperty="Color" RepeatBehavior="Forever">
+                            <DiscreteColorKeyFrame Value="Yellow" KeyTime="0:0:0.2" />
+                            <DiscreteColorKeyFrame Value="Red" KeyTime="0:0:.4" />
+                            <DiscreteColorKeyFrame Value="Orange" KeyTime="0:0:.6" />
+                            <DiscreteColorKeyFrame Value="Gold" KeyTime="0:0:.8" />
+                        </ColorAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>

@@ -121,6 +121,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controller\GameSettings.cs" />
+    <Compile Include="Model\InvincibilityStar.cs" />
     <Compile Include="Model\LevelManager.cs" />
     <Compile Include="Model\SoundEffects.cs" />
     <Compile Include="Model\TimeExtender.cs" />

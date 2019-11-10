@@ -23,5 +23,10 @@ namespace FroggerStarter.View.Sprites.PowerUpSprites
         {
             this.InitializeComponent();
         }
+
+        
     }
+
+    
+
 }
