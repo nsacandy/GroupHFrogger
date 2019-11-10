@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using FroggerStarter.Controller;
 using FroggerStarter.View.Sprites;
 using Visibility = Windows.UI.Xaml.Visibility;
@@ -76,11 +82,48 @@ namespace FroggerStarter.View
             this.gameOver.Visibility = Visibility.Visible;
             this.score.Visibility = Visibility.Visible;
             this.timer.Stop();
+            this.promptUserForRestart();
+        }
+
+        private async void promptUserForRestart()
+        {
+            ContentDialog restartPrompt = new ContentDialog()
+            {
+                Title = "Game Over",
+                Content = "Would you like to play again?",
+                PrimaryButtonText = "Sure",
+                CloseButtonText = "No thanks"
+            };
+            restartPrompt.PrimaryButtonCommand = restartGame(restartPrompt.IsPrimaryButtonEnabled);
+            await restartPrompt.ShowAsync();
         }
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
             this.gameManager.MovePlayer(args);
+        }
+
+        private class restartGame:ICommand
+        {
+            private bool restartButtonEnabled;
+            restartGame(bool buttonEnable)
+            {
+                this.restartButtonEnabled = buttonEnable;
+            }
+            public bool CanExecute(object parameter)
+            {
+                return this.restartButtonEnabled;
+            }
+
+            public void Execute(object parameter)
+            {
+                if (CanExecute(object))
+                {
+                    execute();
+                }
+            }
+
+            public event EventHandler CanExecuteChanged;
         }
 
         private void generateLives()

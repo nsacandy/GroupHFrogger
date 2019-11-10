@@ -216,9 +216,27 @@ namespace FroggerStarter.Controller
             }
         }
 
-        private void onTimeExtention()
+        private void checkForInvincibilityStarCollision()
+        {
+            var playerBox = this.player.PlayerSprite.HitBox;
+            var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
+
+            foreach (var uiElement in objectsAtPlayerLocation)
+            {
+                if (uiElement is InvincibilityStarSprite)
+                {
+                    App.AppSoundEffects.Play(Sounds.PowerUpStar);
+                    this.player.onInvincibilityTriggered();
+                    this.invincibilityTimer = GameSettings.InvincibilityLength;
+                    this.invincibilityStar.OnHit();
+                }
+            }
+        }
+
+        private void onTimeExtention(object sender, EventArgs e)
         {
             this.timeSprite.OnHit();
+            this.currentLifeAndPointTime -= new TimeSpan(0, 0, 5);
             this.currentLifeAndPointTime -= new TimeSpan(0, 0, 4);
         }
 
