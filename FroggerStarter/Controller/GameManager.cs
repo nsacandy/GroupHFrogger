@@ -7,8 +7,10 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using FroggerStarter.Model;
+using FroggerStarter.Model.Vehicles;
 using FroggerStarter.View.Sprites;
 using FroggerStarter.View.Sprites.PowerUpSprites;
+using FroggerStarter.View.Sprites.VehicleSprites;
 
 namespace FroggerStarter.Controller
 {
@@ -340,10 +342,11 @@ namespace FroggerStarter.Controller
 
             foreach (var uiElement in objectsAtPlayerLocation)
             {
-                if (uiElement is CarSprite || uiElement is TruckSprite)
+                if (uiElement is IVehicleSprite)
                 {
                     App.AppSoundEffects.Play(Sounds.HitVehicle);
                     this.onLifeLost();
+                    break;
                 }
             }
         }

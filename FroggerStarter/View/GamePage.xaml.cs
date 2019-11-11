@@ -138,14 +138,24 @@ namespace FroggerStarter.View
             }
         }
 
+        //private bool canRestart(object obj)
+        //{
+        //     return this.restartDialog.IsPrimaryButtonEnabled;
+        //}
+
+        //private async void restartApplication(object obj)
+        //{
+        //    await CoreApplication.RequestRestartAsync("");
+        //}
+
         private bool canRestart(object obj)
         {
-             return this.restartDialog.IsPrimaryButtonEnabled;
+            return this.restartDialog.IsPrimaryButtonEnabled;
         }
 
         private async void restartApplication(object obj)
         {
-            await CoreApplication.RequestRestartAsync("");
+            await CoreApplication.RequestRestartAsync("FroggerStarter");
         }
 
         private bool canQuit(object obj)
