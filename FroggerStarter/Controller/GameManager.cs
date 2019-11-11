@@ -44,12 +44,16 @@ namespace FroggerStarter.Controller
         private HomeManager homes;
         private LevelManager level;
         private TimeExtender timeSprite;
+        private InvincibilityStar invincibilityStar;
 
+        private TimeSpan invincibilityTimer;
         private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.GameLengthInSeconds);
         private DispatcherTimer timer;
         private DateTime startTime;
         private TimeSpan currentLifeAndPointTime;
         private int gameTimerTick;
+        private bool playerIsInvincible;
+
         #endregion
 
         #region Properties
@@ -94,6 +98,8 @@ namespace FroggerStarter.Controller
             this.player = new PlayerManager(GameSettings.TOP_LANE_OFFSET, this.backgroundHeight, GameSettings.leftBorder, this.backgroundWidth);
             this.level = new LevelManager();
             this.timeSprite = new TimeExtender();
+            this.invincibilityStar = new InvincibilityStar();
+            this.invincibilityTimer = new TimeSpan(0,0,0);
 
             this.currentLifeAndPointTime = this.timerLength;
             this.startTime = DateTime.Now;
@@ -132,6 +138,7 @@ namespace FroggerStarter.Controller
             this.createAndPlacePlayer();
             this.addVehiclesToCanvas();
             this.addTimeSpriteToCanvas();
+            this.addInvincibilityStarToCanvas();
             this.homes = new HomeManager(this.gameCanvas);
         }
 
@@ -143,6 +150,11 @@ namespace FroggerStarter.Controller
         private void addTimeSpriteToCanvas()
         {
             this.gameCanvas.Children.Add(this.timeSprite.Sprite);
+        }
+
+        private void addInvincibilityStarToCanvas()
+        {
+            this.gameCanvas.Children.Add(this.invincibilityStar.Sprite);
         }
 
         private void addVehiclesToCanvas()
@@ -173,9 +185,15 @@ namespace FroggerStarter.Controller
 
         private void timerOnTick(object sender, object e)
         {
+            if (this.invincibilityTimer.Seconds >= 0)
+            {
+                this.invincibilityTimer -= this.timer.Interval;
+            }
             this.gameTimerTick++;
             this.currentLifeAndPointTime = DateTime.Now - this.startTime;
             this.showTimeSprite();
+            this.showInvincibilityStarSprite();
+            this.checkForInvincibilityStarCollision();
             this.checkForPlayerVehicleCollisionAsync();
             this.checkForPointScored();
             this.checkForTimeSpriteCollision();
@@ -198,7 +216,7 @@ namespace FroggerStarter.Controller
             }
         }
 
-        private void onTimeExtention(object sender, EventArgs e)
+        private void onTimeExtention()
         {
             this.timeSprite.OnHit();
             this.currentLifeAndPointTime -= new TimeSpan(0, 0, 4);
@@ -209,6 +227,14 @@ namespace FroggerStarter.Controller
             if (this.gameTimerTick % GameSettings.TimeSpriteShowInterval == 0 && !this.timeSprite.IsShowing)
             {
                 this.timeSprite.Show();
+            }
+        }
+
+        private void showInvincibilityStarSprite()
+        {
+            if (this.gameTimerTick % GameSettings.TimeSpriteShowInterval == 0 && !this.invincibilityStar.IsShowing)
+            {
+                this.invincibilityStar.Show();
             }
         }
 
@@ -287,6 +313,10 @@ namespace FroggerStarter.Controller
 
         private void checkForPlayerVehicleCollisionAsync()
         {
+            if (this.invincibilityTimer.TotalSeconds > 0)
+            {
+                return;
+            }
             var playerBox = this.player.PlayerSprite.HitBox;
             var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
 

@@ -121,6 +121,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controller\GameSettings.cs" />
+    <Compile Include="Model\InvincibilityStar.cs" />
     <Compile Include="Model\HighScoreModel\HighScore.cs" />
     <Compile Include="Model\HighScoreModel\HighScores.cs" />
     <Compile Include="Model\LevelManager.cs" />
