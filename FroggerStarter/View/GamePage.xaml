@@ -27,20 +27,8 @@
         <Rectangle x:Name="fullTimerBar" Fill="White" Height="10" Width="50" Canvas.Left="40" Canvas.Top="380" />
         <Rectangle x:Name="emptyTimerBar" Fill="Red" Height="10" Width="0" Canvas.Left="40" Canvas.Top="380" />
 
-        
-            <Popup x:Name="StandardPopup" Canvas.Left="100" Canvas.Top="100" Width="100" Height="100"  >
-                <Border BorderBrush="White" 
-                        Background="White"
-                        BorderThickness="2" Width="200" Height="200">
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Text="Simple Popup" FontSize="24.667" HorizontalAlignment="Center"/>
-                        <Button Content="Close" Click="ClosePopupClicked" HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-            </Popup>
+        <ContentDialog x:Name="restartDialog" Width="100" Height="100" RenderTransformOrigin="0.49,0.79" Canvas.Left="275" Canvas.Top="155"/>
 
-        <ContentDialog Canvas.Left="100" Canvas.Top="100" Width="100" Height="100" ></ContentDialog>
-        
     </Canvas>
 
 

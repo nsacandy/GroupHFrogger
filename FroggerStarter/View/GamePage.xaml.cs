@@ -25,14 +25,14 @@ namespace FroggerStarter.View
     {
         #region Data members
 
-        private readonly double applicationHeight = (double) Application.Current.Resources["AppHeight"];
-        private readonly double applicationWidth = (double) Application.Current.Resources["AppWidth"];
+        private readonly double applicationHeight = (double)Application.Current.Resources["AppHeight"];
+        private readonly double applicationWidth = (double)Application.Current.Resources["AppWidth"];
         private readonly GameManager gameManager;
         private FrogSprite[] lives;
         private IDictionary<LilyPad, FrogSprite> landingSpots;
 
         private DispatcherTimer timer;
-        
+
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace FroggerStarter.View
             this.InitializeComponent();
 
             ApplicationView.PreferredLaunchViewSize = new Size
-                {Width = this.applicationWidth, Height = this.applicationHeight};
+            { Width = this.applicationWidth, Height = this.applicationHeight };
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView()
                            .SetPreferredMinSize(new Size(this.applicationWidth, this.applicationHeight));
@@ -87,15 +87,16 @@ namespace FroggerStarter.View
 
         private async void promptUserForRestart()
         {
-            ContentDialog restartPrompt = new ContentDialog()
+            this.restartDialog = new ContentDialog()
             {
                 Title = "Game Over",
                 Content = "Would you like to play again?",
                 PrimaryButtonText = "Sure",
                 CloseButtonText = "No thanks"
             };
-            restartPrompt.PrimaryButtonCommand = restartGame(restartPrompt.IsPrimaryButtonEnabled);
-            await restartPrompt.ShowAsync();
+            restartDialog.CloseButtonCommand = new relayCommand(quitApplication,canQuit);
+            restartDialog.PrimaryButtonCommand = new relayCommand(restartApplication,canRestart);
+            await restartDialog.ShowAsync();
         }
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
@@ -103,27 +104,58 @@ namespace FroggerStarter.View
             this.gameManager.MovePlayer(args);
         }
 
-        private class restartGame:ICommand
+        public class relayCommand : ICommand
         {
-            private bool restartButtonEnabled;
-            restartGame(bool buttonEnable)
-            {
-                this.restartButtonEnabled = buttonEnable;
-            }
+            public Action<object> execute;
+            public Predicate<object> canExecute;
+
+
             public bool CanExecute(object parameter)
             {
-                return this.restartButtonEnabled;
+                bool result = canExecute?.Invoke(parameter) ?? true;
+                return result;
             }
 
             public void Execute(object parameter)
             {
-                if (CanExecute(object))
+                if (CanExecute(parameter))
                 {
-                    execute();
+                    execute(parameter);
                 }
             }
 
-            public event EventHandler CanExecuteChanged;
+            public relayCommand(Action<object> execute, Predicate<object> canExecute)
+            {
+                this.execute = execute;
+                this.canExecute = canExecute;
+            }
+
+        public event EventHandler CanExecuteChanged;
+
+            public virtual void OnCanExecuteChanged()
+            {
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private bool canRestart(object obj)
+        {
+             return this.restartDialog.IsPrimaryButtonEnabled;
+        }
+
+        private async void restartApplication(object obj)
+        {
+            await CoreApplication.RequestRestartAsync("");
+        }
+
+        private bool canQuit(object obj)
+        {
+            return this.restartDialog.IsSecondaryButtonEnabled;
+        }
+
+        private async void quitApplication(object obj)
+        {
+            CoreApplication.Exit();
         }
 
         private void generateLives()
@@ -188,7 +220,7 @@ namespace FroggerStarter.View
             this.landingSpots = new Dictionary<LilyPad, FrogSprite>();
             foreach (var t in this.gameManager.GetFrogHomes())
             {
-                var newLandingSpotFrog = new FrogSprite {Visibility = Visibility.Collapsed};
+                var newLandingSpotFrog = new FrogSprite { Visibility = Visibility.Collapsed };
 
                 var xLocation = t.HitBox.X;
                 var yLocation = t.HitBox.Y;
