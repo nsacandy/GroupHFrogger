@@ -22,38 +22,38 @@
             <VisualStateGroup x:Name="CommonStates">
                 <VisualStateGroup.Transitions>
 
-                    <VisualTransition From="OriginalSprite" To="Moving" 
+                    <VisualTransition From="OriginalSprite" To="Moving"
                                       GeneratedDuration="0:0:0.25" />
-                    <VisualTransition From="Moving" To="OriginalSprite" GeneratedDuration="0:0:0.25"/>
-                    <VisualTransition From="Invincible" To="OriginalSprite" GeneratedDuration="0:0:2"/>
+                    <VisualTransition From="Moving" To="OriginalSprite" GeneratedDuration="0:0:0.25" />
+                    <VisualTransition From="Invincible" To="OriginalSprite" GeneratedDuration="0:0:2" />
                 </VisualStateGroup.Transitions>
                 <VisualState x:Name="OriginalSprite" />
                 <VisualState x:Name="Moving">
                     <Storyboard>
                         <DoubleAnimation Storyboard.TargetName="movingLeftArm" Storyboard.TargetProperty="Opacity"
-                                         From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True"/>
+                                         From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="movingRightArm" Storyboard.TargetProperty="Opacity"
                                          From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="movingLeftLeg" Storyboard.TargetProperty="Opacity"
                                          From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="movingRightLeg" Storyboard.TargetProperty="Opacity"
-                                         From="0.0"  To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True"/>
+                                         From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="movingLeftArm2" Storyboard.TargetProperty="Opacity"
-                                         From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True"/>
+                                         From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="movingRightArm2" Storyboard.TargetProperty="Opacity"
                                          From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="movingLeftLeg2" Storyboard.TargetProperty="Opacity"
                                          From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="movingRightLeg2" Storyboard.TargetProperty="Opacity"
-                                         From="0.0"  To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True"/>
+                                         From="0.0" To="1.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="leftArm" Storyboard.TargetProperty="Opacity"
-                                         From="1.0" To="0.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True"/>
+                                         From="1.0" To="0.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="leftLeg" Storyboard.TargetProperty="Opacity"
                                          From="1.0" To="0.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="rightArm" Storyboard.TargetProperty="Opacity"
                                          From="1.0" To="0.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                         <DoubleAnimation Storyboard.TargetName="rightLeg" Storyboard.TargetProperty="Opacity"
-                                         From="1.0"  To="0.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True"/>
+                                         From="1.0" To="0.0" BeginTime="0:0:0" Duration="0:0:.15" AutoReverse="True" />
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Dying">
@@ -87,7 +87,7 @@
                 </VisualState>
                 <VisualState x:Name="Invincible">
                     <VisualState.StateTriggers>
-                        <StateTrigger></StateTrigger>
+                        <StateTrigger />
                     </VisualState.StateTriggers>
                     <Storyboard Completed="StopInvincibility">
                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="FrogColor"
@@ -104,7 +104,7 @@
 
         <Canvas x:Name="frogSprite">
             <Rectangle x:Name="body" Canvas.Top="10" Canvas.Left="10" Fill="{StaticResource FrogColor}" Width="30"
-                   Height="30" />
+                       Height="30" />
             <Rectangle Canvas.Top="5" Canvas.Left="15" Fill="{StaticResource FrogColor}" Width="20" Height="5" />
             <Rectangle Canvas.Top="40" Canvas.Left="15" Fill="{StaticResource FrogColor}" Width="20" Height="5" />
 
@@ -116,21 +116,21 @@
 
             <Rectangle Canvas.Top="20" Canvas.Left="5" Fill="{StaticResource FrogColor}" Width="5" Height="5" />
             <Rectangle Canvas.Top="17.5" Canvas.Left="2.5" Fill="{StaticResource FrogColor}" Width="5" Height="5" />
-            <Rectangle x:Name="leftArm"  Canvas.Top="0" Canvas.Left="0" Fill="{StaticResource FrogColor}" Width="5"
-                   Height="20" />
+            <Rectangle x:Name="leftArm" Canvas.Top="0" Canvas.Left="0" Fill="{StaticResource FrogColor}" Width="5"
+                       Height="20" />
 
             <Rectangle Canvas.Top="20" Canvas.Left="40" Fill="{StaticResource FrogColor}" Width="5" Height="5" />
             <Rectangle Canvas.Top="17.5" Canvas.Left="42.5" Fill="{StaticResource FrogColor}" Width="5" Height="5" />
             <Rectangle x:Name="rightArm" Canvas.Top="0" Canvas.Left="45" Fill="{StaticResource FrogColor}" Width="5"
-                   Height="20" />
+                       Height="20" />
 
             <Rectangle Canvas.Top="30" Canvas.Left="5" Fill="{StaticResource FrogColor}" Width="5" Height="5" />
             <Rectangle x:Name="leftLeg" Canvas.Top="30" Canvas.Left="0" Fill="{StaticResource FrogColor}" Width="5"
-                   Height="20" />
+                       Height="20" />
 
             <Rectangle Canvas.Top="30" Canvas.Left="40" Fill="{StaticResource FrogColor}" Width="5" Height="5" />
             <Rectangle x:Name="rightLeg" Canvas.Top="30" Canvas.Left="45" Fill="{StaticResource FrogColor}" Width="5"
-                   Height="20" />
+                       Height="20" />
 
             <Ellipse Canvas.Top="20" Canvas.Left="15" Fill="Yellow" Width="5" Height="5" />
             <Ellipse Canvas.Top="28" Canvas.Left="25" Fill="Yellow" Width="5" Height="5" />
@@ -139,65 +139,77 @@
             <Ellipse Canvas.Top="33" Canvas.Left="19" Fill="YellowGreen" Width="5" Height="5" />
 
             <Ellipse x:Name="splatOne" Canvas.Top="0" Canvas.Left="15" Fill="DarkGreen" Width="20" Height="50"
-                 Opacity="0.0" />
+                     Opacity="0.0" />
             <Ellipse x:Name="splatTwo" Canvas.Top="15" Canvas.Left="0" Fill="DarkGreen" Width="50" Height="20"
-                 Opacity="0.0" />
+                     Opacity="0.0" />
             <Rectangle x:Name="deadRightLeg" Canvas.Top="30" Canvas.Left="35" Fill="DarkGreen" Width="5" Height="20"
-                   Opacity="0.0" />
+                       Opacity="0.0" />
             <Rectangle x:Name="deadLeftLeg" Canvas.Top="30" Canvas.Left="10" Fill="DarkGreen" Width="5" Height="20"
-                   Opacity="0.0" />
+                       Opacity="0.0" />
             <Rectangle x:Name="deadRightArm" Canvas.Top="0" Canvas.Left="35" Fill="DarkGreen" Width="5" Height="20"
-                   Opacity="0.0" />
+                       Opacity="0.0" />
             <Rectangle x:Name="deadLeftArm" Canvas.Top="0" Canvas.Left="10" Fill="DarkGreen" Width="5" Height="20"
-                   Opacity="0.0" />
+                       Opacity="0.0" />
 
             <Canvas>
-                <Rectangle x:Name="movingLeftArm"  Canvas.Top="11.666" Canvas.Left="0.071" Fill="{StaticResource FrogColor}" Width="5"
-                           Height="13.746" RenderTransformOrigin="0.5,0.5" Opacity="0.0" UseLayoutRounding="False" d:LayoutRounding="Auto" >
+                <Rectangle x:Name="movingLeftArm" Canvas.Top="11.666" Canvas.Left="0.071"
+                           Fill="{StaticResource FrogColor}" Width="5"
+                           Height="13.746" RenderTransformOrigin="0.5,0.5" Opacity="0.0" UseLayoutRounding="False"
+                           d:LayoutRounding="Auto">
                     <Rectangle.RenderTransform>
-                        <CompositeTransform Rotation="-38.093"/>
+                        <CompositeTransform Rotation="-38.093" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Rectangle x:Name="movingRightArm" Canvas.Top="13.079" Canvas.Left="43.547" Fill="{StaticResource FrogColor}" Width="5"
-                           Height="12.688" RenderTransformOrigin="0.5,0.5" Opacity=".0" UseLayoutRounding="False" d:LayoutRounding="Auto">
+                <Rectangle x:Name="movingRightArm" Canvas.Top="13.079" Canvas.Left="43.547"
+                           Fill="{StaticResource FrogColor}" Width="5"
+                           Height="12.688" RenderTransformOrigin="0.5,0.5" Opacity=".0" UseLayoutRounding="False"
+                           d:LayoutRounding="Auto">
                     <Rectangle.RenderTransform>
-                        <CompositeTransform Rotation="37.26"/>
+                        <CompositeTransform Rotation="37.26" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Rectangle x:Name="movingRightLeg" Canvas.Top="26.89" Canvas.Left="43.478" Fill="{StaticResource FrogColor}" Width="5"
-                           Height="14.154" RenderTransformOrigin="0.5,0.5" Opacity=".0" UseLayoutRounding="False" d:LayoutRounding="Auto">
+                <Rectangle x:Name="movingRightLeg" Canvas.Top="26.89" Canvas.Left="43.478"
+                           Fill="{StaticResource FrogColor}" Width="5"
+                           Height="14.154" RenderTransformOrigin="0.5,0.5" Opacity=".0" UseLayoutRounding="False"
+                           d:LayoutRounding="Auto">
                     <Rectangle.RenderTransform>
-                        <CompositeTransform Rotation="-41.549"/>
+                        <CompositeTransform Rotation="-41.549" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Rectangle x:Name="movingLeftLeg" Canvas.Top="31.375" Canvas.Left="2.971" Fill="{StaticResource FrogColor}" Width="5"
-                           Height="12.204" RenderTransformOrigin="0.5,0.5" Opacity=".0" UseLayoutRounding="False" d:LayoutRounding="Auto">
+                <Rectangle x:Name="movingLeftLeg" Canvas.Top="31.375" Canvas.Left="2.971"
+                           Fill="{StaticResource FrogColor}" Width="5"
+                           Height="12.204" RenderTransformOrigin="0.5,0.5" Opacity=".0" UseLayoutRounding="False"
+                           d:LayoutRounding="Auto">
                     <Rectangle.RenderTransform>
-                        <CompositeTransform Rotation="36.309"/>
+                        <CompositeTransform Rotation="36.309" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Rectangle x:Name="movingLeftArm2"  Canvas.Top="0" Canvas.Left="0" Fill="{StaticResource FrogColor}" Width="5"
-                           Height="20" RenderTransformOrigin="0.5,0.5" Opacity="0.0" >
-                    <Rectangle.RenderTransform>
-                        <CompositeTransform Rotation="38.093"/>
-                    </Rectangle.RenderTransform>
-                </Rectangle>
-                <Rectangle x:Name="movingRightArm2" Canvas.Top="0" Canvas.Left="45" Fill="{StaticResource FrogColor}" Width="5"
+                <Rectangle x:Name="movingLeftArm2" Canvas.Top="0" Canvas.Left="0" Fill="{StaticResource FrogColor}"
+                           Width="5"
                            Height="20" RenderTransformOrigin="0.5,0.5" Opacity="0.0">
                     <Rectangle.RenderTransform>
-                        <CompositeTransform Rotation="-47.26"/>
+                        <CompositeTransform Rotation="38.093" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Rectangle x:Name="movingRightLeg2" Canvas.Top="30" Canvas.Left="45" Fill="{StaticResource FrogColor}" Width="5"
+                <Rectangle x:Name="movingRightArm2" Canvas.Top="0" Canvas.Left="45" Fill="{StaticResource FrogColor}"
+                           Width="5"
                            Height="20" RenderTransformOrigin="0.5,0.5" Opacity="0.0">
                     <Rectangle.RenderTransform>
-                        <CompositeTransform Rotation="41.549"/>
+                        <CompositeTransform Rotation="-47.26" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Rectangle x:Name="movingLeftLeg2" Canvas.Top="30" Canvas.Left="0" Fill="{StaticResource FrogColor}" Width="5"
+                <Rectangle x:Name="movingRightLeg2" Canvas.Top="30" Canvas.Left="45" Fill="{StaticResource FrogColor}"
+                           Width="5"
                            Height="20" RenderTransformOrigin="0.5,0.5" Opacity="0.0">
                     <Rectangle.RenderTransform>
-                        <CompositeTransform Rotation="-49.665"/>
+                        <CompositeTransform Rotation="41.549" />
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <Rectangle x:Name="movingLeftLeg2" Canvas.Top="30" Canvas.Left="0" Fill="{StaticResource FrogColor}"
+                           Width="5"
+                           Height="20" RenderTransformOrigin="0.5,0.5" Opacity="0.0">
+                    <Rectangle.RenderTransform>
+                        <CompositeTransform Rotation="-49.665" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
             </Canvas>

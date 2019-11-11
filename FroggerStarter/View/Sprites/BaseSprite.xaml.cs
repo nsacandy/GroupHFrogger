@@ -11,12 +11,6 @@ namespace FroggerStarter.View.Sprites
     /// <seealso cref="Windows.UI.Xaml.Controls.UserControl" />
     public abstract partial class BaseSprite : ISpriteRenderer
     {
-        #region Properties
-
-        public Rect HitBox { get; private set; }
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -24,9 +18,15 @@ namespace FroggerStarter.View.Sprites
         /// </summary>
         protected BaseSprite()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             IsHitTestVisible = true;
         }
+
+        #endregion
+
+        #region Properties
+
+        public Rect HitBox { get; private set; }
 
         #endregion
 
@@ -42,7 +42,7 @@ namespace FroggerStarter.View.Sprites
         {
             Canvas.SetLeft(this, x);
             Canvas.SetTop(this, y);
-            this.HitBox = new Rect(x, y, Width, Height);
+            HitBox = new Rect(x, y, Width, Height);
         }
 
         #endregion

@@ -8,14 +8,11 @@ namespace FroggerStarter.Model.Vehicles
     /// </summary>
     public abstract class Vehicle : GameObject
     {
-
-        
         #region Data members
 
         #endregion
 
         #region Constructors
-
 
         #endregion
 
@@ -23,12 +20,12 @@ namespace FroggerStarter.Model.Vehicles
 
         public override void setHeading(Heading heading)
         {
-            this.currentHeading = heading;
+            currentHeading = heading;
             switch (currentHeading)
             {
-                case Heading.Right: 
-                this.headRight();
-                break;
+                case Heading.Right:
+                    headRight();
+                    break;
                 case Heading.Left:
                     break;
             }
@@ -36,13 +33,13 @@ namespace FroggerStarter.Model.Vehicles
 
         protected void headRight()
         {
-            this.Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
-            this.Sprite.RenderTransform = new ScaleTransform { ScaleX = -1 };
+            Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
+            Sprite.RenderTransform = new ScaleTransform {ScaleX = -1};
         }
 
         public void MoveVehicle()
         {
-            switch (this.currentHeading)
+            switch (currentHeading)
             {
                 case Heading.Left:
                     X -= SpeedX;

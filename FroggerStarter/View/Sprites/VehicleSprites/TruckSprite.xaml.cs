@@ -4,13 +4,13 @@ using FroggerStarter.View.Sprites.VehicleSprites;
 
 namespace FroggerStarter.View.Sprites
 {
-    public sealed partial class TruckSprite:BaseSprite,IVehicleSprite
+    public sealed partial class TruckSprite : BaseSprite, IVehicleSprite
     {
         #region Constructors
 
         public TruckSprite()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         #endregion

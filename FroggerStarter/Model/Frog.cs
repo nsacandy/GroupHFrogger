@@ -10,13 +10,6 @@ namespace FroggerStarter.Model
     /// <seealso cref="FroggerStarter.Model.GameObject" />
     public class Frog : GameObject
     {
-        #region Data members
-
-        private const int SpeedXDirection = 50;
-        private const int SpeedYDirection = 50;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -24,46 +17,51 @@ namespace FroggerStarter.Model
         /// </summary>
         public Frog()
         {
-            this.Sprite = new DeathSprite();
-            this.currentHeading = Heading.Up;
+            Sprite = new DeathSprite();
+            currentHeading = Heading.Up;
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
-        #endregion        
+        #endregion
+
         /// <summary>
-        /// Sets the heading.
+        ///     Sets the heading.
         /// </summary>
         /// <param name="heading">The heading.</param>
-
         public override void setHeading(Heading heading)
         {
-            this.currentHeading = heading;
-            switch (this.currentHeading)
+            currentHeading = heading;
+            switch (currentHeading)
             {
                 case Heading.Down:
-                    this.Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
-                    this.Sprite.RenderTransform = new RotateTransform();
-                    this.Sprite.RenderTransform.SetValue(RotateTransform.AngleProperty,  "180");
+                    Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
+                    Sprite.RenderTransform = new RotateTransform();
+                    Sprite.RenderTransform.SetValue(RotateTransform.AngleProperty, "180");
                     break;
                 case Heading.Up:
-                    this.Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
-                    this.Sprite.RenderTransform = new RotateTransform();
-                    this.Sprite.RenderTransform.SetValue(RotateTransform.AngleProperty, "0");
+                    Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
+                    Sprite.RenderTransform = new RotateTransform();
+                    Sprite.RenderTransform.SetValue(RotateTransform.AngleProperty, "0");
                     break;
                 case Heading.Left:
-                    this.Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
-                    this.Sprite.RenderTransform = new RotateTransform();
-                    this.Sprite.RenderTransform.SetValue(RotateTransform.AngleProperty, "270");
+                    Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
+                    Sprite.RenderTransform = new RotateTransform();
+                    Sprite.RenderTransform.SetValue(RotateTransform.AngleProperty, "270");
                     break;
                 case Heading.Right:
 
-                    this.Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
-                    this.Sprite.RenderTransform = new RotateTransform();
-                    this.Sprite.RenderTransform.SetValue(RotateTransform.AngleProperty, "90");
+                    Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
+                    Sprite.RenderTransform = new RotateTransform();
+                    Sprite.RenderTransform.SetValue(RotateTransform.AngleProperty, "90");
                     break;
             }
         }
 
-        
+        #region Data members
+
+        private const int SpeedXDirection = 50;
+        private const int SpeedYDirection = 50;
+
+        #endregion
     }
 }

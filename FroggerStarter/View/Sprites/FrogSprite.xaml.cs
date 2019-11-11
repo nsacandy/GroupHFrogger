@@ -8,7 +8,7 @@ namespace FroggerStarter.View.Sprites
 
         public FrogSprite()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             IsHitTestVisible = false;
         }
 

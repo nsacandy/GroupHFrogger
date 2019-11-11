@@ -4,17 +4,16 @@ using FroggerStarter.View.Sprites.VehicleSprites;
 
 namespace FroggerStarter.View.Sprites
 {
-    public partial class CarSprite : BaseSprite,IVehicleSprite
+    public partial class CarSprite : BaseSprite, IVehicleSprite
 
     {
         #region Constructors
 
         public CarSprite()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         #endregion
     }
-
 }

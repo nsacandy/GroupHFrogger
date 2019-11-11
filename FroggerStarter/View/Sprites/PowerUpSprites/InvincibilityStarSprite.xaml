@@ -10,30 +10,32 @@
     Width="40">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Name="Body" Color="Gold"/>
+        <SolidColorBrush x:Name="Body" Color="Gold" />
     </UserControl.Resources>
 
 
     <Canvas>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="CommonStates">
-                <VisualState x:Name="Default"/>
+                <VisualState x:Name="Default" />
                 <VisualState x:Name="Spinning">
                     <Storyboard>
-                        <DoubleAnimation Storyboard.TargetName="StarDrawing" Storyboard.TargetProperty="RenderTransform"
-                                 From="0.0" To="1" BeginTime="0:0:0" Duration="0:0:0.5" AutoReverse="True" RepeatBehavior="Forever"/>
+                        <DoubleAnimation Storyboard.TargetName="StarDrawing"
+                                         Storyboard.TargetProperty="RenderTransform"
+                                         From="0.0" To="1" BeginTime="0:0:0" Duration="0:0:0.5" AutoReverse="True"
+                                         RepeatBehavior="Forever" />
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Canvas x:Name="StarDrawing">
-            <Polygon Fill="{StaticResource Body}" Points="10,15,20,0,30,15"/>
-            <Polygon Fill="{StaticResource Body}" Points="0,15,20,25,10,15"/>
-            <Polygon Fill="{StaticResource Body}" Points="30,15,40,15,20,25"/>
+            <Polygon Fill="{StaticResource Body}" Points="10,15,20,0,30,15" />
+            <Polygon Fill="{StaticResource Body}" Points="0,15,20,25,10,15" />
+            <Polygon Fill="{StaticResource Body}" Points="30,15,40,15,20,25" />
 
-            <Polygon Fill="{StaticResource Body}" Points="0,35,20,25,10,35"/>
-            <Polygon Fill="{StaticResource Body}" Points="30,35,40,35,20,25"/>
-            <Polygon Fill="{StaticResource Body}" Points="10,35,20,50,30,35"/>
+            <Polygon Fill="{StaticResource Body}" Points="0,35,20,25,10,35" />
+            <Polygon Fill="{StaticResource Body}" Points="30,35,40,35,20,25" />
+            <Polygon Fill="{StaticResource Body}" Points="10,35,20,50,30,35" />
         </Canvas>
     </Canvas>
 </local:BaseSprite>

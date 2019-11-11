@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using Windows.UI.Composition;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using FroggerStarter.Controller;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -11,31 +8,24 @@ namespace FroggerStarter.View.Sprites
 {
     public sealed partial class DeathSprite
     {
-        #region Types and Delegates
-
-        public event EventHandler NewSpriteCreated;
-
-        #endregion
-
-        private bool isInvincible;
-
-        public bool IsInvincible
-        {
-            get { return isInvincible; }
-            set { isInvincible = value; }
-        }
-
-
         #region Constructors
 
         public DeathSprite()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             IsHitTestVisible = false;
-            this.Invincible.Storyboard.Duration = GameSettings.InvincibilityLength;
-            this.Dying.Storyboard.Completed += this.onNewSpriteCreated;
-            this.Invincible.Storyboard.Completed += this.StopInvincibility;
+            Invincible.Storyboard.Duration = GameSettings.InvincibilityLength;
+            Dying.Storyboard.Completed += onNewSpriteCreated;
+            Invincible.Storyboard.Completed += StopInvincibility;
         }
+
+        #endregion
+
+        public bool IsInvincible { get; set; }
+
+        #region Types and Delegates
+
+        public event EventHandler NewSpriteCreated;
 
         #endregion
 
@@ -44,30 +34,31 @@ namespace FroggerStarter.View.Sprites
         public void AnimateDeath()
         {
             VisualStateManager.GoToState(this, "Dying", false);
-            this.Dying.Storyboard.Begin();
+            Dying.Storyboard.Begin();
         }
 
         private void onNewSpriteCreated(object e, object f)
         {
             VisualStateManager.GoToState(this, "OriginalSprite", false);
-            this.NewSpriteCreated?.Invoke(this, null);
+            NewSpriteCreated?.Invoke(this, null);
         }
 
         public void AnimateMove()
         {
-            this.Moving.Storyboard.Begin();
+            Moving.Storyboard.Begin();
         }
 
         public void AnimateInvincibility()
         {
-            this.Invincible.Storyboard.Begin();
+            Invincible.Storyboard.Begin();
         }
 
         public void StopInvincibility(object e, object f)
         {
-            this.isInvincible = false;
+            IsInvincible = false;
             VisualStateManager.GoToState(this, "OriginalSprite", true);
         }
     }
+
     #endregion
 }

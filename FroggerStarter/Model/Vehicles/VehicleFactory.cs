@@ -9,17 +9,17 @@
             SportsCar
         }
 
-        public static Vehicle CreateVehicle(VehicleFactory.VehicleType vehicleType, Vehicle.Heading heading)
+        public static Vehicle CreateVehicle(VehicleType vehicleType, GameObject.Heading heading)
         {
             switch (vehicleType)
             {
-                case VehicleFactory.VehicleType.Car:
+                case VehicleType.Car:
                     var newCar = new Car(heading);
                     return newCar;
-                case VehicleFactory.VehicleType.Truck:
+                case VehicleType.Truck:
                     var newTruck = new Truck(heading);
                     return newTruck;
-                case VehicleFactory.VehicleType.SportsCar:
+                case VehicleType.SportsCar:
                     var newSportsCar = new SportsCar(heading);
                     return newSportsCar;
             }
