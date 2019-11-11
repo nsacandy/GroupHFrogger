@@ -121,6 +121,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controller\GameSettings.cs" />
+    <Compile Include="Model\HighScoreModel\HighScore.cs" />
+    <Compile Include="Model\HighScoreModel\HighScores.cs" />
     <Compile Include="Model\LevelManager.cs" />
     <Compile Include="Model\SoundEffects.cs" />
     <Compile Include="Model\TimeExtender.cs" />
@@ -136,10 +138,14 @@
     <Compile Include="Model\Vehicles\Truck.cs" />
     <Compile Include="Model\Vehicles\Vehicle.cs" />
     <Compile Include="Model\Vehicles\VehicleFactory.cs" />
+    <Compile Include="ViewModel\HighScoreViewModel.cs" />
     <Compile Include="View\GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\HighScorePage.xaml.cs">
+      <DependentUpon>HighScorePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\BaseSprite.xaml.cs">
       <DependentUpon>BaseSprite.xaml</DependentUpon>
     </Compile>
@@ -201,6 +207,10 @@
     <Page Include="View\GamePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\HighScorePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\BaseSprite.xaml">
       <SubType>Designer</SubType>
