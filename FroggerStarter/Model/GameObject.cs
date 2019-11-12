@@ -11,6 +11,8 @@ namespace FroggerStarter.Model
     {
         #region Types and Delegates
 
+
+        /// <summary>The direction the sprite is "facing"</summary>
         public enum Heading
         {
             Left,
@@ -23,7 +25,8 @@ namespace FroggerStarter.Model
 
         #region Data members
 
-        protected Heading currentHeading;
+        /// <summary>The current heading</summary>
+        protected Heading CurrentHeading;
 
         private Point location;
 
@@ -107,7 +110,10 @@ namespace FroggerStarter.Model
 
         #region Methods
 
-        public abstract void setHeading(Heading heading);
+
+        /// <summary>Sets the heading.</summary>
+        /// <param name="heading">The heading.</param>
+        public abstract void SetHeading(Heading heading);
 
         /// <summary>
         ///     Moves the game object right.

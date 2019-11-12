@@ -6,6 +6,8 @@ using FroggerStarter.View.Sprites;
 
 namespace FroggerStarter.Model
 {
+    /// <summary>Class for managing home bases</summary>
+   
     public class HomeManager : IEnumerable<LilyPad>
     {
         #region Data members
@@ -19,6 +21,9 @@ namespace FroggerStarter.Model
 
         #region Constructors
 
+
+        /// <summary>Initializes a new instance of the <see cref="HomeManager"/> class, adds landing spots</summary>
+        /// <param name="gameCanvas">The game canvas.</param>
         public HomeManager(Canvas gameCanvas)
         {
             this.gameCanvas = gameCanvas;
@@ -29,6 +34,8 @@ namespace FroggerStarter.Model
 
         #region Methods
 
+        /// <summary>Returns an enumerator that iterates through the bases.</summary>
+        /// <returns>An enumerator that can be used to iterate through the bases.</returns>
         public IEnumerator<LilyPad> GetEnumerator()
         {
             return this.landingSpots.GetEnumerator();
@@ -60,16 +67,21 @@ namespace FroggerStarter.Model
             }
         }
 
+        /// <summary>Resets the landing spots, typically after new level</summary>
         public void ResetLandingSpots()
         {
             this.addLandingSpotsToCanvas();
         }
 
-        public bool IsAllHomesFilled()
+        /// <summary>Alls the homes filled.</summary>
+        /// <returns>boolean value representing whether the remaining homespots == 0</returns>
+        public bool AllHomesFilled()
         {
             return this.landingSpots.Count == 0;
         }
 
+        /// <summary>Removes the home.</summary>
+        /// <param name="home">The home.</param>
         public void RemoveHome(LilyPad home)
         {
             this.landingSpots.Remove(home);

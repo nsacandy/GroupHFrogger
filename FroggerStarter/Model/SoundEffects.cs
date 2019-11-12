@@ -5,6 +5,7 @@ using Windows.Media.Playback;
 
 namespace FroggerStarter.Model
 {
+    /// <summary>Enum for different sound effects</summary>
     public enum Sounds
     {
         Hop,
@@ -19,6 +20,10 @@ namespace FroggerStarter.Model
         PowerUpStar
     }
 
+
+    /// <summary>
+    ///   <para>Class for adding sounds to the game</para>
+    /// </summary>
     public class SoundEffects
     {
         #region Data members
@@ -29,12 +34,15 @@ namespace FroggerStarter.Model
 
         #region Properties
 
+        /// <summary>Property for controlling InvincibleStar soundeffect loop</summary>
+        /// <value>The power star loop.</value>
         public MediaPlayer PowerStarLoop { get; private set; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>Initializes a new instance of the <see cref="SoundEffects"/> class.</summary>
         public SoundEffects()
         {
             this.setStarLoop();
@@ -48,9 +56,6 @@ namespace FroggerStarter.Model
 
         private void loadEfx()
         {
-            var powerStar = this.loadSoundFileAsync("sound-frogger-star-power.wav");
-            powerStar.IsLoopingEnabled = true;
-            powerStar.Play();
             this.effects.Add(Sounds.Hop, this.loadSoundFileAsync("sound-frogger-hop.wav"));
             this.effects.Add(Sounds.HitVehicle, this.loadSoundFileAsync("sound-frogger-squash.wav"));
             this.effects.Add(Sounds.HitWater, this.loadSoundFileAsync("sound-frogger-plunk.wav"));
@@ -77,14 +82,15 @@ namespace FroggerStarter.Model
             return sound;
         }
 
+        /// <summary>Plays the specified sound.</summary>
+        /// <param name="efx">The sound effect.</param>
         public void Play(Sounds efx)
         {
             var mediaElement = this.effects[efx];
-
             mediaElement.Play();
         }
 
-        public void setStarLoop()
+        private void setStarLoop()
         {
             var powerStar = this.loadSoundFileAsync("sound-frogger-star-power.wav");
             powerStar.IsLoopingEnabled = true;

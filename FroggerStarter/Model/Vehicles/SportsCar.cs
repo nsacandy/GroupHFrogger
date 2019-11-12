@@ -4,7 +4,7 @@ namespace FroggerStarter.Model.Vehicles
 {
     /// <summary>A slightly faster car extended from the Car class</summary>
     /// <seealso cref="FroggerStarter.Model.Vehicles.Car" />
-    public class SportsCar : Car
+    public sealed class SportsCar : Car
     {
         #region Data members
 
@@ -19,7 +19,7 @@ namespace FroggerStarter.Model.Vehicles
         public SportsCar(Heading heading) : base(heading)
         {
             Sprite = new SportsCarSprite();
-            setHeading(heading);
+            SetHeading(heading);
         }
 
         #endregion

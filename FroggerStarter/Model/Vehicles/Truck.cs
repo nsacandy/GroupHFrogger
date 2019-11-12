@@ -2,7 +2,7 @@
 
 namespace FroggerStarter.Model.Vehicles
 {
-    internal class Truck : Vehicle
+    internal sealed class Truck : Vehicle
     {
         #region Constructors
 
@@ -11,7 +11,7 @@ namespace FroggerStarter.Model.Vehicles
         public Truck(Heading heading)
         {
             Sprite = new TruckSprite();
-            setHeading(heading);
+            SetHeading(heading);
         }
 
         #endregion

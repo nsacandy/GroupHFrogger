@@ -21,7 +21,12 @@ namespace FroggerStarter.Model
 
         #region Properties
 
+        /// <summary>Gets the player's class</summary>
+        /// <value>The player's frog class </value>
         public Frog Player { get; }
+
+        /// <summary>Gets the player sprite.</summary>
+        /// <value>The player sprite.</value>
         public FrogSprite PlayerSprite { get; }
 
         #endregion
@@ -51,7 +56,7 @@ namespace FroggerStarter.Model
         private void onNewSpriteCreated(object sender, EventArgs e)
         {
             this.keyboardFrozen = false;
-            this.setHeading(Heading.Up);
+            this.SetHeading(Heading.Up);
             this.NewSpriteCreated?.Invoke(this, null);
         }
 
@@ -69,7 +74,7 @@ namespace FroggerStarter.Model
 
             this.PlayerSprite.AnimateMove();
             this.setPreviousPositionLocation();
-            this.setHeading(Heading.Left);
+            this.SetHeading(Heading.Left);
             this.Player.MoveLeft();
             if (this.Player.X < this.leftBoundary)
             {
@@ -77,11 +82,8 @@ namespace FroggerStarter.Model
             }
         }
 
-        /// <summary>
-        ///     Moves the player to the right.
-        ///     Precondition: none
-        ///     Postcondition: player.X = player.X@prev + player.Width
-        /// </summary>
+        /// <summary>Moves the player to the right.
+        ///  <@postcondition>player x + player speed </@precondition></summary>
         public void MovePlayerRight()
         {
             if (this.keyboardFrozen)
@@ -92,7 +94,7 @@ namespace FroggerStarter.Model
             this.PlayerSprite.AnimateMove();
             this.setPreviousPositionLocation();
             this.Player.MoveRight();
-            this.setHeading(Heading.Right);
+            this.SetHeading(Heading.Right);
             if (this.Player.X + this.Player.Width > this.rightBoundary)
             {
                 this.ResetPlayerToPreviousPosition();
@@ -114,7 +116,7 @@ namespace FroggerStarter.Model
             this.PlayerSprite.AnimateMove();
             this.setPreviousPositionLocation();
             this.Player.MoveUp();
-            this.setHeading(Heading.Up);
+            this.SetHeading(Heading.Up);
             if (this.Player.Y < this.topBoundary)
             {
                 this.ResetPlayerToPreviousPosition();
@@ -136,7 +138,7 @@ namespace FroggerStarter.Model
             this.PlayerSprite.AnimateMove();
             this.setPreviousPositionLocation();
             this.Player.MoveDown();
-            this.setHeading(Heading.Down);
+            this.SetHeading(Heading.Down);
             if (this.Player.Y + this.Player.Height > this.bottomBoundary)
             {
                 this.ResetPlayerToPreviousPosition();
@@ -148,33 +150,47 @@ namespace FroggerStarter.Model
             this.previousPosition = new Point(this.PlayerSprite.HitBox.X, this.PlayerSprite.HitBox.Y);
         }
 
-        public void SetPlayerLocation(double x, double y)
+        /// <summary>Keeps track of most recent location.</summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        public void LastLocationTracker(double x, double y)
         {
             this.Player.X = x;
             this.Player.Y = y;
             this.setPreviousPositionLocation();
         }
 
+        /// <summary>Resets the player to previous position.</summary>
         public void ResetPlayerToPreviousPosition()
         {
             this.Player.X = this.previousPosition.X;
             this.Player.Y = this.previousPosition.Y;
         }
 
+        /// <summary>Handles the life lost.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         public void HandleLifeLost(object sender, EventArgs e)
         {
             this.keyboardFrozen = true;
             this.PlayerSprite.AnimateDeath();
         }
 
-        public void onInvincibilityTriggered()
+        /// <summary>Called when [invincibility triggered].</summary>
+        public void OnInvincibilityTriggered()
         {
             this.PlayerSprite.AnimateInvincibility();
         }
 
-        public override void setHeading(Heading heading)
+        /// <summary>
+        ///   <para>
+        ///  Sets the heading.
+        /// </para>
+        /// </summary>
+        /// <param name="heading">The heading.</param>
+        public override void SetHeading(Heading heading)
         {
-            this.Player.setHeading(heading);
+            this.Player.SetHeading(heading);
         }
 
         #endregion

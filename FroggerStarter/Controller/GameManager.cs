@@ -221,7 +221,7 @@ namespace FroggerStarter.Controller
                 {
                     App.AppSoundEffects.PowerStarLoop.Play();
 
-                    this.player.onInvincibilityTriggered();
+                    this.player.OnInvincibilityTriggered();
                     this.invincibilityTimer = new DispatcherTimer();
                     this.invincibilityTimer.Interval = GameSettings.InvincibilityLength;
                     this.invincibilityTimer.Start();
@@ -249,7 +249,7 @@ namespace FroggerStarter.Controller
         {
             if (this.gameTimerTick % GameSettings.TimeSpriteAppearInterval == 0 && !this.timeSprite.IsShowing)
             {
-                this.timeSprite.Show();
+                this.timeSprite.RandomlyShow();
             }
         }
 
@@ -257,7 +257,7 @@ namespace FroggerStarter.Controller
         {
             if (this.gameTimerTick % GameSettings.InvincibilityAppearInterval == 0 && !this.invincibilityStar.IsShowing)
             {
-                this.invincibilityStar.Show();
+                this.invincibilityStar.RandomlyShow();
             }
         }
 
@@ -296,7 +296,7 @@ namespace FroggerStarter.Controller
             {
                 App.AppSoundEffects.Play(Sounds.LandHome);
                 this.PointScored?.Invoke(this, new ScoreArgs(pad));
-                if (this.homes.IsAllHomesFilled() && !this.level.CurrentLevel.Equals(LevelManager.GameLevel.Final))
+                if (this.homes.AllHomesFilled() && !this.level.CurrentLevel.Equals(LevelManager.GameLevel.Final))
                 {
                     this.NextLevel?.Invoke(this, null);
                 }
@@ -308,7 +308,7 @@ namespace FroggerStarter.Controller
             this.setPlayerToCenterOfBottomLane();
             this.homes.RemoveHome(e.LilyPad);
             this.updateScore(e);
-            if (this.homes.IsAllHomesFilled() && this.level.CurrentLevel.Equals(LevelManager.GameLevel.Final))
+            if (this.homes.AllHomesFilled() && this.level.CurrentLevel.Equals(LevelManager.GameLevel.Final))
             {
                 this.raiseGameOver();
             }
@@ -328,10 +328,10 @@ namespace FroggerStarter.Controller
 
         private void setPlayerToCenterOfBottomLane()
         {
-            var centeredX = this.backgroundWidth / 2 - this.player.PlayerSprite.Width / 2;
-            var centeredY = this.backgroundHeight - this.player.PlayerSprite.Height - GameSettings.BottomLaneOffset;
+            var centeredX = GameSettings.BackgroundWidth / 2 - this.player.PlayerSprite.Width / 2;
+            var centeredY = GameSettings.BackgroundHeight - this.player.PlayerSprite.Height - GameSettings.BottomLaneOffset;
 
-            this.player.SetPlayerLocation(centeredX, centeredY);
+            this.player.LastLocationTracker(centeredX, centeredY);
         }
 
         private void checkForPlayerVehicleCollisionAsync()

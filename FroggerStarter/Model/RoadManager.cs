@@ -33,6 +33,8 @@ namespace FroggerStarter.Model
 
         #region Methods
 
+        /// <summary>Returns an enumerator that iterates through the collection of Vehicles</summary>
+        /// <returns>An enumerator that can be used to iterate through the collection of vehicles</returns>
         public IEnumerator<Vehicle> GetEnumerator()
         {
             foreach (var lane in this.lanes)
@@ -47,6 +49,8 @@ namespace FroggerStarter.Model
             return this.GetEnumerator();
         }
 
+        /// <summary>Sets the lanes by level specs in GameSettings</summary>
+        /// <param name="level">The level enum</param>
         public void SetLanesByLevel(LevelManager.GameLevel level)
         {
             this.lanes.Clear();
@@ -252,14 +256,16 @@ namespace FroggerStarter.Model
             }
         }
 
+        /// <summary>Resets the number vehicles to starting number</summary>
         public void resetNumVehicles()
         {
             foreach (var lane in this.lanes)
             {
-                lane.HideVehicles();
+                lane.HideRandomVehicles();
             }
         }
 
+        /// <summary>Collapses all vehicles' visibility</summary>
         public void CollapseAllVehicles()
         {
             foreach (var lane in this.lanes)

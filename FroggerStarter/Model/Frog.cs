@@ -25,7 +25,7 @@ namespace FroggerStarter.Model
         public Frog()
         {
             Sprite = new FrogSprite();
-            currentHeading = Heading.Up;
+            CurrentHeading = Heading.Up;
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
@@ -34,13 +34,13 @@ namespace FroggerStarter.Model
         #region Methods
 
         /// <summary>
-        ///     Sets the heading.
+        ///     Sets the heading of the vehicle sprite
         /// </summary>
         /// <param name="heading">The heading.</param>
-        public override void setHeading(Heading heading)
+        public override void SetHeading(Heading heading)
         {
-            currentHeading = heading;
-            switch (currentHeading)
+            CurrentHeading = heading;
+            switch (CurrentHeading)
             {
                 case Heading.Down:
                     Sprite.RenderTransformOrigin = new Point(0.5, 0.5);

@@ -5,6 +5,8 @@ using FroggerStarter.View.Sprites.PowerUpSprites;
 
 namespace FroggerStarter.Model
 {
+    /// <summary>Invincibility stars that render the player un-hittable for a few seconds</summary>
+    /// <seealso cref="FroggerStarter.Model.GameObject" />
     public class InvincibilityStar : GameObject
     {
         #region Data members
@@ -18,12 +20,16 @@ namespace FroggerStarter.Model
 
         #region Properties
 
+        /// <summary>Gets a value indicating whether this instance is visible.</summary>
+        /// <value>
+        ///   <c>true</c> if this instance is visible; otherwise, <c>false</c>.</value>
         public bool IsShowing { get; private set; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>Initializes a new instance of the <see cref="InvincibilityStar"/> class.</summary>
         public InvincibilityStar()
         {
             this.setUpTimer();
@@ -59,7 +65,8 @@ namespace FroggerStarter.Model
             X = this.rand.Next((int) GameSettings.BackgroundWidth - (int) Sprite.Width);
         }
 
-        public void Show()
+        /// <summary>Randomly determines if star will display, and displays it</summary>
+        public void RandomlyShow()
         {
             if (this.rand.NextDouble() < 0.4)
             {
@@ -69,15 +76,19 @@ namespace FroggerStarter.Model
             }
         }
 
+        /// <summary>Called when [hit]. Collapses star, restarts show timer</summary>
         public void OnHit()
         {
             Sprite.Visibility = Visibility.Collapsed;
             this.IsShowing = false;
         }
 
-        public override void setHeading(Heading heading)
+
+        /// <summary>Sets the heading.</summary>
+        /// <param name="heading">The heading.</param>
+        public override void SetHeading(Heading heading)
         {
-            throw new NotImplementedException();
+            
         }
 
         #endregion
