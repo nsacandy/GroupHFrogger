@@ -29,7 +29,7 @@ namespace FroggerStarter.Controller
         private readonly LevelManager level;
         private readonly TimeExtender timeSprite;
         private readonly InvincibilityStar invincibilityStar;
-        //private readonly HighScoreViewModel viewModel;
+        private readonly HighScoreViewModel viewModel;
 
         private DispatcherTimer invincibilityTimer;
         private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.LifeLengthInSeconds);
@@ -76,7 +76,7 @@ namespace FroggerStarter.Controller
             this.timeSprite = new TimeExtender();
             this.invincibilityStar = new InvincibilityStar();
             this.invincibilityTimer = new DispatcherTimer();
-            //this.viewModel = new HighScoreViewModel();
+
 
             this.currentLifeAndPointTime = this.timerLength;
             this.startTime = DateTime.Now;
@@ -186,6 +186,7 @@ namespace FroggerStarter.Controller
 
         private void timerOnTick(object sender, object e)
         {
+            this.gameTimerTick++;
             this.currentLifeAndPointTime = DateTime.Now - this.startTime;
             this.showTimeSprite();
             this.showInvincibilityStarSprite();
@@ -244,12 +245,11 @@ namespace FroggerStarter.Controller
         {
             this.timeSprite.OnHit();
             this.currentLifeAndPointTime -= new TimeSpan(0, 0, 5);
-            this.currentLifeAndPointTime -= new TimeSpan(0, 0, 4);
         }
 
         private void showTimeSprite()
         {
-            if (this.currentLifeAndPointTime.Seconds % GameSettings.TimeSpriteAppearInterval == 0 && !this.timeSprite.IsShowing)
+            if (this.gameTimerTick % GameSettings.TimeSpriteAppearInterval == 0 && !this.timeSprite.IsShowing)
             {
                 this.timeSprite.RandomlyShow();
             }
@@ -257,7 +257,7 @@ namespace FroggerStarter.Controller
 
         private void showInvincibilityStarSprite()
         {
-            if (this.currentLifeAndPointTime.Seconds % GameSettings.InvincibilityAppearInterval == 0 && !this.invincibilityStar.IsShowing)
+            if (this.gameTimerTick % GameSettings.InvincibilityAppearInterval == 0 && !this.invincibilityStar.IsShowing)
             {
                 this.invincibilityStar.RandomlyShow();
             }
@@ -433,10 +433,12 @@ namespace FroggerStarter.Controller
             }
         }
 
-        //public void MakeHighScorePlayer(string name)
-        //{
-        //    this.viewModel.AddPlayerToHighScore(this.level.CurrentLevel, this.Score, name);
-        //}
+        /// <summary>Makes the high score player.</summary>
+        /// <param name="name">The name.</param>
+        public void MakeHighScorePlayer(string name)
+        {
+            this.viewModel.AddPlayerToHighScore(this.level.CurrentLevel, this.Score, name);
+        }
 
         /// <summary>Custom EventArgs class made to pass score and location data</summary>
         /// <seealso cref="System.EventArgs" />

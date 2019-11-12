@@ -78,9 +78,7 @@ namespace FroggerStarter.View
             this.gameOver.Visibility = Visibility.Visible;
             this.score.Visibility = Visibility.Visible;
             this.timer.Stop();
-            var result = await this.inputTextDialogAsync();
-            //this.gameManager.MakeHighScorePlayer(result);
-            this.HandleShowHighScoreboard();
+            this.promptUserForRestart();
         }
 
         private async void promptUserForRestart()

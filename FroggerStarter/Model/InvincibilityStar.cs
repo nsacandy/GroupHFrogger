@@ -68,7 +68,7 @@ namespace FroggerStarter.Model
         /// <summary>Randomly determines if star will display, and displays it</summary>
         public void RandomlyShow()
         {
-            if (this.rand.NextDouble() < 0.4)
+            if (this.rand.NextDouble() < 0.6)
             {
                 this.IsShowing = true;
                 Sprite.Visibility = Visibility.Visible;
