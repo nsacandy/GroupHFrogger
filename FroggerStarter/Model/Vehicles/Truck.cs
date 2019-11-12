@@ -2,13 +2,12 @@
 
 namespace FroggerStarter.Model.Vehicles
 {
-    class Truck : Vehicle
+    internal class Truck : Vehicle
     {
-
         public Truck(Heading heading)
         {
-            this.Sprite = new TruckSprite();
-            this.setHeading(heading);
+            Sprite = new TruckSprite();
+            setHeading(heading);
         }
     }
 }

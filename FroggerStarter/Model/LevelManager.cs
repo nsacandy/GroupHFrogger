@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FroggerStarter.Model
+﻿namespace FroggerStarter.Model
 {
     public class LevelManager
     {
@@ -15,26 +9,20 @@ namespace FroggerStarter.Model
             Final
         }
 
+
         public GameLevel CurrentLevel { get; private set; } = GameLevel.One;
-
-
-        public LevelManager()
-        {
-            
-        }
 
         public void MoveToNextLevel()
         {
             switch (CurrentLevel)
             {
                 case GameLevel.One:
-                    this.CurrentLevel = GameLevel.Two;
+                    CurrentLevel = GameLevel.Two;
                     break;
                 case GameLevel.Two:
-                    this.CurrentLevel = GameLevel.Final;
+                    CurrentLevel = GameLevel.Final;
                     break;
             }
         }
-        
     }
 }

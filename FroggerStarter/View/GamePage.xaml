@@ -26,6 +26,10 @@
 
         <Rectangle x:Name="fullTimerBar" Fill="White" Height="10" Width="50" Canvas.Left="40" Canvas.Top="380" />
         <Rectangle x:Name="emptyTimerBar" Fill="Red" Height="10" Width="0" Canvas.Left="40" Canvas.Top="380" />
+
+        <ContentDialog x:Name="restartDialog" Width="100" Height="100" RenderTransformOrigin="0.49,0.79"
+                       Canvas.Left="275" Canvas.Top="155" />
+
     </Canvas>
 
 

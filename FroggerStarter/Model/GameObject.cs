@@ -22,12 +22,13 @@ namespace FroggerStarter.Model
         }
 
         protected Heading currentHeading;
+
         #endregion
 
         #region Properties
 
         public abstract void setHeading(Heading heading);
-        
+
         /// <summary>
         ///     Gets or sets the x location of the game object.
         /// </summary>
@@ -36,11 +37,11 @@ namespace FroggerStarter.Model
         /// </value>
         public double X
         {
-            get => this.location.X;
+            get => location.X;
             set
             {
-                this.location.X = value;
-                this.render();
+                location.X = value;
+                render();
             }
         }
 
@@ -52,11 +53,11 @@ namespace FroggerStarter.Model
         /// </value>
         public double Y
         {
-            get => this.location.Y;
+            get => location.Y;
             set
             {
-                this.location.Y = value;
-                this.render();
+                location.Y = value;
+                render();
             }
         }
 
@@ -82,7 +83,7 @@ namespace FroggerStarter.Model
         /// <value>
         ///     The width.
         /// </value>
-        public double Width => this.Sprite.Width;
+        public double Width => Sprite.Width;
 
         /// <summary>
         ///     Gets the height of the game object.
@@ -90,7 +91,7 @@ namespace FroggerStarter.Model
         /// <value>
         ///     The height.
         /// </value>
-        public double Height => this.Sprite.Height;
+        public double Height => Sprite.Height;
 
         /// <summary>
         ///     Gets or sets the sprite associated with the game object.
@@ -111,7 +112,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MoveRight()
         {
-            this.moveX(this.SpeedX);
+            moveX(SpeedX);
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MoveLeft()
         {
-            this.moveX(-this.SpeedX);
+            moveX(-SpeedX);
         }
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MoveUp()
         {
-            this.moveY(-this.SpeedY);
+            moveY(-SpeedY);
         }
 
         /// <summary>
@@ -141,22 +142,22 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MoveDown()
         {
-            this.moveY(this.SpeedY);
+            moveY(SpeedY);
         }
 
         private void moveX(int x)
         {
-            this.X += x;
+            X += x;
         }
 
         private void moveY(int y)
         {
-            this.Y += y;
+            Y += y;
         }
 
         private void render()
         {
-            this.Sprite.RenderAt(this.X, this.Y);
+            Sprite.RenderAt(X, Y);
         }
 
         /// <summary>
@@ -168,18 +169,12 @@ namespace FroggerStarter.Model
         /// <param name="speedY">The speed y.</param>
         protected void SetSpeed(int speedX, int speedY)
         {
-            if (speedX < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(speedX));
-            }
+            if (speedX < 0) throw new ArgumentOutOfRangeException(nameof(speedX));
 
-            if (speedY < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(speedY));
-            }
+            if (speedY < 0) throw new ArgumentOutOfRangeException(nameof(speedY));
 
-            this.SpeedX = speedX;
-            this.SpeedY = speedY;
+            SpeedX = speedX;
+            SpeedY = speedY;
         }
 
         #endregion

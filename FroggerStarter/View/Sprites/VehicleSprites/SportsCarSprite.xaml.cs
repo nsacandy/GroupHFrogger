@@ -2,11 +2,13 @@
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace FroggerStarter.View.Sprites.PowerUpSprites
+
+
+namespace FroggerStarter.View.Sprites.VehicleSprites
 {
-    public sealed partial class TimeExtenderSprite : BaseSprite
+    public sealed partial class SportsCarSprite
     {
-        public TimeExtenderSprite()
+        public SportsCarSprite()
         {
             InitializeComponent();
         }
