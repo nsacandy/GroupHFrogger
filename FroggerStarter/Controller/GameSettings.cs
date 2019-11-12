@@ -8,8 +8,9 @@ namespace FroggerStarter.Controller
         public const double bottomLaneOffset = 5;
         public const double leftBorder = 0;
         public const int GameLengthInSeconds = 20;
-        public const int TimeSpriteShowInterval = 335;
-        public static readonly TimeSpan InvincibilityLength = new TimeSpan(0, 0, 3);
+        public const int TimeSpriteShowInterval = 4;
+        public const int InvincibilityAppearInterval = 5;
+        public static readonly TimeSpan InvincibilityLength = new TimeSpan(0, 0, 5);
 
         public static readonly double TOP_LANE_OFFSET = (double) Application.Current.Resources["HighRoadYLocation"];
         public static readonly double backgroundWidth = (double) Application.Current.Resources["AppWidth"];

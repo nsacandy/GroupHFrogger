@@ -167,14 +167,12 @@
     <Compile Include="View\Sprites\PowerUpSprites\TimeExtenderSprite.xaml.cs">
       <DependentUpon>TimeExtenderSprite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\VehicleSprites\IVehicleSprite.cs" />
     <Compile Include="View\Sprites\VehicleSprites\SportsCarSprite.xaml.cs">
       <DependentUpon>SportsCarSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\VehicleSprites\TruckSprite.xaml.cs">
       <DependentUpon>TruckSprite.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Sprites\VehicleSprites\VehicleSprite.xaml.cs">
-      <DependentUpon>VehicleSprite.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -243,10 +241,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\VehicleSprites\TruckSprite.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Sprites\VehicleSprites\VehicleSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

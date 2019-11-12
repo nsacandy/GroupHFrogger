@@ -3,25 +3,34 @@
 using System;
 using Windows.UI.Xaml;
 using FroggerStarter.Controller;
+using FroggerStarter.Model;
 
 namespace FroggerStarter.View.Sprites
 {
     public sealed partial class FrogSprite
     {
+
+        private bool isInvincible;
+
+        public bool IsInvincible
+        {
+            get { return isInvincible; }
+            set { isInvincible = value; }
+        }
         #region Constructors
 
         public FrogSprite()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             IsHitTestVisible = false;
-            Invincible.Storyboard.Duration = GameSettings.InvincibilityLength;
-            Dying.Storyboard.Completed += onNewSpriteCreated;
-            Invincible.Storyboard.Completed += StopInvincibility;
+
+            this.Invincible.Storyboard.Duration = GameSettings.InvincibilityLength;
+            this.Dying.Storyboard.Completed += this.onNewSpriteCreated;
+            this.Invincible.Storyboard.Completed += this.StopInvincibility;
         }
 
         #endregion
 
-        public bool IsInvincible { get; set; }
 
         #region Types and Delegates
 
@@ -51,6 +60,9 @@ namespace FroggerStarter.View.Sprites
         public void AnimateInvincibility()
         {
             Invincible.Storyboard.Begin();
+            
+            App.AppSoundEffects.Play(Sounds.PowerUpStar);
+            
         }
 
         public void StopInvincibility(object e, object f)
@@ -58,6 +70,8 @@ namespace FroggerStarter.View.Sprites
             IsInvincible = false;
             VisualStateManager.GoToState(this, "OriginalSprite", true);
         }
-        #endregion
     }
-    }
+
+    #endregion
+}
+    

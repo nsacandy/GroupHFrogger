@@ -19,18 +19,31 @@ namespace FroggerStarter.Model
         PowerUpStar
     }
 
+    
     public class SoundEffects
     {
         private readonly Dictionary<Sounds, MediaPlayer> effects;
+        private MediaPlayer powerStarLoop;
 
+        public MediaPlayer PowerStarLoop
+        {
+            get { return powerStarLoop; }
+            private set { powerStarLoop = value; }
+        }
+
+        
         public SoundEffects()
         {
+            this.setStarLoop();
             effects = new Dictionary<Sounds, MediaPlayer>();
             loadEfx();
         }
 
         private void loadEfx()
         {
+            MediaPlayer powerStar = loadSoundFileAsync("sound-frogger-star-power.wav");
+            powerStar.IsLoopingEnabled = true;
+            powerStar.Play();
             effects.Add(Sounds.Hop, loadSoundFileAsync("sound-frogger-hop.wav"));
             effects.Add(Sounds.HitVehicle, loadSoundFileAsync("sound-frogger-squash.wav"));
             effects.Add(Sounds.HitWater, loadSoundFileAsync("sound-frogger-plunk.wav"));
@@ -64,5 +77,13 @@ namespace FroggerStarter.Model
 
             mediaElement.Play();
         }
+
+        public void setStarLoop()
+        {
+            MediaPlayer powerStar = loadSoundFileAsync("sound-frogger-star-power.wav");
+            powerStar.IsLoopingEnabled = true;
+            this.powerStarLoop = powerStar;
+        }
+        
     }
 }
