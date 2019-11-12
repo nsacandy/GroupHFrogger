@@ -4,42 +4,42 @@ using Windows.UI.Xaml.Media;
 namespace FroggerStarter.Model.Vehicles
 {
     /// <summary>
-    ///     Defines vehicle models
+    ///     Abstract class for defining basic Vehicle functionality
     /// </summary>
     public abstract class Vehicle : GameObject
     {
-        #region Data members
-
-        #endregion
-
-        #region Constructors
-
-        #endregion
-
         #region Methods
 
-        public override void setHeading(Heading heading)
+        /// <summary>Sets the heading of the spite.</summary>
+        /// <param name="heading">The heading.</param>
+        public override void SetHeading(Heading heading)
         {
-            currentHeading = heading;
-            switch (currentHeading)
+            CurrentHeading = heading;
+            switch (CurrentHeading)
             {
                 case Heading.Right:
-                    headRight();
+                    this.HeadRight();
                     break;
                 case Heading.Left:
                     break;
             }
         }
 
-        protected void headRight()
+        /// <summary>Heads the Vehicle right</summary>
+        protected void HeadRight()
         {
             Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
             Sprite.RenderTransform = new ScaleTransform {ScaleX = -1};
         }
 
+        /// <summary>
+        ///   <para>
+        ///  Moves the vehicle in the direction of the heading
+        /// </para>
+        /// </summary>
         public void MoveVehicle()
         {
-            switch (currentHeading)
+            switch (CurrentHeading)
             {
                 case Heading.Left:
                     X -= SpeedX;
@@ -56,6 +56,8 @@ namespace FroggerStarter.Model.Vehicles
             }
         }
 
+        /// <summary>Sets the speed of the Vehicle</summary>
+        /// <param name="speed">The speed.</param>
         public virtual void SetSpeed(int speed)
         {
             base.SetSpeed(speed, speed);

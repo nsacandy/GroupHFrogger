@@ -9,39 +9,41 @@
     mc:Ignorable="d" Height="447" Width="675">
 
     <Page.DataContext>
-        <viewModel:HighScoreViewModel/>
+        <viewModel:HighScoreViewModel />
     </Page.DataContext>
 
     <Grid Background="White" Margin="0,0,-4,7">
-        <ListView 
+        <ListView
             SelectedItem=""
-            ItemsSource ="{Binding Path=AllScores, Mode=TwoWay}" 	
-            BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="265" Margin="237,35,0,0" VerticalAlignment="Top" Width="278">
+            ItemsSource="{Binding Path=AllScores, Mode=TwoWay}"
+            BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="265" Margin="237,35,0,0"
+            VerticalAlignment="Top" Width="278">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Black" BorderThickness="1" Width="230">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" 
-                                       Text="{Binding Name}" Margin="0, 0, 0, 0"/>
-                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" 
-                                       Text="{Binding Level}" Margin="80, 0, 0, 0"/>
-                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0" 
-                                       Text="{Binding Score}" Margin="180, 0, 0, 0"/>
+                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0"
+                                       Text="{Binding Name}" Margin="0, 0, 0, 0" />
+                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0"
+                                       Text="{Binding Level}" Margin="80, 0, 0, 0" />
+                            <TextBlock HorizontalAlignment="Stretch" Grid.Row="0"
+                                       Text="{Binding Score}" Margin="180, 0, 0, 0" />
                         </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Content="Play Again" Margin="91,338,0,0" VerticalAlignment="Top"/>
-        <Button Content="Exit" Margin="237,338,0,0" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="7,56,0,0" Text="Sort By:" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button Content="Player score/name/level" Margin="30,103,0,0" VerticalAlignment="Top"/>
-        <Button Content="Player name/score/level" Margin="30,152,0,0" VerticalAlignment="Top"/>
-        <Button Content="Level/score/name" Margin="30,200,0,0" VerticalAlignment="Top"/>
+        <Button Content="Play Again" Margin="91,338,0,0" VerticalAlignment="Top" />
+        <Button Content="Exit" Margin="237,338,0,0" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="7,56,0,0" Text="Sort By:" TextWrapping="Wrap"
+                   VerticalAlignment="Top" />
+        <Button Content="Player score/name/level" Margin="30,103,0,0" VerticalAlignment="Top" />
+        <Button Content="Player name/score/level" Margin="30,152,0,0" VerticalAlignment="Top" />
+        <Button Content="Level/score/name" Margin="30,200,0,0" VerticalAlignment="Top" />
 
     </Grid>
 </Page>

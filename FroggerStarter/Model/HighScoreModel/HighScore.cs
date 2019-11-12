@@ -1,29 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Store.Preview.InstallControl;
-using FroggerStarter.Controller;
+﻿using FroggerStarter.Controller;
 
 namespace FroggerStarter.Model.HighScoreModel
 {
+    /// <summary>Keeps track of high score</summary>
     public class HighScore
     {
-        public string Name { get; private set; }
-        public int Score { get; private set; }
-        public LevelManager.GameLevel Level { get; private set; }
+        #region Data members
 
-        public HighScore(LevelManager.GameLevel level, int score, string name)
+        private readonly GameManager manager;
+        private readonly LevelManager currLevel;
+        private int level;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>Gets or sets the name of the scorer.</summary>
+        /// <value>The name.</value>
+        public string Name { get; set; }
+        /// <summary>Gets or sets the high score achieved.</summary>
+        /// <value>The score.</value>
+        public int Score { get; set; }
+
+        /// <summary>Gets or sets the level achieved.</summary>
+        /// <value>The level.</value>
+        public LevelManager.GameLevel Level { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>Initializes a new instance of the <see cref="HighScore"/> class.</summary>
+        public HighScore()
         {
-            this.Level = level;
-            this.Score = score;
-            this.Name = name;
+            this.manager = this.manager;
+            this.currLevel = this.currLevel;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>Converts to string.</summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
             return $"{this.Name} : {this.Level} : {this.Score}";
         }
+
+        #endregion
     }
 }

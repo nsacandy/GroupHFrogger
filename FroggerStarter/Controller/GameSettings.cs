@@ -3,18 +3,24 @@ using Windows.UI.Xaml;
 
 namespace FroggerStarter.Controller
 {
+    /// <summary>
+    ///     <para>Class that keeps track of various settings in the game</para>
+    /// </summary>
     internal static class GameSettings
     {
-        public const double bottomLaneOffset = 5;
-        public const double leftBorder = 0;
-        public const int GameLengthInSeconds = 20;
-        public const int TimeSpriteShowInterval = 4;
+        #region Data members
+
+        public const int InitialNumLives = 4;
+        public const double BottomLaneOffset = 5;
+        public const double LeftBorder = 0;
+        public const int LifeLengthInSeconds = 20;
+        public const int TimeSpriteAppearInterval = 4;
         public const int InvincibilityAppearInterval = 5;
         public static readonly TimeSpan InvincibilityLength = new TimeSpan(0, 0, 5);
 
-        public static readonly double TOP_LANE_OFFSET = (double) Application.Current.Resources["HighRoadYLocation"];
-        public static readonly double backgroundWidth = (double) Application.Current.Resources["AppWidth"];
-        public static readonly double backgroundHeight = (double) Application.Current.Resources["AppHeight"];
+        public static readonly double TopLaneOffset = (double) Application.Current.Resources["HighRoadYLocation"];
+        public static readonly double BackgroundWidth = (double) Application.Current.Resources["AppWidth"];
+        public static readonly double BackgroundHeight = (double) Application.Current.Resources["AppHeight"];
 
         public static readonly double TopBorder = (double) Application.Current.Resources["HighRoadYLocation"] +
                                                   (double) Application.Current.Resources["RoadHeight"];
@@ -36,5 +42,7 @@ namespace FroggerStarter.Controller
         public static readonly int[] LaneThreeLevelThreeValues = {205, 6, 6};
         public static readonly int[] LaneFourLevelThreeValues = {155, 5, 7};
         public static readonly int[] LaneFiveLevelThreeValues = {105, 7, 8};
+
+        #endregion
     }
 }

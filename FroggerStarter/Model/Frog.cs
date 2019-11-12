@@ -10,6 +10,13 @@ namespace FroggerStarter.Model
     /// <seealso cref="FroggerStarter.Model.GameObject" />
     public class Frog : GameObject
     {
+        #region Data members
+
+        private const int SpeedXDirection = 50;
+        private const int SpeedYDirection = 50;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -18,20 +25,22 @@ namespace FroggerStarter.Model
         public Frog()
         {
             Sprite = new FrogSprite();
-            currentHeading = Heading.Up;
+            CurrentHeading = Heading.Up;
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
         #endregion
 
+        #region Methods
+
         /// <summary>
-        ///     Sets the heading.
+        ///     Sets the heading of the vehicle sprite
         /// </summary>
         /// <param name="heading">The heading.</param>
-        public override void setHeading(Heading heading)
+        public override void SetHeading(Heading heading)
         {
-            currentHeading = heading;
-            switch (currentHeading)
+            CurrentHeading = heading;
+            switch (CurrentHeading)
             {
                 case Heading.Down:
                     Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
@@ -56,11 +65,6 @@ namespace FroggerStarter.Model
                     break;
             }
         }
-
-        #region Data members
-
-        private const int SpeedXDirection = 50;
-        private const int SpeedYDirection = 50;
 
         #endregion
     }

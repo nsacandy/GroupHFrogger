@@ -3,5 +3,4 @@
     internal interface IVehicleSprite
     {
     }
-
 }

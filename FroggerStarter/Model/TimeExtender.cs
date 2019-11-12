@@ -5,65 +5,94 @@ using FroggerStarter.View.Sprites.PowerUpSprites;
 
 namespace FroggerStarter.Model
 {
+    /// <summary>A powerup that extends player's life-time</summary>
+    /// <seealso cref="FroggerStarter.Model.GameObject" />
     public class TimeExtender : GameObject
     {
+        #region Data members
+
         private readonly int[] possibleYValuesNonWater = {305, 255, 205, 155, 105};
 
         private readonly Random rand;
         private DispatcherTimer timer;
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>Gets a value indicating whether this instance is visible.</summary>
+        /// <value>
+        ///   <c>true</c> if this instance is showing; otherwise, <c>false</c>.</value>
+        public bool IsShowing { get; private set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>Initializes a new instance of the <see cref="TimeExtender"/> class.</summary>
         public TimeExtender()
         {
-            setUpTimer();
-            rand = new Random();
+            this.setUpTimer();
+            this.rand = new Random();
             Sprite = new TimeExtenderSprite();
             Sprite.Visibility = Visibility.Collapsed;
-            moveNext();
+            this.moveNext();
         }
 
-        public bool IsShowing { get; private set; }
+        #endregion
+
+        #region Methods
 
         private void onTick(object sender, object e)
         {
-            IsShowing = false;
+            this.IsShowing = false;
             Sprite.Visibility = Visibility.Collapsed;
-            moveNext();
-            timer.Stop();
+            this.moveNext();
+            this.timer.Stop();
         }
 
         private void setUpTimer()
         {
-            timer = new DispatcherTimer();
-            timer.Tick += onTick;
-            timer.Interval = new TimeSpan(0, 0, 0, 3);
+            this.timer = new DispatcherTimer();
+            this.timer.Tick += this.onTick;
+            this.timer.Interval = new TimeSpan(0, 0, 0, 3);
         }
 
         private void moveNext()
         {
-            var nextY = rand.Next(possibleYValuesNonWater.Length);
-            Y = possibleYValuesNonWater[nextY];
-            X = rand.Next((int) GameSettings.backgroundWidth - (int) Sprite.Width);
+            var nextY = this.rand.Next(this.possibleYValuesNonWater.Length);
+            Y = this.possibleYValuesNonWater[nextY];
+            X = this.rand.Next((int) GameSettings.BackgroundWidth - (int) Sprite.Width);
         }
 
-        public void Show()
+
+        /// <summary>Randomly shows the powerup</summary>
+        public void RandomlyShow()
         {
-            if (rand.NextDouble() < 0.1)
+            if (this.rand.NextDouble() < 0.1)
             {
-                IsShowing = true;
+                this.IsShowing = true;
                 Sprite.Visibility = Visibility.Visible;
-                timer.Start();
+                this.timer.Start();
             }
         }
 
+        /// <summary>Called when [hit]. Collapses powerup visibility</summary>
         public void OnHit()
         {
             Sprite.Visibility = Visibility.Collapsed;
-            IsShowing = false;
+            this.IsShowing = false;
         }
 
-        public override void setHeading(Heading heading)
+
+        /// <summary>Sets the heading.</summary>
+        /// <param name="heading">The heading.</param>
+        
+        public override void SetHeading(Heading heading)
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

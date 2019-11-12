@@ -6,28 +6,6 @@ namespace FroggerStarter.Model
 {
     internal class PlayerManager : GameObject
     {
-        #region Constructors
-
-        public PlayerManager(double topBoundary, double bottomBoundary, double leftBoundary, double rightBoundary)
-        {
-            Player = new Frog();
-            PlayerSprite = (FrogSprite) Player.Sprite;
-            PlayerSprite.IsHitTestVisible = false;
-
-            this.topBoundary = topBoundary;
-            this.bottomBoundary = bottomBoundary;
-            this.leftBoundary = leftBoundary;
-            this.rightBoundary = rightBoundary;
-
-            PlayerSprite.NewSpriteCreated += onNewSpriteCreated;
-        }
-
-        #endregion
-
-        #region Types and Delegates
-
-        #endregion
-
         #region Data members
 
         private readonly double topBoundary;
@@ -43,8 +21,31 @@ namespace FroggerStarter.Model
 
         #region Properties
 
+        /// <summary>Gets the player's class</summary>
+        /// <value>The player's frog class </value>
         public Frog Player { get; }
+
+        /// <summary>Gets the player sprite.</summary>
+        /// <value>The player sprite.</value>
         public FrogSprite PlayerSprite { get; }
+
+        #endregion
+
+        #region Constructors
+
+        public PlayerManager(double topBoundary, double bottomBoundary, double leftBoundary, double rightBoundary)
+        {
+            this.Player = new Frog();
+            this.PlayerSprite = (FrogSprite) this.Player.Sprite;
+            this.PlayerSprite.IsHitTestVisible = false;
+
+            this.topBoundary = topBoundary;
+            this.bottomBoundary = bottomBoundary;
+            this.leftBoundary = leftBoundary;
+            this.rightBoundary = rightBoundary;
+
+            this.PlayerSprite.NewSpriteCreated += this.onNewSpriteCreated;
+        }
 
         #endregion
 
@@ -54,9 +55,9 @@ namespace FroggerStarter.Model
 
         private void onNewSpriteCreated(object sender, EventArgs e)
         {
-            keyboardFrozen = false;
-            setHeading(Heading.Up);
-            NewSpriteCreated?.Invoke(this, null);
+            this.keyboardFrozen = false;
+            this.SetHeading(Heading.Up);
+            this.NewSpriteCreated?.Invoke(this, null);
         }
 
         /// <summary>
@@ -66,28 +67,38 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerLeft()
         {
-            if (keyboardFrozen) return;
-            PlayerSprite.AnimateMove();
-            setPreviousPositionLocation();
-            setHeading(Heading.Left);
-            Player.MoveLeft();
-            if (Player.X < leftBoundary) ResetPlayerToPreviousPosition();
+            if (this.keyboardFrozen)
+            {
+                return;
+            }
+
+            this.PlayerSprite.AnimateMove();
+            this.setPreviousPositionLocation();
+            this.SetHeading(Heading.Left);
+            this.Player.MoveLeft();
+            if (this.Player.X < this.leftBoundary)
+            {
+                this.ResetPlayerToPreviousPosition();
+            }
         }
 
-        /// <summary>
-        ///     Moves the player to the right.
-        ///     Precondition: none
-        ///     Postcondition: player.X = player.X@prev + player.Width
-        /// </summary>
+        /// <summary>Moves the player to the right.
+        ///  <@postcondition>player x + player speed </@precondition></summary>
         public void MovePlayerRight()
         {
-            if (keyboardFrozen) return;
+            if (this.keyboardFrozen)
+            {
+                return;
+            }
 
-            PlayerSprite.AnimateMove();
-            setPreviousPositionLocation();
-            Player.MoveRight();
-            setHeading(Heading.Right);
-            if (Player.X + Player.Width > rightBoundary) ResetPlayerToPreviousPosition();
+            this.PlayerSprite.AnimateMove();
+            this.setPreviousPositionLocation();
+            this.Player.MoveRight();
+            this.SetHeading(Heading.Right);
+            if (this.Player.X + this.Player.Width > this.rightBoundary)
+            {
+                this.ResetPlayerToPreviousPosition();
+            }
         }
 
         /// <summary>
@@ -97,13 +108,19 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerUp()
         {
-            if (keyboardFrozen) return;
+            if (this.keyboardFrozen)
+            {
+                return;
+            }
 
-            PlayerSprite.AnimateMove();
-            setPreviousPositionLocation();
-            Player.MoveUp();
-            setHeading(Heading.Up);
-            if (Player.Y < topBoundary) ResetPlayerToPreviousPosition();
+            this.PlayerSprite.AnimateMove();
+            this.setPreviousPositionLocation();
+            this.Player.MoveUp();
+            this.SetHeading(Heading.Up);
+            if (this.Player.Y < this.topBoundary)
+            {
+                this.ResetPlayerToPreviousPosition();
+            }
         }
 
         /// <summary>
@@ -113,47 +130,67 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerDown()
         {
-            if (keyboardFrozen) return;
+            if (this.keyboardFrozen)
+            {
+                return;
+            }
 
-            PlayerSprite.AnimateMove();
-            setPreviousPositionLocation();
-            Player.MoveDown();
-            setHeading(Heading.Down);
-            if (Player.Y + Player.Height > bottomBoundary) ResetPlayerToPreviousPosition();
+            this.PlayerSprite.AnimateMove();
+            this.setPreviousPositionLocation();
+            this.Player.MoveDown();
+            this.SetHeading(Heading.Down);
+            if (this.Player.Y + this.Player.Height > this.bottomBoundary)
+            {
+                this.ResetPlayerToPreviousPosition();
+            }
         }
 
         private void setPreviousPositionLocation()
         {
-            previousPosition = new Point(PlayerSprite.HitBox.X, PlayerSprite.HitBox.Y);
+            this.previousPosition = new Point(this.PlayerSprite.HitBox.X, this.PlayerSprite.HitBox.Y);
         }
 
-        public void SetPlayerLocation(double x, double y)
+        /// <summary>Keeps track of most recent location.</summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        public void LastLocationTracker(double x, double y)
         {
-            Player.X = x;
-            Player.Y = y;
-            setPreviousPositionLocation();
+            this.Player.X = x;
+            this.Player.Y = y;
+            this.setPreviousPositionLocation();
         }
 
+        /// <summary>Resets the player to previous position.</summary>
         public void ResetPlayerToPreviousPosition()
         {
-            Player.X = previousPosition.X;
-            Player.Y = previousPosition.Y;
+            this.Player.X = this.previousPosition.X;
+            this.Player.Y = this.previousPosition.Y;
         }
 
+        /// <summary>Handles the life lost.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         public void HandleLifeLost(object sender, EventArgs e)
         {
-            keyboardFrozen = true;
-            PlayerSprite.AnimateDeath();
+            this.keyboardFrozen = true;
+            this.PlayerSprite.AnimateDeath();
         }
 
-        public void onInvincibilityTriggered()
+        /// <summary>Called when [invincibility triggered].</summary>
+        public void OnInvincibilityTriggered()
         {
-            PlayerSprite.AnimateInvincibility();
+            this.PlayerSprite.AnimateInvincibility();
         }
 
-        public override void setHeading(Heading heading)
+        /// <summary>
+        ///   <para>
+        ///  Sets the heading.
+        /// </para>
+        /// </summary>
+        /// <param name="heading">The heading.</param>
+        public override void SetHeading(Heading heading)
         {
-            Player.setHeading(heading);
+            this.Player.SetHeading(heading);
         }
 
         #endregion

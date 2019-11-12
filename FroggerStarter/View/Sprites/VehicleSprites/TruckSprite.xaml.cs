@@ -10,7 +10,7 @@ namespace FroggerStarter.View.Sprites
 
         public TruckSprite()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion

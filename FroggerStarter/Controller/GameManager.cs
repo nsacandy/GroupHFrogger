@@ -20,67 +20,7 @@ namespace FroggerStarter.Controller
     /// </summary>
     public class GameManager
     {
-        #region Constructors
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="GameManager" /> class.
-        /// </summary>
-        /// <param name="backgroundHeight">Height of the background.</param>
-        /// <param name="backgroundWidth">Width of the background.</param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        ///     backgroundHeight &lt;= 0
-        ///     or
-        ///     backgroundWidth &lt;= 0
-        /// </exception>
-        public GameManager(double backgroundHeight, double backgroundWidth)
-        {
-            if (backgroundHeight <= 0) throw new ArgumentOutOfRangeException(nameof(backgroundHeight));
-
-            if (backgroundWidth <= 0) throw new ArgumentOutOfRangeException(nameof(backgroundWidth));
-
-            this.backgroundHeight = backgroundHeight;
-            this.backgroundWidth = backgroundWidth;
-
-            IsGameOver = false;
-
-            roadManager = new RoadManager(this.backgroundWidth);
-            player = new PlayerManager(GameSettings.TOP_LANE_OFFSET, this.backgroundHeight, GameSettings.leftBorder,
-                this.backgroundWidth);
-            level = new LevelManager();
-            timeSprite = new TimeExtender();
-            invincibilityStar = new InvincibilityStar();
-            invincibilityTimer = new DispatcherTimer();
-            this.viewModel = new HighScoreViewModel();
-            
-
-            currentLifeAndPointTime = timerLength;
-            startTime = DateTime.Now;
-
-            player.NewSpriteCreated += playerOnNewSpriteCreated;
-            LifeLost += player.HandleLifeLost;
-            PointScored += handlePointScored;
-            NextLevel += moveToNextLevel;
-            TimePowerUp += onTimeExtention;
-        }
-
-        #endregion
-
-        #region Types and Delegates
-
-        public event EventHandler LifeLost;
-        public event EventHandler GameOver;
-        public event EventHandler GameResumed;
-        public event EventHandler NextLevel;
-        public event EventHandler TimePowerUp;
-
-        public event EventHandler<ScoreArgs> PointScored;
-
-        #endregion
-
         #region Data members
-
-        private readonly double backgroundHeight;
-        private readonly double backgroundWidth;
 
         private Canvas gameCanvas;
         private readonly PlayerManager player;
@@ -92,7 +32,7 @@ namespace FroggerStarter.Controller
         private HighScoreViewModel viewModel;
 
         private DispatcherTimer invincibilityTimer;
-        private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.GameLengthInSeconds);
+        private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.LifeLengthInSeconds);
         private DispatcherTimer timer;
         private DateTime startTime;
         private TimeSpan currentLifeAndPointTime;
@@ -102,20 +42,83 @@ namespace FroggerStarter.Controller
 
         #region Properties
 
+        /// <summary>Player's score set when they reach a lilypad based on time remaining.</summary>
+        /// <value>The score.</value>
         public int Score { get; private set; }
-        public int Lives { get; private set; } = 4;
+
+        /// <summary>Player's remaining lives.</summary>
+        public int Lives { get; private set; }
+
+        /// <summary>Gets a value indicating whether the game has ended, when all lives have been lost.</summary>
+        /// <value>
+        ///     <c>true</c> if this instance final life was lost; otherwise, <c>false</c>.
+        /// </value>
         public bool IsGameOver { get; private set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="GameManager" /> class.
+        ///     Sets initial values, sets event handling for gameOver, pointScored, nextLevel,
+        ///     newSprite, and powerups
+        /// </summary>
+        public GameManager()
+        {
+            this.IsGameOver = false;
+
+            this.roadManager = new RoadManager(GameSettings.BackgroundWidth);
+            this.player = new PlayerManager(GameSettings.TopLaneOffset, GameSettings.BackgroundHeight,
+                GameSettings.LeftBorder,
+                GameSettings.BackgroundWidth);
+            this.level = new LevelManager();
+            this.timeSprite = new TimeExtender();
+            this.invincibilityStar = new InvincibilityStar();
+            this.invincibilityTimer = new DispatcherTimer();
+
+            this.currentLifeAndPointTime = this.timerLength;
+            this.startTime = DateTime.Now;
+            this.Lives = GameSettings.InitialNumLives;
+            this.player.NewSpriteCreated += this.playerOnNewSpriteCreated;
+            this.LifeLost += this.player.HandleLifeLost;
+            this.PointScored += this.handlePointScored;
+            this.NextLevel += this.moveToNextLevel;
+            this.TimePowerUp += this.onTimeExtention;
+        }
 
         #endregion
 
         #region Methods
 
+        /// <summary>Occurs when [life lost], player collides with vehicle</summary>
+        public event EventHandler LifeLost;
+
+        /// <summary>Occurs when all lives have been lost.</summary>
+        public event EventHandler GameOver;
+
+        /// <summary>Occurs when the timer starts back after death.</summary>
+        public event EventHandler GameResumed;
+
+        /// <summary>Occurs when player has filled all lilypads in current level.</summary>
+        public event EventHandler NextLevel;
+
+        /// <summary>
+        ///     <para>
+        ///         Occurs when [time power up] is hit.
+        ///     </para>
+        /// </summary>
+        public event EventHandler TimePowerUp;
+
+        /// <summary>Occurs when player reaches a lilypad.</summary>
+        public event EventHandler<ScoreArgs> PointScored;
+
         private void setupGameTimer()
         {
-            timer = new DispatcherTimer();
-            timer.Tick += timerOnTick;
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 15);
-            timer.Start();
+            this.timer = new DispatcherTimer();
+            this.timer.Tick += this.timerOnTick;
+            this.timer.Interval = new TimeSpan(0, 0, 0, 0, 15);
+            this.timer.Start();
         }
 
         /// <summary>
@@ -128,146 +131,165 @@ namespace FroggerStarter.Controller
         /// <exception cref="ArgumentNullException">gameCanvas</exception>
         public void InitializeGame(Canvas gamePage)
         {
-            gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
-            setupGameTimer();
-            createAndPlacePlayer();
-            addVehiclesToCanvas();
-            addTimeSpriteToCanvas();
-            addInvincibilityStarToCanvas();
-            homes = new HomeManager(gameCanvas);
+            this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
+            this.setupGameTimer();
+            this.createAndPlacePlayer();
+            this.addVehiclesToCanvas();
+            this.addTimeSpriteToCanvas();
+            this.addInvincibilityStarToCanvas();
+            this.homes = new HomeManager(this.gameCanvas);
         }
 
+        /// <summary>Gets the frog homes.</summary>
+        /// <returns>An enumerable instance of lilypads</returns>
         public IEnumerable<LilyPad> GetFrogHomes()
         {
-            return homes;
+            return this.homes;
         }
 
         private void addTimeSpriteToCanvas()
         {
-            gameCanvas.Children.Add(timeSprite.Sprite);
+            this.gameCanvas.Children.Add(this.timeSprite.Sprite);
         }
 
         private void addInvincibilityStarToCanvas()
         {
-            gameCanvas.Children.Add(invincibilityStar.Sprite);
+            this.gameCanvas.Children.Add(this.invincibilityStar.Sprite);
         }
 
         private void addVehiclesToCanvas()
         {
-            foreach (var vehicle in roadManager) gameCanvas.Children.Add(vehicle.Sprite);
+            foreach (var vehicle in this.roadManager)
+            {
+                this.gameCanvas.Children.Add(vehicle.Sprite);
+            }
         }
 
         private void removeVehiclesFromCanvas()
         {
-            foreach (var vehicle in roadManager) gameCanvas.Children.Remove(vehicle.Sprite);
+            foreach (var vehicle in this.roadManager)
+            {
+                this.gameCanvas.Children.Remove(vehicle.Sprite);
+            }
         }
 
         private void moveToNextLevel(object sender, EventArgs e)
         {
             App.AppSoundEffects.Play(Sounds.LevelComplete);
-            removeVehiclesFromCanvas();
-            level.MoveToNextLevel();
-            roadManager.SetLanesByLevel(level.CurrentLevel);
-            addVehiclesToCanvas();
-            homes.ResetLandingSpots();
+            this.removeVehiclesFromCanvas();
+            this.level.MoveToNextLevel();
+            this.roadManager.SetLanesByLevel(this.level.CurrentLevel);
+            this.addVehiclesToCanvas();
+            this.homes.ResetLandingSpots();
         }
 
         private void timerOnTick(object sender, object e)
         {
-            
-            gameTimerTick++;
-            currentLifeAndPointTime = DateTime.Now - startTime;
-            showTimeSprite();
-            showInvincibilityStarSprite();
+            this.gameTimerTick++;
+            this.currentLifeAndPointTime = DateTime.Now - this.startTime;
+            this.showTimeSprite();
+            this.showInvincibilityStarSprite();
             this.checkForInvincibilityStarCollision();
-            checkForPlayerVehicleCollisionAsync();
-            checkForPointScored();
-            checkForTimeSpriteCollision();
-            checkRemainingTime();
-            roadManager.moveAllVehicles();
+            this.checkForPlayerVehicleCollisionAsync();
+            this.checkForPointScored();
+            this.checkForTimeSpriteCollision();
+            this.checkRemainingTime();
+            this.roadManager.moveAllVehicles();
         }
 
         private void checkForTimeSpriteCollision()
         {
-            var playerBox = player.PlayerSprite.HitBox;
+            var playerBox = this.player.PlayerSprite.HitBox;
             var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
 
             foreach (var uiElement in objectsAtPlayerLocation)
+            {
                 if (uiElement is TimeExtenderSprite)
                 {
                     App.AppSoundEffects.Play(Sounds.PowerUpTime);
-                    TimePowerUp?.Invoke(this, null);
+                    this.TimePowerUp?.Invoke(this, null);
                 }
+            }
         }
 
         private void checkForInvincibilityStarCollision()
         {
-            var playerBox = player.PlayerSprite.HitBox;
+            var playerBox = this.player.PlayerSprite.HitBox;
             var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
 
             foreach (var uiElement in objectsAtPlayerLocation)
+            {
                 if (uiElement is InvincibilityStarSprite)
                 {
                     App.AppSoundEffects.PowerStarLoop.Play();
-                    
-                    player.onInvincibilityTriggered();
-                    invincibilityTimer = new DispatcherTimer();
-                    invincibilityTimer.Interval = GameSettings.InvincibilityLength;
-                    invincibilityTimer.Start();
-                    invincibilityTimer.Tick += ((sender, o) => this.onInvincibilityTimerTick());
-                    invincibilityTimer.Tick += ((sender, o) => App.AppSoundEffects.PowerStarLoop.Pause());
-                    invincibilityStar.OnHit();
+
+                    this.player.OnInvincibilityTriggered();
+                    this.invincibilityTimer = new DispatcherTimer();
+                    this.invincibilityTimer.Interval = GameSettings.InvincibilityLength;
+                    this.invincibilityTimer.Start();
+                    this.invincibilityTimer.Tick += (sender, o) => this.onInvincibilityTimerTick();
+                    this.invincibilityTimer.Tick += (sender, o) => App.AppSoundEffects.PowerStarLoop.Pause();
+                    this.invincibilityStar.OnHit();
                 }
+            }
         }
 
         private void onInvincibilityTimerTick()
         {
-            invincibilityTimer.Stop();
+            this.invincibilityTimer.Stop();
             App.AppSoundEffects.PowerStarLoop.Pause();
         }
 
         private void onTimeExtention(object sender, EventArgs e)
         {
-            timeSprite.OnHit();
-            currentLifeAndPointTime -= new TimeSpan(0, 0, 5);
-            currentLifeAndPointTime -= new TimeSpan(0, 0, 4);
+            this.timeSprite.OnHit();
+            this.currentLifeAndPointTime -= new TimeSpan(0, 0, 5);
+            this.currentLifeAndPointTime -= new TimeSpan(0, 0, 4);
         }
 
         private void showTimeSprite()
         {
-            if (gameTimerTick % GameSettings.TimeSpriteShowInterval == 0 && !timeSprite.IsShowing) timeSprite.Show();
+            if (this.gameTimerTick % GameSettings.TimeSpriteAppearInterval == 0 && !this.timeSprite.IsShowing)
+            {
+                this.timeSprite.RandomlyShow();
+            }
         }
 
         private void showInvincibilityStarSprite()
         {
-            if (gameTimerTick % GameSettings.InvincibilityAppearInterval == 0 && !invincibilityStar.IsShowing)
-                invincibilityStar.Show();
+            if (this.gameTimerTick % GameSettings.InvincibilityAppearInterval == 0 && !this.invincibilityStar.IsShowing)
+            {
+                this.invincibilityStar.RandomlyShow();
+            }
         }
 
         private void checkRemainingTime()
         {
-            if (currentLifeAndPointTime.Seconds >= timerLength.Seconds)
+            if (this.currentLifeAndPointTime.Seconds >= this.timerLength.Seconds)
             {
                 App.AppSoundEffects.Play(Sounds.TimeOut);
-                onLifeLost();
+                this.onLifeLost();
             }
         }
 
         private void checkForPointScored()
         {
-            var playerBox = player.PlayerSprite.HitBox;
+            var playerBox = this.player.PlayerSprite.HitBox;
             var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
 
             foreach (var uiElement in objectsAtPlayerLocation)
             {
-                handlePlayerHitsHome(uiElement);
-                handlePlayerDoesNotHitHome(playerBox);
+                this.handlePlayerHitsHome(uiElement);
+                this.handlePlayerDoesNotHitHome(playerBox);
             }
         }
 
         private void handlePlayerDoesNotHitHome(Rect playerBox)
         {
-            if (playerBox.Y < GameSettings.TopBorder) player.ResetPlayerToPreviousPosition();
+            if (playerBox.Y < GameSettings.TopBorder)
+            {
+                this.player.ResetPlayerToPreviousPosition();
+            }
         }
 
         private void handlePlayerHitsHome(UIElement uiElement)
@@ -291,107 +313,116 @@ namespace FroggerStarter.Controller
 
         private void updateScore(ScoreArgs e)
         {
-            Score += timerLength.Seconds - currentLifeAndPointTime.Seconds;
-            startTime = DateTime.Now;
+            this.Score += this.timerLength.Seconds - this.currentLifeAndPointTime.Seconds;
+            this.startTime = DateTime.Now;
         }
 
         private void createAndPlacePlayer()
         {
-            gameCanvas.Children.Add(player.PlayerSprite);
-            setPlayerToCenterOfBottomLane();
+            this.gameCanvas.Children.Add(this.player.PlayerSprite);
+            this.setPlayerToCenterOfBottomLane();
         }
 
         private void setPlayerToCenterOfBottomLane()
         {
-            var centeredX = backgroundWidth / 2 - player.PlayerSprite.Width / 2;
-            var centeredY = backgroundHeight - player.PlayerSprite.Height - GameSettings.bottomLaneOffset;
+            var centeredX = GameSettings.BackgroundWidth / 2 - this.player.PlayerSprite.Width / 2;
+            var centeredY = GameSettings.BackgroundHeight - this.player.PlayerSprite.Height - GameSettings.BottomLaneOffset;
 
-            player.SetPlayerLocation(centeredX, centeredY);
+            this.player.LastLocationTracker(centeredX, centeredY);
         }
 
         private void checkForPlayerVehicleCollisionAsync()
         {
-            if (invincibilityTimer.IsEnabled) return;
-            var playerBox = player.PlayerSprite.HitBox;
+            if (this.invincibilityTimer.IsEnabled)
+            {
+                return;
+            }
+
+            var playerBox = this.player.PlayerSprite.HitBox;
             var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
 
             foreach (var uiElement in objectsAtPlayerLocation)
+            {
                 if (uiElement is IVehicleSprite)
                 {
                     App.AppSoundEffects.Play(Sounds.HitVehicle);
-                    onLifeLost();
+                    this.onLifeLost();
                     break;
                 }
+            }
         }
 
         private void onLifeLost()
         {
-            handleLifeLost();
-            LifeLost?.Invoke(this, null);
+            this.handleLifeLost();
+            this.LifeLost?.Invoke(this, null);
         }
 
         private void handleLifeLost()
         {
-            timer.Stop();
-            Lives -= 1;
-            if (Lives == 0)
+            this.timer.Stop();
+            this.Lives -= 1;
+            if (this.Lives == 0)
             {
-                handleGameOver();
-                raiseGameOver();
+                this.handleGameOver();
+                this.raiseGameOver();
             }
             else
             {
-                roadManager.resetNumVehicles();
+                this.roadManager.resetNumVehicles();
             }
         }
 
         private void playerOnNewSpriteCreated(object sender, EventArgs e)
         {
-            if (IsGameOver)
+            if (this.IsGameOver)
             {
-                player.PlayerSprite.Visibility = Visibility.Collapsed;
+                this.player.PlayerSprite.Visibility = Visibility.Collapsed;
                 return;
             }
 
-            setPlayerToCenterOfBottomLane();
-            timer.Start();
-            startTime = DateTime.Now;
-            onGameResumed();
+            this.setPlayerToCenterOfBottomLane();
+            this.timer.Start();
+            this.startTime = DateTime.Now;
+            this.onGameResumed();
         }
 
         private void onGameResumed()
         {
-            GameResumed?.Invoke(this, null);
+            this.GameResumed?.Invoke(this, null);
         }
 
         private void raiseGameOver()
         {
-            GameOver?.Invoke(this, null);
+            this.GameOver?.Invoke(this, null);
         }
 
         private void handleGameOver()
         {
             App.AppSoundEffects.Play(Sounds.GameOver);
-            timer.Stop();
-            IsGameOver = true;
-            roadManager.CollapseAllVehicles();
+            this.timer.Stop();
+            this.IsGameOver = true;
+            this.roadManager.CollapseAllVehicles();
         }
 
+        /// <summary>Moves the player.</summary>
+        /// <postcondition>Player X or Y different</postcondition>
+        /// <param name="args">The <see cref="KeyEventArgs" /> instance containing the event data.</param>
         public void MovePlayer(KeyEventArgs args)
         {
             switch (args.VirtualKey)
             {
                 case VirtualKey.Left:
-                    player.MovePlayerLeft();
+                    this.player.MovePlayerLeft();
                     break;
                 case VirtualKey.Right:
-                    player.MovePlayerRight();
+                    this.player.MovePlayerRight();
                     break;
                 case VirtualKey.Up:
-                    player.MovePlayerUp();
+                    this.player.MovePlayerUp();
                     break;
                 case VirtualKey.Down:
-                    player.MovePlayerDown();
+                    this.player.MovePlayerDown();
                     break;
             }
         }
@@ -401,24 +432,26 @@ namespace FroggerStarter.Controller
             this.viewModel.AddPlayerToHighScore(this.level.CurrentLevel, this.Score, name);
         }
 
+        /// <summary>Custom EventArgs class made to pass score and location data</summary>
+        /// <seealso cref="System.EventArgs" />
         public class ScoreArgs : EventArgs
         {
-            #region Constructors
-
-            public ScoreArgs(LilyPad hitLilyPad)
-            {
-                LilyPad = hitLilyPad;
-            }
-
-            #endregion
-
             #region Properties
 
+            /// <summary>Gets the lily pad that fired the event.</summary>
+            /// <value>The lily pad.</value>
             public LilyPad LilyPad { get; }
 
             #endregion
 
-            #region Data members
+            #region Constructors
+
+            /// <summary>Initializes a new instance of the <see cref="ScoreArgs" /> class.</summary>
+            /// <param name="hitLilyPad">The hit lily pad.</param>
+            public ScoreArgs(LilyPad hitLilyPad)
+            {
+                this.LilyPad = hitLilyPad;
+            }
 
             #endregion
         }

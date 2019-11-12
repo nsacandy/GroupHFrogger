@@ -14,7 +14,11 @@ namespace FroggerStarter
     /// </summary>
     public sealed partial class App
     {
+        #region Data members
+
         public static SoundEffects AppSoundEffects = new SoundEffects();
+
+        #endregion
 
         #region Constructors
 
@@ -24,8 +28,8 @@ namespace FroggerStarter
         /// </summary>
         public App()
         {
-            InitializeComponent();
-            Suspending += OnSuspending;
+            this.InitializeComponent();
+            Suspending += this.OnSuspending;
         }
 
         #endregion
@@ -41,7 +45,6 @@ namespace FroggerStarter
         {
             var rootFrame = Window.Current.Content as Frame;
 
-
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
@@ -49,7 +52,7 @@ namespace FroggerStarter
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
-                rootFrame.NavigationFailed += OnNavigationFailed;
+                rootFrame.NavigationFailed += this.OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -65,7 +68,9 @@ namespace FroggerStarter
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
+                {
                     rootFrame.Navigate(typeof(GamePage), e.Arguments);
+                }
 
                 // Ensure the current window is active
                 Window.Current.Activate();
