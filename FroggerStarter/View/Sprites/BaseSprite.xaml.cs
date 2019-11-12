@@ -13,6 +13,8 @@ namespace FroggerStarter.View.Sprites
     {
         #region Properties
 
+        /// <summary>Gets the hit box.</summary>
+        /// <value>The hit box.</value>
         public Rect HitBox { get; private set; }
 
         #endregion

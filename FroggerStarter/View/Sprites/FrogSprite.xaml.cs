@@ -7,16 +7,16 @@ using FroggerStarter.Model;
 
 namespace FroggerStarter.View.Sprites
 {
+    /// <summary>CodeBehind for FrogSprite</summary>
+    /// <seealso cref="FroggerStarter.View.Sprites.BaseSprite" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class FrogSprite
     {
-        #region Properties
-
-        public bool IsInvincible { get; set; }
-
-        #endregion
-
+        
         #region Constructors
 
+        /// <summary>Initializes a new instance of the <see cref="FrogSprite"/> class.</summary>
         public FrogSprite()
         {
             this.InitializeComponent();
@@ -31,8 +31,10 @@ namespace FroggerStarter.View.Sprites
 
         #region Methods
 
+        /// <summary>Creates new spritecreated.</summary>
         public event EventHandler NewSpriteCreated;
 
+        /// <summary>Animates the death storyboard.</summary>
         public void AnimateDeath()
         {
             VisualStateManager.GoToState(this, "Dying", false);
@@ -45,11 +47,13 @@ namespace FroggerStarter.View.Sprites
             this.NewSpriteCreated?.Invoke(this, null);
         }
 
+        /// <summary>Animates the move storyboard.</summary>
         public void AnimateMove()
         {
             this.Moving.Storyboard.Begin();
         }
 
+        /// <summary>Animates the invincibility.</summary>
         public void AnimateInvincibility()
         {
             this.Invincible.Storyboard.Begin();
@@ -57,9 +61,11 @@ namespace FroggerStarter.View.Sprites
             App.AppSoundEffects.Play(Sounds.PowerUpStar);
         }
 
+        /// <summary>Stops the invincibility.</summary>
+        /// <param name="e">The e.</param>
+        /// <param name="f">The f.</param>
         public void StopInvincibility(object e, object f)
         {
-            this.IsInvincible = false;
             VisualStateManager.GoToState(this, "OriginalSprite", true);
         }
 

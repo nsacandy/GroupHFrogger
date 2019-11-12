@@ -1,10 +1,13 @@
 ﻿// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-using FroggerStarter.View.Sprites.VehicleSprites;
-
-namespace FroggerStarter.View.Sprites
+namespace FroggerStarter.View.Sprites.VehicleSprites
 {
-    public sealed partial class TruckSprite : BaseSprite, IVehicleSprite
+    /// <summary>Code behind for truckSprite</summary>
+    /// <seealso cref="FroggerStarter.View.Sprites.BaseSprite" />
+    /// <seealso cref="FroggerStarter.View.Sprites.VehicleSprites.IVehicleSprite" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
+    public sealed partial class TruckSprite : IVehicleSprite
     {
         #region Constructors
 
