@@ -89,56 +89,27 @@ namespace FroggerStarter.View
                 PrimaryButtonText = "Sure",
                 CloseButtonText = "No thanks"
             };
-            restartDialog.CloseButtonCommand = new relayCommand(quitApplication, canQuit);
-            restartDialog.PrimaryButtonCommand = new relayCommand(restartApplication, canRestart);
-            await restartDialog.ShowAsync();
+            
+            var result = await restartDialog.ShowAsync();
+
+            switch (result)
+            {
+                case ContentDialogResult.Primary:
+                    await CoreApplication.RequestRestartAsync("launch");
+                    break;
+                case ContentDialogResult.Secondary:
+                    Application.Current.Exit();
+                    break;
+                case ContentDialogResult.None:
+                    Application.Current.Exit();
+                    break;
+            }
         }
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
             gameManager.MovePlayer(args);
         }
-
-        public class relayCommand : ICommand
-        {
-            public Predicate<object> canExecute;
-            public Action<object> execute;
-
-            public relayCommand(Action<object> execute, Predicate<object> canExecute)
-            {
-                this.execute = execute;
-                this.canExecute = canExecute;
-            }
-
-
-            public bool CanExecute(object parameter)
-            {
-                var result = canExecute?.Invoke(parameter) ?? true;
-                return result;
-            }
-
-            public void Execute(object parameter)
-            {
-                if (CanExecute(parameter)) execute(parameter);
-            }
-
-            public event EventHandler CanExecuteChanged;
-
-            public virtual void OnCanExecuteChanged()
-            {
-                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        //private bool canRestart(object obj)
-        //{
-        //     return this.restartDialog.IsPrimaryButtonEnabled;
-        //}
-
-        //private async void restartApplication(object obj)
-        //{
-        //    await CoreApplication.RequestRestartAsync("");
-        //}
 
         private bool canRestart(object obj)
         {
@@ -148,9 +119,7 @@ namespace FroggerStarter.View
 
         private async void restartApplication(object obj)
         {
-            restartDialog.Hide();
-            Window.Current.Activate();
-            await CoreApplication.RequestRestartAsync("FroggerStarter.exe");
+             await CoreApplication.RequestRestartAsync("launch");
         }
 
         private bool canQuit(object obj)

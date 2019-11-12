@@ -47,7 +47,7 @@ namespace FroggerStarter.Model
 
         public void Show()
         {
-            if (rand.NextDouble() < 0.4)
+            if (rand.NextDouble() < 0.1)
             {
                 IsShowing = true;
                 Sprite.Visibility = Visibility.Visible;

@@ -48,7 +48,8 @@ namespace FroggerStarter.Controller
             level = new LevelManager();
             timeSprite = new TimeExtender();
             invincibilityStar = new InvincibilityStar();
-            invincibilityTimer = new TimeSpan(0, 0, 0);
+            invincibilityTimer = new DispatcherTimer();
+            
 
             currentLifeAndPointTime = timerLength;
             startTime = DateTime.Now;
@@ -87,13 +88,12 @@ namespace FroggerStarter.Controller
         private readonly TimeExtender timeSprite;
         private readonly InvincibilityStar invincibilityStar;
 
-        private TimeSpan invincibilityTimer;
+        private DispatcherTimer invincibilityTimer;
         private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.GameLengthInSeconds);
         private DispatcherTimer timer;
         private DateTime startTime;
         private TimeSpan currentLifeAndPointTime;
         private int gameTimerTick;
-        private bool playerIsInvincible;
 
         #endregion
 
@@ -171,7 +171,7 @@ namespace FroggerStarter.Controller
 
         private void timerOnTick(object sender, object e)
         {
-            if (invincibilityTimer.Seconds >= 0) invincibilityTimer -= timer.Interval;
+            
             gameTimerTick++;
             currentLifeAndPointTime = DateTime.Now - startTime;
             showTimeSprite();
@@ -205,11 +205,22 @@ namespace FroggerStarter.Controller
             foreach (var uiElement in objectsAtPlayerLocation)
                 if (uiElement is InvincibilityStarSprite)
                 {
-                    App.AppSoundEffects.Play(Sounds.PowerUpStar);
+                    App.AppSoundEffects.PowerStarLoop.Play();
+                    
                     player.onInvincibilityTriggered();
-                    invincibilityTimer = GameSettings.InvincibilityLength;
+                    invincibilityTimer = new DispatcherTimer();
+                    invincibilityTimer.Interval = GameSettings.InvincibilityLength;
+                    invincibilityTimer.Start();
+                    invincibilityTimer.Tick += ((sender, o) => this.onInvincibilityTimerTick());
+                    invincibilityTimer.Tick += ((sender, o) => App.AppSoundEffects.PowerStarLoop.Pause());
                     invincibilityStar.OnHit();
                 }
+        }
+
+        private void onInvincibilityTimerTick()
+        {
+            invincibilityTimer.Stop();
+            App.AppSoundEffects.PowerStarLoop.Pause();
         }
 
         private void onTimeExtention(object sender, EventArgs e)
@@ -226,7 +237,7 @@ namespace FroggerStarter.Controller
 
         private void showInvincibilityStarSprite()
         {
-            if (gameTimerTick % GameSettings.TimeSpriteShowInterval == 0 && !invincibilityStar.IsShowing)
+            if (gameTimerTick % GameSettings.InvincibilityAppearInterval == 0 && !invincibilityStar.IsShowing)
                 invincibilityStar.Show();
         }
 
@@ -297,12 +308,12 @@ namespace FroggerStarter.Controller
 
         private void checkForPlayerVehicleCollisionAsync()
         {
-            if (invincibilityTimer.TotalSeconds > 0) return;
+            if (invincibilityTimer.IsEnabled) return;
             var playerBox = player.PlayerSprite.HitBox;
             var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
 
             foreach (var uiElement in objectsAtPlayerLocation)
-                if (uiElement is VehicleSprite)
+                if (uiElement is IVehicleSprite)
                 {
                     App.AppSoundEffects.Play(Sounds.HitVehicle);
                     onLifeLost();
