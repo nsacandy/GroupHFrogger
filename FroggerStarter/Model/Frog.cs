@@ -10,6 +10,13 @@ namespace FroggerStarter.Model
     /// <seealso cref="FroggerStarter.Model.GameObject" />
     public class Frog : GameObject
     {
+        #region Data members
+
+        private const int SpeedXDirection = 50;
+        private const int SpeedYDirection = 50;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -23,6 +30,8 @@ namespace FroggerStarter.Model
         }
 
         #endregion
+
+        #region Methods
 
         /// <summary>
         ///     Sets the heading.
@@ -56,11 +65,6 @@ namespace FroggerStarter.Model
                     break;
             }
         }
-
-        #region Data members
-
-        private const int SpeedXDirection = 50;
-        private const int SpeedYDirection = 50;
 
         #endregion
     }

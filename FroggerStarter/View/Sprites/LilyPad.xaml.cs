@@ -8,7 +8,7 @@ namespace FroggerStarter.View.Sprites
 
         public LilyPad()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion

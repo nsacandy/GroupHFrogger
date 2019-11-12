@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using FroggerStarter.Extentions;
 using FroggerStarter.Model.HighScoreModel;
 
@@ -13,9 +8,15 @@ namespace FroggerStarter.ViewModel
 {
     public class HighScoreViewModel : INotifyPropertyChanged
     {
-        private HighScores highScores;
+        #region Data members
+
+        private readonly HighScores highScores;
 
         private ObservableCollection<HighScore> allScores;
+
+        #endregion
+
+        #region Properties
 
         public ObservableCollection<HighScore> AllScores
         {
@@ -27,11 +28,19 @@ namespace FroggerStarter.ViewModel
             }
         }
 
+        #endregion
+
+        #region Constructors
+
         public HighScoreViewModel()
         {
             this.highScores = new HighScores();
             this.AllScores = this.highScores.PlayerHighScores.ToObservableCollection();
         }
+
+        #endregion
+
+        #region Methods
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -39,5 +48,7 @@ namespace FroggerStarter.ViewModel
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

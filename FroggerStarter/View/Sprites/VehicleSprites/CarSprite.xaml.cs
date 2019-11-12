@@ -11,7 +11,7 @@ namespace FroggerStarter.View.Sprites
 
         public CarSprite()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion

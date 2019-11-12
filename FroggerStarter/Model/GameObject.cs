@@ -9,9 +9,7 @@ namespace FroggerStarter.Model
     /// </summary>
     public abstract class GameObject
     {
-        #region Data members
-
-        private Point location;
+        #region Types and Delegates
 
         public enum Heading
         {
@@ -21,13 +19,17 @@ namespace FroggerStarter.Model
             Down
         }
 
+        #endregion
+
+        #region Data members
+
         protected Heading currentHeading;
+
+        private Point location;
 
         #endregion
 
         #region Properties
-
-        public abstract void setHeading(Heading heading);
 
         /// <summary>
         ///     Gets or sets the x location of the game object.
@@ -37,11 +39,11 @@ namespace FroggerStarter.Model
         /// </value>
         public double X
         {
-            get => location.X;
+            get => this.location.X;
             set
             {
-                location.X = value;
-                render();
+                this.location.X = value;
+                this.render();
             }
         }
 
@@ -53,11 +55,11 @@ namespace FroggerStarter.Model
         /// </value>
         public double Y
         {
-            get => location.Y;
+            get => this.location.Y;
             set
             {
-                location.Y = value;
-                render();
+                this.location.Y = value;
+                this.render();
             }
         }
 
@@ -83,7 +85,7 @@ namespace FroggerStarter.Model
         /// <value>
         ///     The width.
         /// </value>
-        public double Width => Sprite.Width;
+        public double Width => this.Sprite.Width;
 
         /// <summary>
         ///     Gets the height of the game object.
@@ -91,7 +93,7 @@ namespace FroggerStarter.Model
         /// <value>
         ///     The height.
         /// </value>
-        public double Height => Sprite.Height;
+        public double Height => this.Sprite.Height;
 
         /// <summary>
         ///     Gets or sets the sprite associated with the game object.
@@ -105,6 +107,8 @@ namespace FroggerStarter.Model
 
         #region Methods
 
+        public abstract void setHeading(Heading heading);
+
         /// <summary>
         ///     Moves the game object right.
         ///     Precondition: None
@@ -112,7 +116,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MoveRight()
         {
-            moveX(SpeedX);
+            this.moveX(this.SpeedX);
         }
 
         /// <summary>
@@ -122,7 +126,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MoveLeft()
         {
-            moveX(-SpeedX);
+            this.moveX(-this.SpeedX);
         }
 
         /// <summary>
@@ -132,7 +136,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MoveUp()
         {
-            moveY(-SpeedY);
+            this.moveY(-this.SpeedY);
         }
 
         /// <summary>
@@ -142,22 +146,22 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MoveDown()
         {
-            moveY(SpeedY);
+            this.moveY(this.SpeedY);
         }
 
         private void moveX(int x)
         {
-            X += x;
+            this.X += x;
         }
 
         private void moveY(int y)
         {
-            Y += y;
+            this.Y += y;
         }
 
         private void render()
         {
-            Sprite.RenderAt(X, Y);
+            this.Sprite.RenderAt(this.X, this.Y);
         }
 
         /// <summary>
@@ -169,12 +173,18 @@ namespace FroggerStarter.Model
         /// <param name="speedY">The speed y.</param>
         protected void SetSpeed(int speedX, int speedY)
         {
-            if (speedX < 0) throw new ArgumentOutOfRangeException(nameof(speedX));
+            if (speedX < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(speedX));
+            }
 
-            if (speedY < 0) throw new ArgumentOutOfRangeException(nameof(speedY));
+            if (speedY < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(speedY));
+            }
 
-            SpeedX = speedX;
-            SpeedY = speedY;
+            this.SpeedX = speedX;
+            this.SpeedY = speedY;
         }
 
         #endregion

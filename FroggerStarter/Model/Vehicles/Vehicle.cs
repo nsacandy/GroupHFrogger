@@ -4,18 +4,10 @@ using Windows.UI.Xaml.Media;
 namespace FroggerStarter.Model.Vehicles
 {
     /// <summary>
-    ///     Defines vehicle models
+    ///     Abstract class for defining basic Vehicle functionality
     /// </summary>
     public abstract class Vehicle : GameObject
     {
-        #region Data members
-
-        #endregion
-
-        #region Constructors
-
-        #endregion
-
         #region Methods
 
         public override void setHeading(Heading heading)
@@ -24,7 +16,7 @@ namespace FroggerStarter.Model.Vehicles
             switch (currentHeading)
             {
                 case Heading.Right:
-                    headRight();
+                    this.headRight();
                     break;
                 case Heading.Left:
                     break;

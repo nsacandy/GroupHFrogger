@@ -1,37 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Store.Preview.InstallControl;
-using FroggerStarter.Controller;
+﻿using FroggerStarter.Controller;
 
 namespace FroggerStarter.Model.HighScoreModel
 {
     public class HighScore
     {
-        private GameManager manager;
-        private LevelManager currLevel;
+        #region Data members
+
+        private readonly GameManager manager;
+        private readonly LevelManager currLevel;
         private int level;
+
+        #endregion
+
+        #region Properties
 
         public string Name { get; set; }
         public int Score { get; set; }
 
-        public LevelManager.GameLevel Level
-        {
-            get;
-            set;
-        }
+        public LevelManager.GameLevel Level { get; set; }
+
+        #endregion
+
+        #region Constructors
 
         public HighScore()
         {
-            this.manager = manager;
-            this.currLevel = currLevel;
+            this.manager = this.manager;
+            this.currLevel = this.currLevel;
         }
+
+        #endregion
+
+        #region Methods
 
         public override string ToString()
         {
             return $"{this.Name} : {this.Level} : {this.Score}";
         }
+
+        #endregion
     }
 }

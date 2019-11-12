@@ -9,14 +9,12 @@ namespace FroggerStarter.View.Sprites
 {
     public sealed partial class FrogSprite
     {
+        #region Properties
 
-        private bool isInvincible;
+        public bool IsInvincible { get; set; }
 
-        public bool IsInvincible
-        {
-            get { return isInvincible; }
-            set { isInvincible = value; }
-        }
+        #endregion
+
         #region Constructors
 
         public FrogSprite()
@@ -31,47 +29,42 @@ namespace FroggerStarter.View.Sprites
 
         #endregion
 
-
-        #region Types and Delegates
+        #region Methods
 
         public event EventHandler NewSpriteCreated;
-
-        #endregion
-
-        #region Methods
 
         public void AnimateDeath()
         {
             VisualStateManager.GoToState(this, "Dying", false);
-            Dying.Storyboard.Begin();
+            this.Dying.Storyboard.Begin();
         }
 
         private void onNewSpriteCreated(object e, object f)
         {
             VisualStateManager.GoToState(this, "OriginalSprite", false);
-            NewSpriteCreated?.Invoke(this, null);
+            this.NewSpriteCreated?.Invoke(this, null);
         }
 
         public void AnimateMove()
         {
-            Moving.Storyboard.Begin();
+            this.Moving.Storyboard.Begin();
         }
 
         public void AnimateInvincibility()
         {
-            Invincible.Storyboard.Begin();
-            
+            this.Invincible.Storyboard.Begin();
+
             App.AppSoundEffects.Play(Sounds.PowerUpStar);
-            
         }
 
         public void StopInvincibility(object e, object f)
         {
-            IsInvincible = false;
+            this.IsInvincible = false;
             VisualStateManager.GoToState(this, "OriginalSprite", true);
         }
+
+        #endregion
     }
 
     #endregion
 }
-    

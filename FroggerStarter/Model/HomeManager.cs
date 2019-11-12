@@ -8,30 +8,40 @@ namespace FroggerStarter.Model
 {
     public class HomeManager : IEnumerable<LilyPad>
     {
+        #region Data members
+
         private const int NumberHomes = 5;
         private const int FrogHomeBuffer = 100;
         private readonly Canvas gameCanvas;
         private IList<LilyPad> landingSpots;
 
+        #endregion
+
+        #region Constructors
+
         public HomeManager(Canvas gameCanvas)
         {
             this.gameCanvas = gameCanvas;
-            addLandingSpotsToCanvas();
+            this.addLandingSpotsToCanvas();
         }
+
+        #endregion
+
+        #region Methods
 
         public IEnumerator<LilyPad> GetEnumerator()
         {
-            return landingSpots.GetEnumerator();
+            return this.landingSpots.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return landingSpots.GetEnumerator();
+            return this.landingSpots.GetEnumerator();
         }
 
         private void addLandingSpotsToCanvas()
         {
-            landingSpots = new List<LilyPad>();
+            this.landingSpots = new List<LilyPad>();
 
             var currX = 0.0;
             for (var i = 0; i < NumberHomes; i++)
@@ -43,8 +53,8 @@ namespace FroggerStarter.Model
 
                 home.RenderAt(xLocation, yLocation);
 
-                landingSpots.Add(home);
-                gameCanvas.Children.Add(home);
+                this.landingSpots.Add(home);
+                this.gameCanvas.Children.Add(home);
 
                 currX += home.Width + FrogHomeBuffer;
             }
@@ -52,18 +62,20 @@ namespace FroggerStarter.Model
 
         public void ResetLandingSpots()
         {
-            addLandingSpotsToCanvas();
+            this.addLandingSpotsToCanvas();
         }
 
         public bool IsAllHomesFilled()
         {
-            return landingSpots.Count == 0;
+            return this.landingSpots.Count == 0;
         }
 
         public void RemoveHome(LilyPad home)
         {
-            landingSpots.Remove(home);
-            gameCanvas.Children.Remove(home);
+            this.landingSpots.Remove(home);
+            this.gameCanvas.Children.Remove(home);
         }
+
+        #endregion
     }
 }

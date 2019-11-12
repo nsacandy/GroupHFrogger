@@ -2,12 +2,18 @@
 {
     public class VehicleFactory
     {
+        #region Types and Delegates
+
         public enum VehicleType
         {
             Car,
             Truck,
             SportsCar
         }
+
+        #endregion
+
+        #region Methods
 
         public static Vehicle CreateVehicle(VehicleType vehicleType, GameObject.Heading heading)
         {
@@ -26,5 +32,7 @@
 
             return null;
         }
+
+        #endregion
     }
 }

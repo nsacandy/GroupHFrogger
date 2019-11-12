@@ -19,41 +19,48 @@ namespace FroggerStarter.Model
         PowerUpStar
     }
 
-    
     public class SoundEffects
     {
+        #region Data members
+
         private readonly Dictionary<Sounds, MediaPlayer> effects;
-        private MediaPlayer powerStarLoop;
 
-        public MediaPlayer PowerStarLoop
-        {
-            get { return powerStarLoop; }
-            private set { powerStarLoop = value; }
-        }
+        #endregion
 
-        
+        #region Properties
+
+        public MediaPlayer PowerStarLoop { get; private set; }
+
+        #endregion
+
+        #region Constructors
+
         public SoundEffects()
         {
             this.setStarLoop();
-            effects = new Dictionary<Sounds, MediaPlayer>();
-            loadEfx();
+            this.effects = new Dictionary<Sounds, MediaPlayer>();
+            this.loadEfx();
         }
+
+        #endregion
+
+        #region Methods
 
         private void loadEfx()
         {
-            MediaPlayer powerStar = loadSoundFileAsync("sound-frogger-star-power.wav");
+            var powerStar = this.loadSoundFileAsync("sound-frogger-star-power.wav");
             powerStar.IsLoopingEnabled = true;
             powerStar.Play();
-            effects.Add(Sounds.Hop, loadSoundFileAsync("sound-frogger-hop.wav"));
-            effects.Add(Sounds.HitVehicle, loadSoundFileAsync("sound-frogger-squash.wav"));
-            effects.Add(Sounds.HitWater, loadSoundFileAsync("sound-frogger-plunk.wav"));
-            effects.Add(Sounds.TimeOut, loadSoundFileAsync("sound-frogger-time.wav"));
-            effects.Add(Sounds.GameOver, loadSoundFileAsync("sound-frogger-gameover.wav"));
-            effects.Add(Sounds.HitWall, loadSoundFileAsync("sound-frogger-hit-wall.wav"));
-            effects.Add(Sounds.LandHome, loadSoundFileAsync("sound-frogger-land-home.wav"));
-            effects.Add(Sounds.LevelComplete, loadSoundFileAsync("sound-frogger-level-complete.wav"));
-            effects.Add(Sounds.PowerUpTime, loadSoundFileAsync("sound-frogger-power-up-time.wav"));
-            effects.Add(Sounds.PowerUpStar, loadSoundFileAsync("sound-frogger-star-power.wav"));
+            this.effects.Add(Sounds.Hop, this.loadSoundFileAsync("sound-frogger-hop.wav"));
+            this.effects.Add(Sounds.HitVehicle, this.loadSoundFileAsync("sound-frogger-squash.wav"));
+            this.effects.Add(Sounds.HitWater, this.loadSoundFileAsync("sound-frogger-plunk.wav"));
+            this.effects.Add(Sounds.TimeOut, this.loadSoundFileAsync("sound-frogger-time.wav"));
+            this.effects.Add(Sounds.GameOver, this.loadSoundFileAsync("sound-frogger-gameover.wav"));
+            this.effects.Add(Sounds.HitWall, this.loadSoundFileAsync("sound-frogger-hit-wall.wav"));
+            this.effects.Add(Sounds.LandHome, this.loadSoundFileAsync("sound-frogger-land-home.wav"));
+            this.effects.Add(Sounds.LevelComplete, this.loadSoundFileAsync("sound-frogger-level-complete.wav"));
+            this.effects.Add(Sounds.PowerUpTime, this.loadSoundFileAsync("sound-frogger-power-up-time.wav"));
+            this.effects.Add(Sounds.PowerUpStar, this.loadSoundFileAsync("sound-frogger-star-power.wav"));
         }
 
         private MediaPlayer loadSoundFileAsync(string fileName)
@@ -62,8 +69,7 @@ namespace FroggerStarter.Model
                 MediaSource.CreateFromUri(new Uri("ms-appx:///Sounds///" + fileName, UriKind.RelativeOrAbsolute));
             var playbackItem = new MediaPlaybackItem(mediaSource);
 
-            var sound = new MediaPlayer
-            {
+            var sound = new MediaPlayer {
                 AutoPlay = false,
                 Source = playbackItem
             };
@@ -73,17 +79,18 @@ namespace FroggerStarter.Model
 
         public void Play(Sounds efx)
         {
-            var mediaElement = effects[efx];
+            var mediaElement = this.effects[efx];
 
             mediaElement.Play();
         }
 
         public void setStarLoop()
         {
-            MediaPlayer powerStar = loadSoundFileAsync("sound-frogger-star-power.wav");
+            var powerStar = this.loadSoundFileAsync("sound-frogger-star-power.wav");
             powerStar.IsLoopingEnabled = true;
-            this.powerStarLoop = powerStar;
+            this.PowerStarLoop = powerStar;
         }
-        
+
+        #endregion
     }
 }

@@ -6,28 +6,6 @@ namespace FroggerStarter.Model
 {
     internal class PlayerManager : GameObject
     {
-        #region Constructors
-
-        public PlayerManager(double topBoundary, double bottomBoundary, double leftBoundary, double rightBoundary)
-        {
-            Player = new Frog();
-            PlayerSprite = (FrogSprite) Player.Sprite;
-            PlayerSprite.IsHitTestVisible = false;
-
-            this.topBoundary = topBoundary;
-            this.bottomBoundary = bottomBoundary;
-            this.leftBoundary = leftBoundary;
-            this.rightBoundary = rightBoundary;
-
-            PlayerSprite.NewSpriteCreated += onNewSpriteCreated;
-        }
-
-        #endregion
-
-        #region Types and Delegates
-
-        #endregion
-
         #region Data members
 
         private readonly double topBoundary;
@@ -48,15 +26,33 @@ namespace FroggerStarter.Model
 
         #endregion
 
+        #region Constructors
+
+        public PlayerManager(double topBoundary, double bottomBoundary, double leftBoundary, double rightBoundary)
+        {
+            this.Player = new Frog();
+            this.PlayerSprite = (FrogSprite) this.Player.Sprite;
+            this.PlayerSprite.IsHitTestVisible = false;
+
+            this.topBoundary = topBoundary;
+            this.bottomBoundary = bottomBoundary;
+            this.leftBoundary = leftBoundary;
+            this.rightBoundary = rightBoundary;
+
+            this.PlayerSprite.NewSpriteCreated += this.onNewSpriteCreated;
+        }
+
+        #endregion
+
         #region Methods
 
         public event EventHandler NewSpriteCreated;
 
         private void onNewSpriteCreated(object sender, EventArgs e)
         {
-            keyboardFrozen = false;
-            setHeading(Heading.Up);
-            NewSpriteCreated?.Invoke(this, null);
+            this.keyboardFrozen = false;
+            this.setHeading(Heading.Up);
+            this.NewSpriteCreated?.Invoke(this, null);
         }
 
         /// <summary>
@@ -66,12 +62,19 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerLeft()
         {
-            if (keyboardFrozen) return;
-            PlayerSprite.AnimateMove();
-            setPreviousPositionLocation();
-            setHeading(Heading.Left);
-            Player.MoveLeft();
-            if (Player.X < leftBoundary) ResetPlayerToPreviousPosition();
+            if (this.keyboardFrozen)
+            {
+                return;
+            }
+
+            this.PlayerSprite.AnimateMove();
+            this.setPreviousPositionLocation();
+            this.setHeading(Heading.Left);
+            this.Player.MoveLeft();
+            if (this.Player.X < this.leftBoundary)
+            {
+                this.ResetPlayerToPreviousPosition();
+            }
         }
 
         /// <summary>
@@ -81,13 +84,19 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerRight()
         {
-            if (keyboardFrozen) return;
+            if (this.keyboardFrozen)
+            {
+                return;
+            }
 
-            PlayerSprite.AnimateMove();
-            setPreviousPositionLocation();
-            Player.MoveRight();
-            setHeading(Heading.Right);
-            if (Player.X + Player.Width > rightBoundary) ResetPlayerToPreviousPosition();
+            this.PlayerSprite.AnimateMove();
+            this.setPreviousPositionLocation();
+            this.Player.MoveRight();
+            this.setHeading(Heading.Right);
+            if (this.Player.X + this.Player.Width > this.rightBoundary)
+            {
+                this.ResetPlayerToPreviousPosition();
+            }
         }
 
         /// <summary>
@@ -97,13 +106,19 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerUp()
         {
-            if (keyboardFrozen) return;
+            if (this.keyboardFrozen)
+            {
+                return;
+            }
 
-            PlayerSprite.AnimateMove();
-            setPreviousPositionLocation();
-            Player.MoveUp();
-            setHeading(Heading.Up);
-            if (Player.Y < topBoundary) ResetPlayerToPreviousPosition();
+            this.PlayerSprite.AnimateMove();
+            this.setPreviousPositionLocation();
+            this.Player.MoveUp();
+            this.setHeading(Heading.Up);
+            if (this.Player.Y < this.topBoundary)
+            {
+                this.ResetPlayerToPreviousPosition();
+            }
         }
 
         /// <summary>
@@ -113,47 +128,53 @@ namespace FroggerStarter.Model
         /// </summary>
         public void MovePlayerDown()
         {
-            if (keyboardFrozen) return;
+            if (this.keyboardFrozen)
+            {
+                return;
+            }
 
-            PlayerSprite.AnimateMove();
-            setPreviousPositionLocation();
-            Player.MoveDown();
-            setHeading(Heading.Down);
-            if (Player.Y + Player.Height > bottomBoundary) ResetPlayerToPreviousPosition();
+            this.PlayerSprite.AnimateMove();
+            this.setPreviousPositionLocation();
+            this.Player.MoveDown();
+            this.setHeading(Heading.Down);
+            if (this.Player.Y + this.Player.Height > this.bottomBoundary)
+            {
+                this.ResetPlayerToPreviousPosition();
+            }
         }
 
         private void setPreviousPositionLocation()
         {
-            previousPosition = new Point(PlayerSprite.HitBox.X, PlayerSprite.HitBox.Y);
+            this.previousPosition = new Point(this.PlayerSprite.HitBox.X, this.PlayerSprite.HitBox.Y);
         }
 
         public void SetPlayerLocation(double x, double y)
         {
-            Player.X = x;
-            Player.Y = y;
-            setPreviousPositionLocation();
+            this.Player.X = x;
+            this.Player.Y = y;
+            this.setPreviousPositionLocation();
         }
 
         public void ResetPlayerToPreviousPosition()
         {
-            Player.X = previousPosition.X;
-            Player.Y = previousPosition.Y;
+            this.Player.X = this.previousPosition.X;
+            this.Player.Y = this.previousPosition.Y;
         }
 
         public void HandleLifeLost(object sender, EventArgs e)
         {
-            keyboardFrozen = true;
-            PlayerSprite.AnimateDeath();
+            this.keyboardFrozen = true;
+            this.PlayerSprite.AnimateDeath();
         }
 
         public void onInvincibilityTriggered()
         {
-            PlayerSprite.AnimateInvincibility();
+            this.PlayerSprite.AnimateInvincibility();
         }
 
         public override void setHeading(Heading heading)
         {
-            Player.setHeading(heading);
+            this.Player.setHeading(heading);
         }
 
         #endregion

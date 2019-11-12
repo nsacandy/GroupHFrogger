@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.UI.Core;
@@ -19,37 +18,6 @@ namespace FroggerStarter.View
     /// </summary>
     public sealed partial class GamePage
     {
-        #region Constructors
-
-        public GamePage()
-        {
-            InitializeComponent();
-
-            ApplicationView.PreferredLaunchViewSize = new Size
-                {Width = applicationWidth, Height = applicationHeight};
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-            ApplicationView.GetForCurrentView()
-                .SetPreferredMinSize(new Size(applicationWidth, applicationHeight));
-
-            Window.Current.CoreWindow.KeyDown += coreWindowOnKeyDown;
-            gameManager = new GameManager(applicationHeight, applicationWidth);
-            gameManager.InitializeGame(canvas);
-            generateLives();
-            generateLandingSpotFrogs();
-
-            gameManager.LifeLost += handleLifeLost;
-
-            gameManager.GameOver += handleGameOver;
-            gameManager.GameResumed += resumeGame;
-
-            gameManager.PointScored += handlePointScored;
-            gameManager.NextLevel += handleNextRound;
-            gameManager.TimePowerUp += handleTimePowerUp;
-            createVisibleClock();
-        }
-
-        #endregion
-
         #region Data members
 
         private readonly double applicationHeight = (double) Application.Current.Resources["AppHeight"];
@@ -62,35 +30,65 @@ namespace FroggerStarter.View
 
         #endregion
 
+        #region Constructors
+
+        public GamePage()
+        {
+            this.InitializeComponent();
+
+            ApplicationView.PreferredLaunchViewSize = new Size
+                {Width = this.applicationWidth, Height = this.applicationHeight};
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            ApplicationView.GetForCurrentView()
+                           .SetPreferredMinSize(new Size(this.applicationWidth, this.applicationHeight));
+
+            Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
+            this.gameManager = new GameManager(this.applicationHeight, this.applicationWidth);
+            this.gameManager.InitializeGame(this.canvas);
+            this.generateLives();
+            this.generateLandingSpotFrogs();
+
+            this.gameManager.LifeLost += this.handleLifeLost;
+
+            this.gameManager.GameOver += this.handleGameOver;
+            this.gameManager.GameResumed += this.resumeGame;
+
+            this.gameManager.PointScored += this.handlePointScored;
+            this.gameManager.NextLevel += this.handleNextRound;
+            this.gameManager.TimePowerUp += this.handleTimePowerUp;
+            this.createVisibleClock();
+        }
+
+        #endregion
+
         #region Methods
 
         private void resumeGame(object sender, EventArgs e)
         {
-            emptyTimerBar.Width = 0;
-            timer.Start();
+            this.emptyTimerBar.Width = 0;
+            this.timer.Start();
         }
 
         private void handleGameOver(object sender, EventArgs e)
         {
-            emptyTimerBar.Visibility = Visibility.Collapsed;
-            fullTimerBar.Visibility = Visibility.Collapsed;
-            gameOver.Visibility = Visibility.Visible;
-            score.Visibility = Visibility.Visible;
-            timer.Stop();
-            promptUserForRestart();
+            this.emptyTimerBar.Visibility = Visibility.Collapsed;
+            this.fullTimerBar.Visibility = Visibility.Collapsed;
+            this.gameOver.Visibility = Visibility.Visible;
+            this.score.Visibility = Visibility.Visible;
+            this.timer.Stop();
+            this.promptUserForRestart();
         }
 
         private async void promptUserForRestart()
         {
-            restartDialog = new ContentDialog
-            {
+            this.restartDialog = new ContentDialog {
                 Title = "Game Over",
                 Content = "Would you like to play again?",
                 PrimaryButtonText = "Sure",
                 CloseButtonText = "No thanks"
             };
-            
-            var result = await restartDialog.ShowAsync();
+
+            var result = await this.restartDialog.ShowAsync();
 
             switch (result)
             {
@@ -108,23 +106,23 @@ namespace FroggerStarter.View
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
-            gameManager.MovePlayer(args);
+            this.gameManager.MovePlayer(args);
         }
 
         private bool canRestart(object obj)
         {
             Window.Current.Activate();
-            return restartDialog.IsPrimaryButtonEnabled;
+            return this.restartDialog.IsPrimaryButtonEnabled;
         }
 
         private async void restartApplication(object obj)
         {
-             await CoreApplication.RequestRestartAsync("launch");
+            await CoreApplication.RequestRestartAsync("launch");
         }
 
         private bool canQuit(object obj)
         {
-            return restartDialog.IsSecondaryButtonEnabled;
+            return this.restartDialog.IsSecondaryButtonEnabled;
         }
 
         private void quitApplication(object obj)
@@ -134,71 +132,75 @@ namespace FroggerStarter.View
 
         private void generateLives()
         {
-            lives = new FrogSprite[gameManager.Lives];
-            for (var i = 0; i < gameManager.Lives; i++)
+            this.lives = new FrogSprite[this.gameManager.Lives];
+            for (var i = 0; i < this.gameManager.Lives; i++)
             {
                 var life = new FrogSprite();
                 var xLocation = i * (life.Width + 5);
                 life.RenderAt(xLocation, 0);
-                canvas.Children.Add(life);
-                lives[i] = life;
-                createVisibleClock();
+                this.canvas.Children.Add(life);
+                this.lives[i] = life;
+                this.createVisibleClock();
             }
         }
 
         private void handleLifeLost(object sender, EventArgs e)
         {
-            lives[gameManager.Lives].Visibility = Visibility.Collapsed;
-            timer.Stop();
+            this.lives[this.gameManager.Lives].Visibility = Visibility.Collapsed;
+            this.timer.Stop();
         }
 
         private void handlePointScored(object sender, GameManager.ScoreArgs e)
         {
             e.LilyPad.Visibility = Visibility.Collapsed;
-            landingSpots[e.LilyPad].Visibility = Visibility.Visible;
-            score.Text = "Score:" + gameManager.Score;
-            emptyTimerBar.Width = 0;
+            this.landingSpots[e.LilyPad].Visibility = Visibility.Visible;
+            this.score.Text = "Score:" + this.gameManager.Score;
+            this.emptyTimerBar.Width = 0;
         }
 
         private void handleNextRound(object sender, EventArgs e)
         {
-            foreach (var landingSpot in landingSpots.Values) canvas.Children.Remove(landingSpot);
-            generateLandingSpotFrogs();
+            foreach (var landingSpot in this.landingSpots.Values)
+            {
+                this.canvas.Children.Remove(landingSpot);
+            }
+
+            this.generateLandingSpotFrogs();
         }
 
         private void createVisibleClock()
         {
-            timer = new DispatcherTimer();
-            timer.Tick += timerOnTick;
-            timer.Interval = new TimeSpan(0, 0, 0, 1, 0);
-            timer.Start();
+            this.timer = new DispatcherTimer();
+            this.timer.Tick += this.timerOnTick;
+            this.timer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            this.timer.Start();
         }
 
         private void timerOnTick(object sender, object e)
         {
-            var increment = 10.0 / GameSettings.GameLengthInSeconds;
-            emptyTimerBar.Width += increment;
+            var increment = 10.0 / GameSettings.LifeLengthInSeconds;
+            this.emptyTimerBar.Width += increment;
         }
 
         private void handleTimePowerUp(object sender, EventArgs e)
         {
-            var increment = 10.0 / GameSettings.GameLengthInSeconds * 3;
-            emptyTimerBar.Width -= increment;
+            var increment = 10.0 / GameSettings.LifeLengthInSeconds * 3;
+            this.emptyTimerBar.Width -= increment;
         }
 
         private void generateLandingSpotFrogs()
         {
-            landingSpots = new Dictionary<LilyPad, FrogSprite>();
-            foreach (var t in gameManager.GetFrogHomes())
+            this.landingSpots = new Dictionary<LilyPad, FrogSprite>();
+            foreach (var t in this.gameManager.GetFrogHomes())
             {
                 var newLandingSpotFrog = new FrogSprite {Visibility = Visibility.Collapsed};
-
+                VisualStateManager.GoToState(newLandingSpotFrog, "Spinning", true);
                 var xLocation = t.HitBox.X;
                 var yLocation = t.HitBox.Y;
                 newLandingSpotFrog.RenderAt(xLocation, yLocation);
-                canvas.Children.Add(newLandingSpotFrog);
+                this.canvas.Children.Add(newLandingSpotFrog);
 
-                landingSpots.Add(t, newLandingSpotFrog);
+                this.landingSpots.Add(t, newLandingSpotFrog);
             }
         }
 
