@@ -44,7 +44,7 @@ namespace FroggerStarter.Model
                 case LevelManager.GameLevel.Two:
                     setLevelTwoLaneValues();
                     break;
-                case LevelManager.GameLevel.Final:
+                case LevelManager.GameLevel.Three:
                     setLevelThreeLaneValues();
                     break;
             }

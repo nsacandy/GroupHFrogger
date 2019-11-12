@@ -10,23 +10,15 @@ namespace FroggerStarter.Model.HighScoreModel
 {
     public class HighScore
     {
-        private GameManager manager;
-        private LevelManager currLevel;
-        private int level;
+        public string Name { get; private set; }
+        public int Score { get; private set; }
+        public LevelManager.GameLevel Level { get; private set; }
 
-        public string Name { get; set; }
-        public int Score { get; set; }
-
-        public LevelManager.GameLevel Level
+        public HighScore(LevelManager.GameLevel level, int score, string name)
         {
-            get;
-            set;
-        }
-
-        public HighScore()
-        {
-            this.manager = manager;
-            this.currLevel = currLevel;
+            this.Level = level;
+            this.Score = score;
+            this.Name = name;
         }
 
         public override string ToString()

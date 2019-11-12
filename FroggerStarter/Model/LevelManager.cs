@@ -6,7 +6,7 @@
         {
             One,
             Two,
-            Final
+            Three
         }
 
 
@@ -20,7 +20,7 @@
                     CurrentLevel = GameLevel.Two;
                     break;
                 case GameLevel.Two:
-                    CurrentLevel = GameLevel.Final;
+                    CurrentLevel = GameLevel.Three;
                     break;
             }
         }

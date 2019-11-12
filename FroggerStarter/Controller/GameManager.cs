@@ -10,6 +10,7 @@ using FroggerStarter.Model;
 using FroggerStarter.View.Sprites;
 using FroggerStarter.View.Sprites.PowerUpSprites;
 using FroggerStarter.View.Sprites.VehicleSprites;
+using FroggerStarter.ViewModel;
 
 namespace FroggerStarter.Controller
 {
@@ -49,6 +50,7 @@ namespace FroggerStarter.Controller
             timeSprite = new TimeExtender();
             invincibilityStar = new InvincibilityStar();
             invincibilityTimer = new DispatcherTimer();
+            this.viewModel = new HighScoreViewModel();
             
 
             currentLifeAndPointTime = timerLength;
@@ -87,6 +89,7 @@ namespace FroggerStarter.Controller
         private readonly LevelManager level;
         private readonly TimeExtender timeSprite;
         private readonly InvincibilityStar invincibilityStar;
+        private HighScoreViewModel viewModel;
 
         private DispatcherTimer invincibilityTimer;
         private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.GameLengthInSeconds);
@@ -273,7 +276,7 @@ namespace FroggerStarter.Controller
             {
                 App.AppSoundEffects.Play(Sounds.LandHome);
                 PointScored?.Invoke(this, new ScoreArgs(pad));
-                if (homes.IsAllHomesFilled() && !level.CurrentLevel.Equals(LevelManager.GameLevel.Final))
+                if (homes.IsAllHomesFilled() && !level.CurrentLevel.Equals(LevelManager.GameLevel.Three))
                     NextLevel?.Invoke(this, null);
             }
         }
@@ -283,7 +286,7 @@ namespace FroggerStarter.Controller
             setPlayerToCenterOfBottomLane();
             homes.RemoveHome(e.LilyPad);
             updateScore(e);
-            if (homes.IsAllHomesFilled() && level.CurrentLevel.Equals(LevelManager.GameLevel.Final)) raiseGameOver();
+            if (homes.IsAllHomesFilled() && level.CurrentLevel.Equals(LevelManager.GameLevel.Three)) raiseGameOver();
         }
 
         private void updateScore(ScoreArgs e)
@@ -391,6 +394,11 @@ namespace FroggerStarter.Controller
                     player.MovePlayerDown();
                     break;
             }
+        }
+
+        public void MakeHighScorePlayer(string name)
+        {
+            this.viewModel.AddPlayerToHighScore(this.level.CurrentLevel, this.Score, name);
         }
 
         public class ScoreArgs : EventArgs

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using FroggerStarter.Extentions;
+using FroggerStarter.Model;
 using FroggerStarter.Model.HighScoreModel;
 
 namespace FroggerStarter.ViewModel
@@ -33,8 +34,14 @@ namespace FroggerStarter.ViewModel
             this.AllScores = this.highScores.PlayerHighScores.ToObservableCollection();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public void AddPlayerToHighScore(LevelManager.GameLevel level, int score, string name)
+        {
+            this.highScores.Add(level, score, name);
+            this.AllScores = this.highScores.PlayerHighScores.ToObservableCollection();
+        }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

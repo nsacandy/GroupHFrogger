@@ -41,9 +41,7 @@ namespace FroggerStarter.Model
 
         private void loadEfx()
         {
-            MediaPlayer powerStar = loadSoundFileAsync("sound-frogger-star-power.wav");
-            powerStar.IsLoopingEnabled = true;
-            powerStar.Play();
+            
             effects.Add(Sounds.Hop, loadSoundFileAsync("sound-frogger-hop.wav"));
             effects.Add(Sounds.HitVehicle, loadSoundFileAsync("sound-frogger-squash.wav"));
             effects.Add(Sounds.HitWater, loadSoundFileAsync("sound-frogger-plunk.wav"));
