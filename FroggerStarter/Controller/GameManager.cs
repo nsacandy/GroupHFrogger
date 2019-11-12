@@ -302,7 +302,7 @@ namespace FroggerStarter.Controller
             var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
 
             foreach (var uiElement in objectsAtPlayerLocation)
-                if (uiElement is IVehicleSprite)
+                if (uiElement is VehicleSprite)
                 {
                     App.AppSoundEffects.Play(Sounds.HitVehicle);
                     onLifeLost();

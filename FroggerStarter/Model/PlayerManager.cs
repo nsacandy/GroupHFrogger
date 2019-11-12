@@ -11,7 +11,7 @@ namespace FroggerStarter.Model
         public PlayerManager(double topBoundary, double bottomBoundary, double leftBoundary, double rightBoundary)
         {
             Player = new Frog();
-            PlayerSprite = (DeathSprite) Player.Sprite;
+            PlayerSprite = (FrogSprite) Player.Sprite;
             PlayerSprite.IsHitTestVisible = false;
 
             this.topBoundary = topBoundary;
@@ -44,7 +44,7 @@ namespace FroggerStarter.Model
         #region Properties
 
         public Frog Player { get; }
-        public DeathSprite PlayerSprite { get; }
+        public FrogSprite PlayerSprite { get; }
 
         #endregion
 

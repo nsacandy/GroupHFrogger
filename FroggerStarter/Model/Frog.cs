@@ -17,7 +17,7 @@ namespace FroggerStarter.Model
         /// </summary>
         public Frog()
         {
-            Sprite = new DeathSprite();
+            Sprite = new FrogSprite();
             currentHeading = Heading.Up;
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }

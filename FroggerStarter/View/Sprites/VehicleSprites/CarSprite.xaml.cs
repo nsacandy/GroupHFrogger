@@ -1,10 +1,8 @@
 ﻿// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-using FroggerStarter.View.Sprites.VehicleSprites;
-
-namespace FroggerStarter.View.Sprites
+namespace FroggerStarter.View.Sprites.VehicleSprites
 {
-    public partial class CarSprite : BaseSprite, IVehicleSprite
+    public partial class CarSprite
 
     {
         #region Constructors
