@@ -10,7 +10,7 @@
         {
             One,
             Two,
-            Final
+            Three
         }
 
         #endregion
@@ -34,7 +34,7 @@
                     this.CurrentLevel = GameLevel.Two;
                     break;
                 case GameLevel.Two:
-                    this.CurrentLevel = GameLevel.Final;
+                    CurrentLevel = GameLevel.Three;
                     break;
             }
         }

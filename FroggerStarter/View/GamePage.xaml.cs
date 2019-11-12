@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.UI.Core;
@@ -70,14 +71,16 @@ namespace FroggerStarter.View
             this.timer.Start();
         }
 
-        private void handleGameOver(object sender, EventArgs e)
+        private async void handleGameOver(object sender, EventArgs e)
         {
-            this.emptyTimerBar.Visibility = Visibility.Collapsed;
-            this.fullTimerBar.Visibility = Visibility.Collapsed;
-            this.gameOver.Visibility = Visibility.Visible;
-            this.score.Visibility = Visibility.Visible;
-            this.timer.Stop();
-            this.promptUserForRestart();
+            emptyTimerBar.Visibility = Visibility.Collapsed;
+            fullTimerBar.Visibility = Visibility.Collapsed;
+            gameOver.Visibility = Visibility.Visible;
+            score.Visibility = Visibility.Visible;
+            timer.Stop();
+            var result = await this.inputTextDialogAsync();
+            this.gameManager.MakeHighScorePlayer(result);
+            this.HandleShowHighScoreboard();
         }
 
         private async void promptUserForRestart()
@@ -203,6 +206,42 @@ namespace FroggerStarter.View
 
                 this.landingSpots.Add(t, newLandingSpotFrog);
             }
+        }
+
+        public async void HandleShowHighScoreboard()
+        {
+            var viewId = 0;
+
+            var newView = CoreApplication.CreateNewView();
+            await newView.Dispatcher.RunAsync(
+                CoreDispatcherPriority.Normal,
+                () =>
+                {
+                    var frame = new Frame();
+                    frame.Navigate(typeof(HighScorePage));
+                    Window.Current.Content = frame;
+
+                    viewId = ApplicationView.GetForCurrentView().Id;
+
+                    Window.Current.Activate();
+                });
+            
+            var viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewId);
+        }
+
+        private async Task<string> inputTextDialogAsync()
+        {
+            var inputTextBox = new TextBox {AcceptsReturn = false, Height = 32};
+            var dialog = new ContentDialog {
+                Content = inputTextBox,
+                Title = "Enter Name",
+                IsSecondaryButtonEnabled = false,
+                PrimaryButtonText = "Ok",
+            };
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                return inputTextBox.Text;
+            else
+                return "";
         }
 
         #endregion

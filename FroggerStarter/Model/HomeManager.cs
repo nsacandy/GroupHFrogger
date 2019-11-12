@@ -75,7 +75,7 @@ namespace FroggerStarter.Model
 
         /// <summary>Alls the homes filled.</summary>
         /// <returns>boolean value representing whether the remaining homespots == 0</returns>
-        public bool AllHomesFilled()
+        public bool IsAllHomesFilled()
         {
             return this.landingSpots.Count == 0;
         }

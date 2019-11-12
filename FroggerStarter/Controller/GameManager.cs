@@ -10,6 +10,7 @@ using FroggerStarter.Model;
 using FroggerStarter.View.Sprites;
 using FroggerStarter.View.Sprites.PowerUpSprites;
 using FroggerStarter.View.Sprites.VehicleSprites;
+using FroggerStarter.ViewModel;
 
 namespace FroggerStarter.Controller
 {
@@ -28,6 +29,7 @@ namespace FroggerStarter.Controller
         private readonly LevelManager level;
         private readonly TimeExtender timeSprite;
         private readonly InvincibilityStar invincibilityStar;
+        private HighScoreViewModel viewModel;
 
         private DispatcherTimer invincibilityTimer;
         private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.LifeLengthInSeconds);
@@ -295,23 +297,18 @@ namespace FroggerStarter.Controller
             if (uiElement is LilyPad pad)
             {
                 App.AppSoundEffects.Play(Sounds.LandHome);
-                this.PointScored?.Invoke(this, new ScoreArgs(pad));
-                if (this.homes.AllHomesFilled() && !this.level.CurrentLevel.Equals(LevelManager.GameLevel.Final))
-                {
-                    this.NextLevel?.Invoke(this, null);
-                }
+                PointScored?.Invoke(this, new ScoreArgs(pad));
+                if (homes.IsAllHomesFilled() && !level.CurrentLevel.Equals(LevelManager.GameLevel.Three))
+                    NextLevel?.Invoke(this, null);
             }
         }
 
         private void handlePointScored(object sender, ScoreArgs e)
         {
-            this.setPlayerToCenterOfBottomLane();
-            this.homes.RemoveHome(e.LilyPad);
-            this.updateScore(e);
-            if (this.homes.AllHomesFilled() && this.level.CurrentLevel.Equals(LevelManager.GameLevel.Final))
-            {
-                this.raiseGameOver();
-            }
+            setPlayerToCenterOfBottomLane();
+            homes.RemoveHome(e.LilyPad);
+            updateScore(e);
+            if (homes.IsAllHomesFilled() && level.CurrentLevel.Equals(LevelManager.GameLevel.Three)) raiseGameOver();
         }
 
         private void updateScore(ScoreArgs e)
@@ -428,6 +425,11 @@ namespace FroggerStarter.Controller
                     this.player.MovePlayerDown();
                     break;
             }
+        }
+
+        public void MakeHighScorePlayer(string name)
+        {
+            this.viewModel.AddPlayerToHighScore(this.level.CurrentLevel, this.Score, name);
         }
 
         /// <summary>Custom EventArgs class made to pass score and location data</summary>

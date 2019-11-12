@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using FroggerStarter.Extentions;
+using FroggerStarter.Model;
 using FroggerStarter.Model.HighScoreModel;
 
 namespace FroggerStarter.ViewModel
@@ -43,9 +44,11 @@ namespace FroggerStarter.ViewModel
             this.AllScores = this.highScores.PlayerHighScores.ToObservableCollection();
         }
 
-        #endregion
-
-        #region Methods
+        public void AddPlayerToHighScore(LevelManager.GameLevel level, int score, string name)
+        {
+            this.highScores.Add(level, score, name);
+            this.AllScores = this.highScores.PlayerHighScores.ToObservableCollection();
+        }
 
         /// <summary>Occurs when a property value changes.</summary>
         /// <returns></returns>

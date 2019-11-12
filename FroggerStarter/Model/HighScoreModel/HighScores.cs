@@ -5,6 +5,7 @@ namespace FroggerStarter.Model.HighScoreModel
     /// <summary>Keeps up with high scores</summary>
     public class HighScores
     {
+        private IList<HighScore> players;
         #region Properties
 
         /// <summary>Gets the player high scores.</summary>
@@ -28,15 +29,7 @@ namespace FroggerStarter.Model.HighScoreModel
         /// <summary>Initializes a new instance of the <see cref="HighScores"/> class.</summary>
         public HighScores()
         {
-            this.PlayerHighScores = new List<HighScore>();
-
-            this.PlayerHighScores.Add(new HighScore {Level = LevelManager.GameLevel.Two, Score = 100, Name = "Aaron"});
-            this.PlayerHighScores.Add(new HighScore {Level = LevelManager.GameLevel.One, Score = 50, Name = "Aaron"});
-            this.PlayerHighScores.Add(new HighScore
-                {Level = LevelManager.GameLevel.Final, Score = 200, Name = "Aaron"});
-            this.PlayerHighScores.Add(new HighScore {Level = LevelManager.GameLevel.Two, Score = 95, Name = "Aaron"});
-            this.PlayerHighScores.Add(new HighScore
-                {Level = LevelManager.GameLevel.Final, Score = 300, Name = "Aaron"});
+            this.players = new List<HighScore>();
         }
 
         #endregion
@@ -45,9 +38,9 @@ namespace FroggerStarter.Model.HighScoreModel
 
         /// <summary>Adds the specified score.</summary>
         /// <param name="score">The score.</param>
-        public void Add(HighScore score)
+        public void Add(LevelManager.GameLevel level, int score, string name)
         {
-            this.PlayerHighScores.Add(score);
+            this.players.Add(new HighScore(level, score, name));
         }
 
         #endregion
