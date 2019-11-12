@@ -7,9 +7,7 @@ namespace FroggerStarter.Model.HighScoreModel
     {
         #region Data members
 
-        private readonly GameManager manager;
-        private readonly LevelManager currLevel;
-        private int level;
+        
 
         #endregion
 
@@ -31,10 +29,11 @@ namespace FroggerStarter.Model.HighScoreModel
         #region Constructors
 
         /// <summary>Initializes a new instance of the <see cref="HighScore"/> class.</summary>
-        public HighScore()
+        public HighScore(LevelManager.GameLevel level, int score, string name)
         {
-            this.manager = this.manager;
-            this.currLevel = this.currLevel;
+            this.Level = level;
+            this.Score = score;
+            this.Name = name;
         }
 
         #endregion

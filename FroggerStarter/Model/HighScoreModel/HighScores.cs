@@ -5,6 +5,7 @@ namespace FroggerStarter.Model.HighScoreModel
     /// <summary>Keeps up with high scores</summary>
     public class HighScores
     {
+        private IList<HighScore> players;
         #region Properties
 
         /// <summary>Gets the player high scores.</summary>
@@ -37,7 +38,7 @@ namespace FroggerStarter.Model.HighScoreModel
 
         /// <summary>Adds the specified score.</summary>
         /// <param name="score">The score.</param>
-        public void Add(HighScore score)
+        public void Add(LevelManager.GameLevel level, int score, string name)
         {
             this.players.Add(new HighScore(level, score, name));
         }
