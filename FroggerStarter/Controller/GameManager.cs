@@ -176,7 +176,7 @@ namespace FroggerStarter.Controller
             currentLifeAndPointTime = DateTime.Now - startTime;
             showTimeSprite();
             showInvincibilityStarSprite();
-            checkForInvincibilityStarCollision();
+            this.checkForInvincibilityStarCollision();
             checkForPlayerVehicleCollisionAsync();
             checkForPointScored();
             checkForTimeSpriteCollision();
@@ -228,23 +228,6 @@ namespace FroggerStarter.Controller
         {
             if (gameTimerTick % GameSettings.TimeSpriteShowInterval == 0 && !invincibilityStar.IsShowing)
                 invincibilityStar.Show();
-        }
-
-        private void checkForInvincibilityStarCollision()
-        {
-            var playerBox = this.player.PlayerSprite.HitBox;
-            var objectsAtPlayerLocation = VisualTreeHelper.FindElementsInHostCoordinates(playerBox, null);
-
-            foreach (var uiElement in objectsAtPlayerLocation)
-            {
-                if (uiElement is InvincibilityStarSprite)
-                {
-                    App.AppSoundEffects.Play(Sounds.PowerUpStar);
-                    this.player.onInvincibilityTriggered();
-                    this.invincibilityTimer = GameSettings.InvincibilityLength;
-                    this.invincibilityStar.OnHit();
-                }
-            }
         }
 
         private void checkRemainingTime()
