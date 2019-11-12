@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace FroggerStarter.View
 {
-    public sealed partial class HighScorePage : UserControl
+    public sealed partial class HighScorePage
     {
         public HighScorePage()
         {

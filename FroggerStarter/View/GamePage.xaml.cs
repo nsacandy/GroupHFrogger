@@ -76,6 +76,7 @@ namespace FroggerStarter.View
             this.gameOver.Visibility = Visibility.Visible;
             this.score.Visibility = Visibility.Visible;
             this.timer.Stop();
+            this.Frame.Navigate(typeof(HighScorePage));
         }
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
