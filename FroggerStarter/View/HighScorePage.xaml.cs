@@ -10,7 +10,7 @@ namespace FroggerStarter.View
     {
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="HighScorePage"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="HighScorePage" /> class.</summary>
         public HighScorePage()
         {
             this.InitializeComponent();

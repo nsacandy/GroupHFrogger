@@ -22,20 +22,20 @@ namespace FroggerStarter.Model
 
         /// <summary>Gets a value indicating whether this instance is visible.</summary>
         /// <value>
-        ///   <c>true</c> if this instance is showing; otherwise, <c>false</c>.</value>
+        ///     <c>true</c> if this instance is showing; otherwise, <c>false</c>.
+        /// </value>
         public bool IsShowing { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="TimeExtender"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="TimeExtender" /> class.</summary>
         public TimeExtender()
         {
             this.setUpTimer();
             this.rand = new Random();
-            Sprite = new TimeExtenderSprite();
-            Sprite.Visibility = Visibility.Collapsed;
+            Sprite = new TimeExtenderSprite {Visibility = Visibility.Collapsed};
             this.moveNext();
         }
 
@@ -65,11 +65,10 @@ namespace FroggerStarter.Model
             X = this.rand.Next((int) GameSettings.BackgroundWidth - (int) Sprite.Width);
         }
 
-
         /// <summary>Randomly shows the powerup</summary>
         public void RandomlyShow()
         {
-            if (this.rand.NextDouble() < 0.1)
+            if (this.rand.NextDouble() < 0.4)
             {
                 this.IsShowing = true;
                 Sprite.Visibility = Visibility.Visible;
@@ -84,13 +83,11 @@ namespace FroggerStarter.Model
             this.IsShowing = false;
         }
 
-
         /// <summary>Sets the heading.</summary>
         /// <param name="heading">The heading.</param>
-        
         public override void SetHeading(Heading heading)
         {
-            throw new NotImplementedException();
+            
         }
 
         #endregion

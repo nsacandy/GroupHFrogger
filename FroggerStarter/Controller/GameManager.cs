@@ -29,7 +29,7 @@ namespace FroggerStarter.Controller
         private readonly LevelManager level;
         private readonly TimeExtender timeSprite;
         private readonly InvincibilityStar invincibilityStar;
-        private HighScoreViewModel viewModel;
+        //private readonly HighScoreViewModel viewModel;
 
         private DispatcherTimer invincibilityTimer;
         private TimeSpan timerLength = new TimeSpan(0, 0, GameSettings.LifeLengthInSeconds);
@@ -76,6 +76,7 @@ namespace FroggerStarter.Controller
             this.timeSprite = new TimeExtender();
             this.invincibilityStar = new InvincibilityStar();
             this.invincibilityTimer = new DispatcherTimer();
+            //this.viewModel = new HighScoreViewModel();
 
             this.currentLifeAndPointTime = this.timerLength;
             this.startTime = DateTime.Now;
@@ -84,7 +85,7 @@ namespace FroggerStarter.Controller
             this.LifeLost += this.player.HandleLifeLost;
             this.PointScored += this.handlePointScored;
             this.NextLevel += this.moveToNextLevel;
-            this.TimePowerUp += this.onTimeExtention;
+            this.TimePowerUp += this.onTimeExtension;
         }
 
         #endregion
@@ -185,7 +186,6 @@ namespace FroggerStarter.Controller
 
         private void timerOnTick(object sender, object e)
         {
-            this.gameTimerTick++;
             this.currentLifeAndPointTime = DateTime.Now - this.startTime;
             this.showTimeSprite();
             this.showInvincibilityStarSprite();
@@ -240,7 +240,7 @@ namespace FroggerStarter.Controller
             App.AppSoundEffects.PowerStarLoop.Pause();
         }
 
-        private void onTimeExtention(object sender, EventArgs e)
+        private void onTimeExtension(object sender, EventArgs e)
         {
             this.timeSprite.OnHit();
             this.currentLifeAndPointTime -= new TimeSpan(0, 0, 5);
@@ -249,7 +249,7 @@ namespace FroggerStarter.Controller
 
         private void showTimeSprite()
         {
-            if (this.gameTimerTick % GameSettings.TimeSpriteAppearInterval == 0 && !this.timeSprite.IsShowing)
+            if (this.currentLifeAndPointTime.Seconds % GameSettings.TimeSpriteAppearInterval == 0 && !this.timeSprite.IsShowing)
             {
                 this.timeSprite.RandomlyShow();
             }
@@ -257,7 +257,7 @@ namespace FroggerStarter.Controller
 
         private void showInvincibilityStarSprite()
         {
-            if (this.gameTimerTick % GameSettings.InvincibilityAppearInterval == 0 && !this.invincibilityStar.IsShowing)
+            if (this.currentLifeAndPointTime.Seconds % GameSettings.InvincibilityAppearInterval == 0 && !this.invincibilityStar.IsShowing)
             {
                 this.invincibilityStar.RandomlyShow();
             }
@@ -297,18 +297,23 @@ namespace FroggerStarter.Controller
             if (uiElement is LilyPad pad)
             {
                 App.AppSoundEffects.Play(Sounds.LandHome);
-                PointScored?.Invoke(this, new ScoreArgs(pad));
-                if (homes.IsAllHomesFilled() && !level.CurrentLevel.Equals(LevelManager.GameLevel.Three))
-                    NextLevel?.Invoke(this, null);
+                this.PointScored?.Invoke(this, new ScoreArgs(pad));
+                if (this.homes.IsAllHomesFilled() && !this.level.CurrentLevel.Equals(LevelManager.GameLevel.Three))
+                {
+                    this.NextLevel?.Invoke(this, null);
+                }
             }
         }
 
         private void handlePointScored(object sender, ScoreArgs e)
         {
-            setPlayerToCenterOfBottomLane();
-            homes.RemoveHome(e.LilyPad);
-            updateScore(e);
-            if (homes.IsAllHomesFilled() && level.CurrentLevel.Equals(LevelManager.GameLevel.Three)) raiseGameOver();
+            this.setPlayerToCenterOfBottomLane();
+            this.homes.RemoveHome(e.LilyPad);
+            this.updateScore(e);
+            if (this.homes.IsAllHomesFilled() && this.level.CurrentLevel.Equals(LevelManager.GameLevel.Three))
+            {
+                this.raiseGameOver();
+            }
         }
 
         private void updateScore(ScoreArgs e)
@@ -326,7 +331,8 @@ namespace FroggerStarter.Controller
         private void setPlayerToCenterOfBottomLane()
         {
             var centeredX = GameSettings.BackgroundWidth / 2 - this.player.PlayerSprite.Width / 2;
-            var centeredY = GameSettings.BackgroundHeight - this.player.PlayerSprite.Height - GameSettings.BottomLaneOffset;
+            var centeredY = GameSettings.BackgroundHeight - this.player.PlayerSprite.Height -
+                            GameSettings.BottomLaneOffset;
 
             this.player.LastLocationTracker(centeredX, centeredY);
         }
@@ -427,10 +433,10 @@ namespace FroggerStarter.Controller
             }
         }
 
-        public void MakeHighScorePlayer(string name)
-        {
-            this.viewModel.AddPlayerToHighScore(this.level.CurrentLevel, this.Score, name);
-        }
+        //public void MakeHighScorePlayer(string name)
+        //{
+        //    this.viewModel.AddPlayerToHighScore(this.level.CurrentLevel, this.Score, name);
+        //}
 
         /// <summary>Custom EventArgs class made to pass score and location data</summary>
         /// <seealso cref="System.EventArgs" />

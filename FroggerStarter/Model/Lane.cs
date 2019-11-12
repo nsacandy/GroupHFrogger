@@ -53,7 +53,7 @@ namespace FroggerStarter.Model
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="Lane"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="Lane" /> class.</summary>
         /// <param name="yValue">The y value.</param>
         /// <param name="numVehicles">The number vehicles.</param>
         /// <param name="vehicleType">Type of the vehicle.</param>
@@ -207,7 +207,7 @@ namespace FroggerStarter.Model
         }
 
         /// <summary>
-        ///   <para>Specialized args for passing a car out of bounds</para>
+        ///     <para>Specialized args for passing a car out of bounds</para>
         /// </summary>
         /// <seealso cref="System.EventArgs" />
         public class VehicleArgs : EventArgs
@@ -222,7 +222,7 @@ namespace FroggerStarter.Model
 
             #region Constructors
 
-            /// <summary>Initializes a new instance of the <see cref="VehicleArgs"/> class.</summary>
+            /// <summary>Initializes a new instance of the <see cref="VehicleArgs" /> class.</summary>
             /// <param name="outOfBoundsVehicle">The out of bounds vehicle.</param>
             public VehicleArgs(Vehicle outOfBoundsVehicle)
             {

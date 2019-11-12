@@ -5,16 +5,21 @@ namespace FroggerStarter.Model.HighScoreModel
     /// <summary>Keeps up with high scores</summary>
     public class HighScores
     {
-        private IList<HighScore> players;
+        #region Data members
+
+        private readonly IList<HighScore> players;
+
+        #endregion
+
         #region Properties
 
         /// <summary>Gets the player high scores.</summary>
         /// <value>The player high scores.</value>
         public IList<HighScore> PlayerHighScores { get; }
 
-        /// <summary>Gets or sets the <see cref="HighScore"/> at the specified index.</summary>
+        /// <summary>Gets or sets the <see cref="HighScore" /> at the specified index.</summary>
         /// <param name="i">The index that holds the score.</param>
-        /// <value>The <see cref="HighScore"/>.</value>
+        /// <value>The <see cref="HighScore" />.</value>
         /// <returns></returns>
         public HighScore this[int i]
         {
@@ -26,7 +31,7 @@ namespace FroggerStarter.Model.HighScoreModel
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="HighScores"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="HighScores" /> class.</summary>
         public HighScores()
         {
             this.players = new List<HighScore>();

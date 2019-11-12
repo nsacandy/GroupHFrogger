@@ -82,8 +82,10 @@ namespace FroggerStarter.Model
             }
         }
 
-        /// <summary>Moves the player to the right.
-        ///  <@postcondition>player x + player speed </@precondition></summary>
+        /// <summary>
+        ///     Moves the player to the right.
+        ///     <@postcondition>player x + player speed </@precondition>
+        /// </summary>
         public void MovePlayerRight()
         {
             if (this.keyboardFrozen)
@@ -169,7 +171,7 @@ namespace FroggerStarter.Model
 
         /// <summary>Handles the life lost.</summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         public void HandleLifeLost(object sender, EventArgs e)
         {
             this.keyboardFrozen = true;
@@ -183,9 +185,9 @@ namespace FroggerStarter.Model
         }
 
         /// <summary>
-        ///   <para>
-        ///  Sets the heading.
-        /// </para>
+        ///     <para>
+        ///         Sets the heading.
+        ///     </para>
         /// </summary>
         /// <param name="heading">The heading.</param>
         public override void SetHeading(Heading heading)

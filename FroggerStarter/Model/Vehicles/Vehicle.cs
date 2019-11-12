@@ -33,9 +33,9 @@ namespace FroggerStarter.Model.Vehicles
         }
 
         /// <summary>
-        ///   <para>
-        ///  Moves the vehicle in the direction of the heading
-        /// </para>
+        ///     <para>
+        ///         Moves the vehicle in the direction of the heading
+        ///     </para>
         /// </summary>
         public void MoveVehicle()
         {

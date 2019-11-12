@@ -10,7 +10,7 @@ namespace FroggerStarter.View.Sprites.PowerUpSprites
     {
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="TimeExtenderSprite"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="TimeExtenderSprite" /> class.</summary>
         public TimeExtenderSprite()
         {
             this.InitializeComponent();

@@ -10,7 +10,7 @@ namespace FroggerStarter.View.Sprites
     {
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="LilyPad"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="LilyPad" /> class.</summary>
         public LilyPad()
         {
             this.InitializeComponent();

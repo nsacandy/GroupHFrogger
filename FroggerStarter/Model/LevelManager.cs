@@ -34,7 +34,7 @@
                     this.CurrentLevel = GameLevel.Two;
                     break;
                 case GameLevel.Two:
-                    CurrentLevel = GameLevel.Three;
+                    this.CurrentLevel = GameLevel.Three;
                     break;
             }
         }

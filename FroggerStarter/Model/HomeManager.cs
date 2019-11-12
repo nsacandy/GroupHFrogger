@@ -7,7 +7,6 @@ using FroggerStarter.View.Sprites;
 namespace FroggerStarter.Model
 {
     /// <summary>Class for managing home bases</summary>
-   
     public class HomeManager : IEnumerable<LilyPad>
     {
         #region Data members
@@ -21,8 +20,7 @@ namespace FroggerStarter.Model
 
         #region Constructors
 
-
-        /// <summary>Initializes a new instance of the <see cref="HomeManager"/> class, adds landing spots</summary>
+        /// <summary>Initializes a new instance of the <see cref="HomeManager" /> class, adds landing spots</summary>
         /// <param name="gameCanvas">The game canvas.</param>
         public HomeManager(Canvas gameCanvas)
         {

@@ -37,22 +37,26 @@ namespace FroggerStarter.ViewModel
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="HighScoreViewModel"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="HighScoreViewModel" /> class.</summary>
         public HighScoreViewModel()
         {
             this.highScores = new HighScores();
             this.AllScores = this.highScores.PlayerHighScores.ToObservableCollection();
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>Occurs when a property value changes.</summary>
+        /// <returns></returns>
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void AddPlayerToHighScore(LevelManager.GameLevel level, int score, string name)
         {
             this.highScores.Add(level, score, name);
             this.AllScores = this.highScores.PlayerHighScores.ToObservableCollection();
         }
-
-        /// <summary>Occurs when a property value changes.</summary>
-        /// <returns></returns>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>Called when [property changed].</summary>
         /// <param name="propertyName">Name of the property.</param>

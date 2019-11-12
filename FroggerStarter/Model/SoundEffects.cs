@@ -20,9 +20,8 @@ namespace FroggerStarter.Model
         PowerUpStar
     }
 
-
     /// <summary>
-    ///   <para>Class for adding sounds to the game</para>
+    ///     <para>Class for adding sounds to the game</para>
     /// </summary>
     public class SoundEffects
     {
@@ -42,7 +41,7 @@ namespace FroggerStarter.Model
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="SoundEffects"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="SoundEffects" /> class.</summary>
         public SoundEffects()
         {
             this.setStarLoop();

@@ -13,10 +13,9 @@ namespace FroggerStarter.View.Sprites
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class FrogSprite
     {
-        
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="FrogSprite"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="FrogSprite" /> class.</summary>
         public FrogSprite()
         {
             this.InitializeComponent();
@@ -71,6 +70,4 @@ namespace FroggerStarter.View.Sprites
 
         #endregion
     }
-
-    
 }

@@ -22,20 +22,20 @@ namespace FroggerStarter.Model
 
         /// <summary>Gets a value indicating whether this instance is visible.</summary>
         /// <value>
-        ///   <c>true</c> if this instance is visible; otherwise, <c>false</c>.</value>
+        ///     <c>true</c> if this instance is visible; otherwise, <c>false</c>.
+        /// </value>
         public bool IsShowing { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="InvincibilityStar"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="InvincibilityStar" /> class.</summary>
         public InvincibilityStar()
         {
             this.setUpTimer();
             this.rand = new Random();
-            Sprite = new InvincibilityStarSprite();
-            Sprite.Visibility = Visibility.Collapsed;
+            Sprite = new InvincibilityStarSprite {Visibility = Visibility.Collapsed};
             this.moveNext();
         }
 
@@ -83,12 +83,10 @@ namespace FroggerStarter.Model
             this.IsShowing = false;
         }
 
-
         /// <summary>Sets the heading.</summary>
         /// <param name="heading">The heading.</param>
         public override void SetHeading(Heading heading)
         {
-            
         }
 
         #endregion

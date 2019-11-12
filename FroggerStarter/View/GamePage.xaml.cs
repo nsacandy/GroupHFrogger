@@ -33,7 +33,7 @@ namespace FroggerStarter.View
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="GamePage"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="GamePage" /> class.</summary>
         public GamePage()
         {
             this.InitializeComponent();
@@ -73,13 +73,13 @@ namespace FroggerStarter.View
 
         private async void handleGameOver(object sender, EventArgs e)
         {
-            emptyTimerBar.Visibility = Visibility.Collapsed;
-            fullTimerBar.Visibility = Visibility.Collapsed;
-            gameOver.Visibility = Visibility.Visible;
-            score.Visibility = Visibility.Visible;
-            timer.Stop();
+            this.emptyTimerBar.Visibility = Visibility.Collapsed;
+            this.fullTimerBar.Visibility = Visibility.Collapsed;
+            this.gameOver.Visibility = Visibility.Visible;
+            this.score.Visibility = Visibility.Visible;
+            this.timer.Stop();
             var result = await this.inputTextDialogAsync();
-            this.gameManager.MakeHighScorePlayer(result);
+            //this.gameManager.MakeHighScorePlayer(result);
             this.HandleShowHighScoreboard();
         }
 
@@ -188,8 +188,15 @@ namespace FroggerStarter.View
 
         private void handleTimePowerUp(object sender, EventArgs e)
         {
-            var increment = 10.0 / GameSettings.LifeLengthInSeconds * 3;
-            this.emptyTimerBar.Width -= increment;
+            const double increment = 10.0 / GameSettings.LifeLengthInSeconds * 3;
+            try
+            {
+                this.emptyTimerBar.Width -= increment;
+            }
+            catch (Exception exception)
+            {
+                this.emptyTimerBar.Width = 3;
+            }
         }
 
         private void generateLandingSpotFrogs()
@@ -225,7 +232,7 @@ namespace FroggerStarter.View
 
                     Window.Current.Activate();
                 });
-            
+
             var viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewId);
         }
 
@@ -236,12 +243,14 @@ namespace FroggerStarter.View
                 Content = inputTextBox,
                 Title = "Enter Name",
                 IsSecondaryButtonEnabled = false,
-                PrimaryButtonText = "Ok",
+                PrimaryButtonText = "Ok"
             };
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
                 return inputTextBox.Text;
-            else
-                return "";
+            }
+
+            return "";
         }
 
         #endregion

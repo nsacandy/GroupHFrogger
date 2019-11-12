@@ -3,7 +3,7 @@
 namespace FroggerStarter.View.Sprites.PowerUpSprites
 {
     /// <summary>
-    ///   <para>Sprite for invincibilityStar</para>
+    ///     <para>Sprite for invincibilityStar</para>
     /// </summary>
     /// <seealso cref="FroggerStarter.View.Sprites.BaseSprite" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
@@ -12,7 +12,7 @@ namespace FroggerStarter.View.Sprites.PowerUpSprites
     {
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="InvincibilityStarSprite"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="InvincibilityStarSprite" /> class.</summary>
         public InvincibilityStarSprite()
         {
             this.InitializeComponent();

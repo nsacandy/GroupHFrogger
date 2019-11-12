@@ -14,7 +14,7 @@ namespace FroggerStarter.View.Sprites
     {
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="CarSprite"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="CarSprite" /> class.</summary>
         public CarSprite()
         {
             this.InitializeComponent();

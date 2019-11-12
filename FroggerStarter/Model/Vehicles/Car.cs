@@ -18,9 +18,16 @@ namespace FroggerStarter.Model.Vehicles
             this.SetHeading(heading);
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>Sets the heading of the spite.</summary>
         /// <param name="heading">The heading.</param>
-        public sealed override void SetHeading(Heading heading) => base.SetHeading(heading);
+        public sealed override void SetHeading(Heading heading)
+        {
+            base.SetHeading(heading);
+        }
 
         #endregion
     }

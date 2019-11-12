@@ -11,7 +11,6 @@ namespace FroggerStarter.Model
     {
         #region Types and Delegates
 
-
         /// <summary>The direction the sprite is "facing"</summary>
         public enum Heading
         {
@@ -109,7 +108,6 @@ namespace FroggerStarter.Model
         #endregion
 
         #region Methods
-
 
         /// <summary>Sets the heading.</summary>
         /// <param name="heading">The heading.</param>
