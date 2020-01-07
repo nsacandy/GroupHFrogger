@@ -12,6 +12,7 @@ using FroggerStarter.View.Sprites.PowerUpSprites;
 using FroggerStarter.View.Sprites.VehicleSprites;
 using FroggerStarter.ViewModel;
 
+//TODO fire lifeLost when he reaches the top shoulder
 namespace FroggerStarter.Controller
 {
     /// <summary>
